@@ -1,0 +1,113 @@
+import { Switch } from '@seven-design/components'
+
+# Switch 开关
+
+表示两种相互对立的状态间的切换，多用于触发「开/关」。
+
+## 基础用法
+
+绑定 `checked` 到一个布尔类型的变量。
+
+```tsx live
+function BasicSwitch() {
+  const [checked, setChecked] = React.useState(false)
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={setChecked} />
+      <p style={{ marginTop: '12px', color: '#606266' }}>
+        当前状态：{checked ? '开启' : '关闭'}
+      </p>
+    </div>
+  )
+}
+```
+
+## 禁用状态
+
+设置 `disabled` 属性，接受一个布尔值，设置为 `true` 即可禁用。
+
+```tsx live
+<div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+  <Switch disabled />
+  <Switch disabled defaultChecked />
+</div>
+```
+
+## 加载状态
+
+设置 `loading` 属性，表示正在加载中的状态。
+
+```tsx live
+function LoadingSwitch() {
+  const [loading, setLoading] = React.useState(false)
+  const [checked, setChecked] = React.useState(false)
+
+  const handleChange = (value) => {
+    setLoading(true)
+    setTimeout(() => {
+      setChecked(value)
+      setLoading(false)
+    }, 1000)
+  }
+
+  return (
+    <div>
+      <Switch loading={loading} checked={checked} onChange={handleChange} />
+      <p style={{ marginTop: '12px', color: '#606266' }}>
+        {loading ? '加载中...' : checked ? '已开启' : '已关闭'}
+      </p>
+    </div>
+  )
+}
+```
+
+## 自定义值
+
+可以通过 `activeValue` 和 `inactiveValue` 属性来设置开关的值。
+
+```tsx live
+function CustomValueSwitch() {
+  const [value, setValue] = React.useState('off')
+
+  return (
+    <div>
+      <Switch
+        checked={value === 'on'}
+        activeValue="on"
+        inactiveValue="off"
+        onChange={setValue}
+      />
+      <p style={{ marginTop: '12px', color: '#606266' }}>当前值：{value}</p>
+    </div>
+  )
+}
+```
+
+## API
+
+### Props
+
+| 属性           | 说明                 | 类型                              | 默认值  |
+| -------------- | -------------------- | --------------------------------- | ------- |
+| checked        | 是否选中（受控）     | `boolean`                         | -       |
+| defaultChecked | 默认是否选中         | `boolean`                         | `false` |
+| disabled       | 是否禁用             | `boolean`                         | `false` |
+| loading        | 是否加载中           | `boolean`                         | `false` |
+| activeValue    | 选中时的值           | `boolean \| string \| number`     | `true`  |
+| inactiveValue  | 未选中时的值         | `boolean \| string \| number`     | `false` |
+| name           | 原生 input 的 name   | `string`                          | -       |
+| id             | 原生 input 的 id     | `string`                          | -       |
+| className      | 自定义类名           | `string`                          | -       |
+
+### Events
+
+| 事件名   | 说明             | 类型                                      |
+| -------- | ---------------- | ----------------------------------------- |
+| onChange | 状态改变时触发   | `(value: boolean \| string \| number) => void` |
+
+### 键盘操作
+
+| 按键            | 说明       |
+| --------------- | ---------- |
+| Enter / Space   | 切换开关   |

@@ -1,0 +1,196 @@
+/* Button 组件样式 */
+.sd-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 15px;
+  font-size: var(--sd-font-size-base);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: var(--sd-fill-color-blank);
+  border: 1px solid var(--sd-border-color);
+  border-radius: var(--sd-border-radius-base);
+  color: var(--sd-text-color-regular);
+  transition: all var(--sd-transition-duration-fast) var(--sd-transition-function-ease-in-out-bezier);
+  user-select: none;
+  outline: none;
+}
+
+.sd-button:hover,
+.sd-button:focus {
+  color: var(--sd-color-primary);
+  border-color: var(--sd-color-primary-light-7);
+  background-color: var(--sd-color-primary-light-9);
+}
+
+.sd-button:active {
+  color: var(--sd-color-primary-dark-2);
+  border-color: var(--sd-color-primary-dark-2);
+}
+
+/* 按钮类型 */
+.sd-button--primary {
+  color: var(--sd-color-white);
+  background-color: var(--sd-color-primary);
+  border-color: var(--sd-color-primary);
+}
+
+.sd-button--primary:hover,
+.sd-button--primary:focus {
+  background-color: var(--sd-color-primary-light-3);
+  border-color: var(--sd-color-primary-light-3);
+  color: var(--sd-color-white);
+}
+
+.sd-button--primary:active {
+  background-color: var(--sd-color-primary-dark-2);
+  border-color: var(--sd-color-primary-dark-2);
+}
+
+.sd-button--success {
+  color: var(--sd-color-white);
+  background-color: var(--sd-color-success);
+  border-color: var(--sd-color-success);
+}
+
+.sd-button--success:hover,
+.sd-button--success:focus {
+  opacity: 0.8;
+}
+
+.sd-button--warning {
+  color: var(--sd-color-white);
+  background-color: var(--sd-color-warning);
+  border-color: var(--sd-color-warning);
+}
+
+.sd-button--warning:hover,
+.sd-button--warning:focus {
+  opacity: 0.8;
+}
+
+.sd-button--danger {
+  color: var(--sd-color-white);
+  background-color: var(--sd-color-danger);
+  border-color: var(--sd-color-danger);
+}
+
+.sd-button--danger:hover,
+.sd-button--danger:focus {
+  opacity: 0.8;
+}
+
+.sd-button--info {
+  color: var(--sd-color-white);
+  background-color: var(--sd-color-info);
+  border-color: var(--sd-color-info);
+}
+
+.sd-button--info:hover,
+.sd-button--info:focus {
+  opacity: 0.8;
+}
+
+/* 朴素按钮 */
+.sd-button--plain {
+  background-color: transparent;
+}
+
+.sd-button--primary.sd-button--plain {
+  color: var(--sd-color-primary);
+  background-color: var(--sd-color-primary-light-9);
+  border-color: var(--sd-color-primary-light-5);
+}
+
+.sd-button--primary.sd-button--plain:hover,
+.sd-button--primary.sd-button--plain:focus {
+  background-color: var(--sd-color-primary);
+  border-color: var(--sd-color-primary);
+  color: var(--sd-color-white);
+}
+
+/* 圆角按钮 */
+.sd-button--round {
+  border-radius: var(--sd-border-radius-round);
+  padding: 8px 15px;
+}
+
+/* 圆形按钮 */
+.sd-button--circle {
+  border-radius: var(--sd-border-radius-circle);
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+}
+
+/* 尺寸 */
+.sd-button--large {
+  height: var(--sd-component-size-large);
+  padding: 12px 19px;
+  font-size: var(--sd-font-size-base);
+}
+
+.sd-button--large.sd-button--circle {
+  width: 40px;
+  height: 40px;
+}
+
+.sd-button--small {
+  height: var(--sd-component-size-small);
+  padding: 5px 11px;
+  font-size: var(--sd-font-size-small);
+}
+
+.sd-button--small.sd-button--circle {
+  width: 24px;
+  height: 24px;
+}
+
+/* 禁用状态 */
+.sd-button.is-disabled,
+.sd-button.is-disabled:hover,
+.sd-button.is-disabled:focus {
+  color: var(--sd-disabled-text-color);
+  background-color: var(--sd-disabled-bg-color);
+  border-color: var(--sd-disabled-border-color);
+  cursor: not-allowed;
+}
+
+/* 加载状态 */
+.sd-button--loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.sd-button__loading-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sd-button__spinner {
+  width: 1em;
+  height: 1em;
+  animation: sd-button-spin 2s linear infinite;
+}
+
+@keyframes sd-button-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 图标 */
+.sd-button__icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sd-button__text {
+  display: inline-block;
+}

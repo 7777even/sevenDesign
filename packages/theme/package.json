@@ -1,0 +1,20 @@
+{
+  "name": "@seven-design/theme",
+  "version": "0.0.1",
+  "description": "SevenDesign 主题样式包",
+  "main": "dist/index.css",
+  "module": "dist/index.css",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}

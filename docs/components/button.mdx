@@ -1,0 +1,134 @@
+import { Button } from '@seven-design/components'
+
+# Button 按钮
+
+常用的操作按钮。
+
+## 基础用法
+
+使用 `type`、`plain`、`round` 和 `circle` 来定义按钮的样式。
+
+```tsx live
+<div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+  <Button>默认按钮</Button>
+  <Button type="primary">主要按钮</Button>
+  <Button type="success">成功按钮</Button>
+  <Button type="warning">警告按钮</Button>
+  <Button type="danger">危险按钮</Button>
+  <Button type="info">信息按钮</Button>
+</div>
+```
+
+## 朴素按钮
+
+使用 `plain` 属性来创建朴素按钮，朴素按钮的文字为按钮颜色，背景为白色。
+
+```tsx live
+<div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+  <Button plain>朴素按钮</Button>
+  <Button type="primary" plain>
+    主要按钮
+  </Button>
+  <Button type="success" plain>
+    成功按钮
+  </Button>
+  <Button type="warning" plain>
+    警告按钮
+  </Button>
+  <Button type="danger" plain>
+    危险按钮
+  </Button>
+  <Button type="info" plain>
+    信息按钮
+  </Button>
+</div>
+```
+
+## 圆角按钮
+
+使用 `round` 属性来创建圆角按钮。
+
+```tsx live
+<div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+  <Button round>圆角按钮</Button>
+  <Button type="primary" round>
+    主要按钮
+  </Button>
+  <Button type="success" round>
+    成功按钮
+  </Button>
+</div>
+```
+
+## 不同尺寸
+
+Button 组件提供除了默认值以外的三种尺寸，可以在不同场景下选择合适的按钮尺寸。
+
+```tsx live
+<div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+  <Button size="large">大型按钮</Button>
+  <Button>默认按钮</Button>
+  <Button size="small">小型按钮</Button>
+</div>
+```
+
+## 禁用状态
+
+你可以使用 `disabled` 属性来定义按钮是否被禁用。
+
+```tsx live
+<div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+  <Button disabled>默认按钮</Button>
+  <Button type="primary" disabled>
+    主要按钮
+  </Button>
+  <Button type="success" disabled>
+    成功按钮
+  </Button>
+</div>
+```
+
+## 加载状态
+
+通过设置 `loading` 属性为 `true` 来显示加载中状态。
+
+```tsx live
+function LoadingButton() {
+  const [loading, setLoading] = React.useState(false)
+
+  const handleClick = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 2000)
+  }
+
+  return (
+    <Button type="primary" loading={loading} onClick={handleClick}>
+      {loading ? '加载中...' : '点击加载'}
+    </Button>
+  )
+}
+```
+
+## API
+
+### Props
+
+| 属性        | 说明                 | 类型                                                           | 默认值    |
+| ----------- | -------------------- | -------------------------------------------------------------- | --------- |
+| type        | 按钮类型             | `'default' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `default` |
+| size        | 按钮尺寸             | `'large' \| 'default' \| 'small'`                              | `default` |
+| plain       | 是否为朴素按钮       | `boolean`                                                      | `false`   |
+| round       | 是否为圆角按钮       | `boolean`                                                      | `false`   |
+| circle      | 是否为圆形按钮       | `boolean`                                                      | `false`   |
+| loading     | 是否为加载中状态     | `boolean`                                                      | `false`   |
+| disabled    | 是否禁用             | `boolean`                                                      | `false`   |
+| nativeType  | 原生 type 属性       | `'button' \| 'submit' \| 'reset'`                              | `button`  |
+| icon        | 图标组件             | `React.ReactNode`                                              | -         |
+| className   | 自定义类名           | `string`                                                       | -         |
+| onClick     | 点击事件回调         | `(e: React.MouseEvent) => void`                                | -         |
+
+### Events
+
+| 事件名  | 说明           | 类型                                |
+| ------- | -------------- | ----------------------------------- |
+| onClick | 点击按钮时触发 | `(e: React.MouseEvent) => void`     |

@@ -1,0 +1,142 @@
+import { Input } from '@seven-design/components'
+
+# Input 输入框
+
+通过鼠标或键盘输入内容，是最基础的表单域的包装。
+
+## 基础用法
+
+基本的输入框用法。
+
+```tsx live
+function BasicInput() {
+  const [value, setValue] = React.useState('')
+
+  return (
+    <div>
+      <Input
+        placeholder="请输入内容"
+        value={value}
+        onInput={setValue}
+        style={{ width: '300px' }}
+      />
+      <p style={{ marginTop: '12px', color: '#606266' }}>输入的内容：{value}</p>
+    </div>
+  )
+}
+```
+
+## 禁用状态
+
+通过 `disabled` 属性指定是否禁用 input 组件。
+
+```tsx live
+<Input placeholder="禁用状态" disabled style={{ width: '300px' }} />
+```
+
+## 可清空
+
+使用 `clearable` 属性即可得到一个可清空的输入框。
+
+```tsx live
+function ClearableInput() {
+  const [value, setValue] = React.useState('可以清空的内容')
+
+  return (
+    <Input
+      placeholder="请输入内容"
+      value={value}
+      onInput={setValue}
+      clearable
+      style={{ width: '300px' }}
+    />
+  )
+}
+```
+
+## 密码输入框
+
+使用 `showPassword` 属性即可得到一个可切换显示隐藏的密码框。
+
+```tsx live
+<Input
+  placeholder="请输入密码"
+  type="password"
+  showPassword
+  style={{ width: '300px' }}
+/>
+```
+
+## 不同尺寸
+
+使用 `size` 属性改变输入框大小。除了默认大小外，还有另外两个选项：`large`、`small`。
+
+```tsx live
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  <Input placeholder="大尺寸" size="large" style={{ width: '300px' }} />
+  <Input placeholder="默认尺寸" style={{ width: '300px' }} />
+  <Input placeholder="小尺寸" size="small" style={{ width: '300px' }} />
+</div>
+```
+
+## 带图标的输入框
+
+使用 `prefixIcon` 和 `suffixIcon` 属性在 input 组件首部和尾部增加显示图标。
+
+```tsx live
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  <Input
+    placeholder="请输入内容"
+    prefixIcon={
+      <svg viewBox="0 0 1024 1024" width="14" height="14">
+        <path
+          fill="currentColor"
+          d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm23.744 191.488c-52.096 0-92.928 14.784-123.2 44.352-30.976 29.568-45.76 70.4-45.76 122.496h80.256c0-29.568 5.632-52.8 17.6-68.992 13.376-19.712 35.2-28.864 66.176-28.864 23.936 0 42.944 6.336 56.32 19.712 12.672 13.376 19.712 31.68 19.712 54.912 0 17.6-6.336 34.496-19.008 49.984l-11.776 14.08-30.272 34.496c-52.8 59.136-75.328 102.4-75.328 133.376v20.224h80.96V608c0-22.528 1.408-36.608 4.928-47.68 2.816-12.672 15.488-28.864 37.376-48.576l23.232-27.392c12.672-14.08 24.64-28.16 35.2-43.648 23.936-35.904 35.2-71.104 35.2-107.712 0-52.096-17.6-93.632-51.904-123.904-32.896-30.272-78.08-45.056-133.376-45.056zM512 704a48 48 0 1 0 0 96 48 48 0 0 0 0-96z"
+        />
+      </svg>
+    }
+    style={{ width: '300px' }}
+  />
+  <Input
+    placeholder="请输入内容"
+    suffixIcon={
+      <svg viewBox="0 0 1024 1024" width="14" height="14">
+        <path
+          fill="currentColor"
+          d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 393.664L407.936 353.6a38.4 38.4 0 1 0-54.336 54.336L457.664 512 353.6 616.064a38.4 38.4 0 1 0 54.336 54.336L512 566.336 616.064 670.4a38.4 38.4 0 1 0 54.336-54.336L566.336 512 670.4 407.936a38.4 38.4 0 1 0-54.336-54.336L512 457.664z"
+        />
+      </svg>
+    }
+    style={{ width: '300px' }}
+  />
+</div>
+```
+
+## API
+
+### Props
+
+| 属性         | 说明                 | 类型              | 默认值    |
+| ------------ | -------------------- | ----------------- | --------- |
+| type         | 输入框类型           | `string`          | `text`    |
+| size         | 输入框尺寸           | `'large' \| 'default' \| 'small'` | `default` |
+| disabled     | 是否禁用             | `boolean`         | `false`   |
+| readOnly     | 是否只读             | `boolean`         | `false`   |
+| clearable    | 是否可清空           | `boolean`         | `false`   |
+| showPassword | 是否显示密码切换按钮 | `boolean`         | `false`   |
+| prefixIcon   | 前置图标             | `React.ReactNode` | -         |
+| suffixIcon   | 后置图标             | `React.ReactNode` | -         |
+| placeholder  | 输入框占位文本       | `string`          | -         |
+| value        | 输入框值（受控）     | `string`          | -         |
+| defaultValue | 默认值（非受控）     | `string`          | -         |
+| className    | 自定义类名           | `string`          | -         |
+
+### Events
+
+| 事件名   | 说明                   | 类型                                    |
+| -------- | ---------------------- | --------------------------------------- |
+| onInput  | 输入时触发             | `(value: string) => void`               |
+| onChange | 值改变时触发           | `(e: React.ChangeEvent) => void`        |
+| onClear  | 点击清空按钮时触发     | `() => void`                            |
+| onFocus  | 获得焦点时触发         | `(e: React.FocusEvent) => void`         |
+| onBlur   | 失去焦点时触发         | `(e: React.FocusEvent) => void`         |

@@ -1,0 +1,99 @@
+/* Input 组件样式 */
+.sd-input {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  font-size: var(--sd-font-size-base);
+  line-height: var(--sd-component-size-default);
+}
+
+.sd-input__inner {
+  flex: 1;
+  width: 100%;
+  height: var(--sd-component-size-default);
+  padding: 0 15px;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--sd-text-color-regular);
+  background-color: var(--sd-fill-color-blank);
+  border: 1px solid var(--sd-border-color);
+  border-radius: var(--sd-border-radius-base);
+  outline: none;
+  transition: all var(--sd-transition-duration-fast);
+}
+
+.sd-input__inner:hover {
+  border-color: var(--sd-border-color-darker);
+}
+
+.sd-input__inner:focus {
+  border-color: var(--sd-color-primary);
+}
+
+.sd-input__inner::placeholder {
+  color: var(--sd-text-color-placeholder);
+}
+
+/* 前置图标 */
+.sd-input--prefix .sd-input__inner {
+  padding-left: 30px;
+}
+
+.sd-input__prefix {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  color: var(--sd-text-color-placeholder);
+  pointer-events: none;
+}
+
+/* 后置图标 */
+.sd-input--suffix .sd-input__inner {
+  padding-right: 30px;
+}
+
+.sd-input__suffix {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--sd-text-color-placeholder);
+}
+
+.sd-input__clear,
+.sd-input__password {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color var(--sd-transition-duration-fast);
+}
+
+.sd-input__clear:hover,
+.sd-input__password:hover {
+  color: var(--sd-text-color-regular);
+}
+
+/* 尺寸 */
+.sd-input--large .sd-input__inner {
+  height: var(--sd-component-size-large);
+  font-size: var(--sd-font-size-medium);
+}
+
+.sd-input--small .sd-input__inner {
+  height: var(--sd-component-size-small);
+  font-size: var(--sd-font-size-small);
+}
+
+/* 禁用状态 */
+.sd-input.is-disabled .sd-input__inner {
+  color: var(--sd-disabled-text-color);
+  background-color: var(--sd-disabled-bg-color);
+  border-color: var(--sd-disabled-border-color);
+  cursor: not-allowed;
+}

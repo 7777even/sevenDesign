@@ -1,0 +1,96 @@
+/* Switch 组件样式 */
+.sd-switch {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+
+.sd-switch:focus-visible .sd-switch__core {
+  outline: 2px solid var(--sd-color-primary);
+  outline-offset: 1px;
+}
+
+.sd-switch__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  margin: 0;
+}
+
+.sd-switch__core {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  width: 40px;
+  height: 20px;
+  border: 1px solid var(--sd-border-color);
+  border-radius: 10px;
+  background-color: var(--sd-border-color-darker);
+  transition: all var(--sd-transition-duration-fast);
+}
+
+.sd-switch__action {
+  position: absolute;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--sd-color-white);
+  transition: all var(--sd-transition-duration-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* 选中状态 */
+.sd-switch.is-checked .sd-switch__core {
+  background-color: var(--sd-color-primary);
+  border-color: var(--sd-color-primary);
+}
+
+.sd-switch.is-checked .sd-switch__action {
+  left: calc(100% - 17px);
+}
+
+/* 加载状态 */
+.sd-switch__loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  color: var(--sd-color-white);
+}
+
+.sd-switch__spinner {
+  width: 12px;
+  height: 12px;
+  animation: sd-switch-spin 2s linear infinite;
+}
+
+@keyframes sd-switch-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sd-switch.is-loading .sd-switch__action {
+  opacity: 0;
+}
+
+/* 禁用状态 */
+.sd-switch.is-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sd-switch.is-disabled .sd-switch__core {
+  background-color: var(--sd-disabled-bg-color);
+  border-color: var(--sd-disabled-border-color);
+}

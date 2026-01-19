@@ -1,0 +1,122 @@
+/* SevenDesign 主题样式 */
+
+/* ========== CSS Variables ========== */
+:root {
+  /* 品牌色 */
+  --sd-color-primary: #409eff;
+  --sd-color-success: #67c23a;
+  --sd-color-warning: #e6a23c;
+  --sd-color-danger: #f56c6c;
+  --sd-color-info: #909399;
+
+  /* 主色调色板 */
+  --sd-color-primary-light-3: #79bbff;
+  --sd-color-primary-light-5: #a0cfff;
+  --sd-color-primary-light-7: #c6e2ff;
+  --sd-color-primary-light-8: #d9ecff;
+  --sd-color-primary-light-9: #ecf5ff;
+  --sd-color-primary-dark-2: #337ecc;
+
+  /* 中性色 */
+  --sd-color-white: #ffffff;
+  --sd-color-black: #000000;
+  --sd-text-color-primary: #303133;
+  --sd-text-color-regular: #606266;
+  --sd-text-color-secondary: #909399;
+  --sd-text-color-placeholder: #a8abb2;
+  --sd-text-color-disabled: #c0c4cc;
+
+  /* 边框颜色 */
+  --sd-border-color: #dcdfe6;
+  --sd-border-color-light: #e4e7ed;
+  --sd-border-color-lighter: #ebeef5;
+  --sd-border-color-extra-light: #f2f6fc;
+  --sd-border-color-dark: #d4d7de;
+  --sd-border-color-darker: #cdd0d6;
+
+  /* 背景色 */
+  --sd-fill-color-blank: #ffffff;
+  --sd-bg-color: #ffffff;
+  --sd-bg-color-page: #f2f3f5;
+  --sd-bg-color-overlay: #ffffff;
+
+  /* 尺寸 */
+  --sd-border-radius-base: 4px;
+  --sd-border-radius-small: 2px;
+  --sd-border-radius-round: 20px;
+  --sd-border-radius-circle: 100%;
+
+  /* 字体大小 */
+  --sd-font-size-extra-large: 20px;
+  --sd-font-size-large: 18px;
+  --sd-font-size-medium: 16px;
+  --sd-font-size-base: 14px;
+  --sd-font-size-small: 13px;
+  --sd-font-size-extra-small: 12px;
+
+  /* 组件尺寸 */
+  --sd-component-size-large: 40px;
+  --sd-component-size-default: 32px;
+  --sd-component-size-small: 24px;
+
+  /* 阴影 */
+  --sd-box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  --sd-box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --sd-box-shadow-lighter: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+  --sd-box-shadow-dark: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
+
+  /* 禁用状态 */
+  --sd-disabled-bg-color: var(--sd-fill-color-blank);
+  --sd-disabled-text-color: var(--sd-text-color-placeholder);
+  --sd-disabled-border-color: var(--sd-border-color-light);
+
+  /* 过渡动画 */
+  --sd-transition-duration: 0.3s;
+  --sd-transition-duration-fast: 0.2s;
+  --sd-transition-function-ease-in-out-bezier: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --sd-transition-function-fast-bezier: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 暗色主题 */
+.sd-dark {
+  --sd-color-primary: #409eff;
+  --sd-text-color-primary: #e5eaf3;
+  --sd-text-color-regular: #cfd3dc;
+  --sd-text-color-secondary: #a3a6ad;
+  --sd-text-color-placeholder: #8d9095;
+  --sd-text-color-disabled: #6c6e72;
+  --sd-border-color: #4c4d4f;
+  --sd-border-color-light: #414243;
+  --sd-border-color-lighter: #363637;
+  --sd-border-color-extra-light: #2b2b2c;
+  --sd-fill-color-blank: #1d1e1f;
+  --sd-bg-color: #141414;
+  --sd-bg-color-page: #0a0a0a;
+  --sd-bg-color-overlay: #1d1e1f;
+}
+
+/* ========== 重置样式 ========== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ========== 工具类 ========== */
+.sd-clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.sd-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
