@@ -5,7 +5,9 @@ export default defineConfig({
   // Rspress 默认 root 是 "docs"（相对于当前工作目录）。
   // 本项目的 markdown/mdx 就在 docs/ 目录根部，所以这里需要显式设置为 "."
   // 否则会去 docs/docs/** 下面找路由，导致所有页面 404。
+  base: '/sevenDesign/',
   root: '.',
+  
   // 只把 markdown/mdx 当作页面路由，避免把配置文件等非页面文件打进客户端路由
   route: {
     extensions: ['.md', '.mdx'],

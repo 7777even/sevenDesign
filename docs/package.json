@@ -5,7 +5,7 @@
   "description": "SevenDesign 文档站点",
   "scripts": {
     "dev": "rspress dev --port 3001",
-    "build": "rspress build",
+    "build": "rspress build && node -e \"const fs = require('fs'); const path = require('path'); const filePath = path.join('doc_build', '.nojekyll'); fs.mkdirSync(path.dirname(filePath), { recursive: true }); fs.writeFileSync(filePath, '');\"",
     "preview": "rspress preview"
   },
   "dependencies": {
