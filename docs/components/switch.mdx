@@ -1,4 +1,5 @@
 import { Switch } from '@seven-design/components'
+import React from 'react'
 
 # Switch 开关
 
@@ -8,8 +9,8 @@ import { Switch } from '@seven-design/components'
 
 绑定 `checked` 到一个布尔类型的变量。
 
-```tsx live
-function BasicSwitch() {
+```tsx preview
+export default function BasicSwitch() {
   const [checked, setChecked] = React.useState(false)
 
   return (
@@ -27,19 +28,23 @@ function BasicSwitch() {
 
 设置 `disabled` 属性，接受一个布尔值，设置为 `true` 即可禁用。
 
-```tsx live
-<div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-  <Switch disabled />
-  <Switch disabled defaultChecked />
-</div>
+```tsx preview
+export default function Demo() {
+  return (
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+      <Switch disabled />
+      <Switch disabled defaultChecked />
+    </div>
+  )
+}
 ```
 
 ## 加载状态
 
 设置 `loading` 属性，表示正在加载中的状态。
 
-```tsx live
-function LoadingSwitch() {
+```tsx preview
+export default function LoadingSwitch() {
   const [loading, setLoading] = React.useState(false)
   const [checked, setChecked] = React.useState(false)
 
@@ -66,8 +71,8 @@ function LoadingSwitch() {
 
 可以通过 `activeValue` 和 `inactiveValue` 属性来设置开关的值。
 
-```tsx live
-function CustomValueSwitch() {
+```tsx preview
+export default function CustomValueSwitch() {
   const [value, setValue] = React.useState('off')
 
   return (
