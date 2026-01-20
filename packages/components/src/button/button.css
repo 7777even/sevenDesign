@@ -99,17 +99,77 @@
   background-color: transparent;
 }
 
-.sd-button--primary.sd-button--plain {
+/* 默认类型的 plain 按钮保持原有样式 */
+.sd-button--plain:hover,
+.sd-button--plain:focus {
   color: var(--sd-color-primary);
+  border-color: var(--sd-color-primary-light-7);
   background-color: var(--sd-color-primary-light-9);
-  border-color: var(--sd-color-primary-light-5);
+}
+
+.sd-button--primary.sd-button--plain {
+  color: var(--sd-color-primary) !important;
+  background-color: var(--sd-color-primary-light-9) !important;
+  border-color: var(--sd-color-primary-light-5) !important;
 }
 
 .sd-button--primary.sd-button--plain:hover,
 .sd-button--primary.sd-button--plain:focus {
-  background-color: var(--sd-color-primary);
-  border-color: var(--sd-color-primary);
-  color: var(--sd-color-white);
+  background-color: var(--sd-color-primary) !important;
+  border-color: var(--sd-color-primary) !important;
+  color: var(--sd-color-white) !important;
+}
+
+.sd-button--success.sd-button--plain {
+  color: var(--sd-color-success) !important;
+  background-color: var(--sd-color-success-light-9) !important;
+  border-color: var(--sd-color-success-light-5) !important;
+}
+
+.sd-button--success.sd-button--plain:hover,
+.sd-button--success.sd-button--plain:focus {
+  background-color: var(--sd-color-success) !important;
+  border-color: var(--sd-color-success) !important;
+  color: var(--sd-color-white) !important;
+}
+
+.sd-button--warning.sd-button--plain {
+  color: var(--sd-color-warning) !important;
+  background-color: var(--sd-color-warning-light-9) !important;
+  border-color: var(--sd-color-warning-light-5) !important;
+}
+
+.sd-button--warning.sd-button--plain:hover,
+.sd-button--warning.sd-button--plain:focus {
+  background-color: var(--sd-color-warning) !important;
+  border-color: var(--sd-color-warning) !important;
+  color: var(--sd-color-white) !important;
+}
+
+.sd-button--danger.sd-button--plain {
+  color: var(--sd-color-danger) !important;
+  background-color: var(--sd-color-danger-light-9) !important;
+  border-color: var(--sd-color-danger-light-5) !important;
+}
+
+.sd-button--danger.sd-button--plain:hover,
+.sd-button--danger.sd-button--plain:focus {
+  background-color: var(--sd-color-danger) !important;
+  border-color: var(--sd-color-danger) !important;
+  color: var(--sd-color-white) !important;
+}
+
+.sd-button--info.sd-button--plain {
+  color: var(--sd-color-info) !important;
+  background-color: var(--sd-color-info-light-9) !important;
+  border-color: var(--sd-color-info-light-5) !important;
+}
+
+.sd-button--info.sd-button--plain:hover,
+.sd-button--info.sd-button--plain:focus {
+  background-color: var(--sd-color-info) !important;
+  border-color: var(--sd-color-info) !important;
+  color: var(--sd-color-white) !important;
 }
 
 /* 圆角按钮 */

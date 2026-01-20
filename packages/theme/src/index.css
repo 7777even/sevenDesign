@@ -17,6 +17,22 @@
   --sd-color-primary-light-9: #ecf5ff;
   --sd-color-primary-dark-2: #337ecc;
 
+  /* Success 色调色板 */
+  --sd-color-success-light-5: #b3e19d;
+  --sd-color-success-light-9: #f0f9eb;
+
+  /* Warning 色调色板 */
+  --sd-color-warning-light-5: #f3d19e;
+  --sd-color-warning-light-9: #fdf6ec;
+
+  /* Danger 色调色板 */
+  --sd-color-danger-light-5: #f89898;
+  --sd-color-danger-light-9: #fef0f0;
+
+  /* Info 色调色板 */
+  --sd-color-info-light-5: #c8c9cc;
+  --sd-color-info-light-9: #f4f4f5;
+
   /* 中性色 */
   --sd-color-white: #ffffff;
   --sd-color-black: #000000;
