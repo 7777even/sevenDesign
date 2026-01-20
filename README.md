@@ -81,6 +81,3 @@ seven-design/
 
 欢迎提交 Issue 和 Pull Request！
 
-## 📄 许可
-
-MIT License © 2024 Seven Team
