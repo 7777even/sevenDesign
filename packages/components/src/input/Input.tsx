@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { forwardRef, InputHTMLAttributes, useState } from 'react'
+import { forwardRef, InputHTMLAttributes, useState, useRef, useImperativeHandle } from 'react'
 import { classnames } from '@seven-design/core'
 import './input.css'
 
@@ -55,11 +55,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onInput,
     onChange,
     onClear,
+    onFocus,
     ...rest
   } = props
 
   const [showPwd, setShowPwd] = useState(false)
   const [inputValue, setInputValue] = useState(defaultValue || '')
+  const internalInputRef = useRef<HTMLInputElement>(null)
+
+  // 合并外部 ref 和内部 ref
+  useImperativeHandle(ref, () => internalInputRef.current as HTMLInputElement, [])
 
   const inputType = showPassword ? (showPwd ? 'text' : 'password') : type
   const currentValue = value !== undefined ? value : inputValue
@@ -73,10 +78,73 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onInput?.(newValue)
   }
 
-  const handleClear = () => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // 当输入框获得焦点时，清空输入框内的文本
+    const inputElement = e.target
+    
+    // 对于受控组件：通过回调函数通知父组件清空值
+    if (value !== undefined) {
+      onInput?.('')
+      // 如果提供了 onChange 回调，也触发它
+      if (onChange) {
+        const syntheticEvent = {
+          target: {
+            ...inputElement,
+            value: '',
+          },
+          currentTarget: inputElement,
+        } as React.ChangeEvent<HTMLInputElement>
+        onChange(syntheticEvent)
+      }
+    } else {
+      // 对于非受控组件：直接更新内部状态
+      setInputValue('')
+      // 触发 onChange 和 onInput 回调
+      if (onChange) {
+        const syntheticEvent = {
+          target: {
+            ...inputElement,
+            value: '',
+          },
+          currentTarget: inputElement,
+        } as React.ChangeEvent<HTMLInputElement>
+        onChange(syntheticEvent)
+      }
+      onInput?.('')
+    }
+    
+    // 调用外部传入的 onFocus 回调（如果提供了）
+    onFocus?.(e)
+  }
+
+  const handleClear = (e: React.MouseEvent) => {
+    // 阻止事件冒泡和默认行为
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // 调用 onInput 回调，通知父组件清空值
+    // 对于受控组件，这是必需的，因为父组件需要通过 setState 更新 value
+    onInput?.('')
+    
+    // 对于非受控组件，更新内部状态
     if (value === undefined) {
       setInputValue('')
     }
+    
+    // 创建一个合成事件对象，用于触发 onChange（如果提供了 onChange 回调）
+    const inputElement = internalInputRef.current
+    if (inputElement && onChange) {
+      const syntheticEvent = {
+        target: {
+          ...inputElement,
+          value: '',
+        },
+        currentTarget: inputElement,
+      } as React.ChangeEvent<HTMLInputElement>
+      onChange(syntheticEvent)
+    }
+    
+    // 调用 onClear 回调
     onClear?.()
   }
 
@@ -97,19 +165,32 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     <div className={wrapperClasses}>
       {prefixIcon && <span className="sd-input__prefix">{prefixIcon}</span>}
       <input
-        ref={ref}
+        ref={internalInputRef}
         type={inputType}
         className="sd-input__inner"
         disabled={disabled}
         readOnly={readOnly}
         value={currentValue}
         onChange={handleChange}
+        onFocus={handleFocus}
         {...rest}
       />
       <span className="sd-input__suffix">
         {showClearBtn && (
-          <span className="sd-input__clear" onClick={handleClear}>
-            <svg viewBox="0 0 1024 1024" width="14" height="14">
+          <span 
+            className="sd-input__clear" 
+            onClick={handleClear}
+            onMouseDown={(e) => {
+              // 防止点击清空按钮时 input 失去焦点
+              e.preventDefault()
+            }}
+          >
+            <svg 
+              viewBox="0 0 1024 1024" 
+              width="14" 
+              height="14"
+              style={{ pointerEvents: 'none' }}
+            >
               <path
                 fill="currentColor"
                 d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 393.664L407.936 353.6a38.4 38.4 0 1 0-54.336 54.336L457.664 512 353.6 616.064a38.4 38.4 0 1 0 54.336 54.336L512 566.336 616.064 670.4a38.4 38.4 0 1 0 54.336-54.336L566.336 512 670.4 407.936a38.4 38.4 0 1 0-54.336-54.336L512 457.664z"
