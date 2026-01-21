@@ -1,5 +1,5 @@
 {
-  "name": "@seven-design/components",
+  "name": "@seven-design-ui/components",
   "version": "0.0.1",
   "description": "SevenDesign React UI 组件库",
   "main": "dist/index.cjs.js",
