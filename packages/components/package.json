@@ -21,8 +21,8 @@
     "dev": "vite build --watch"
   },
   "dependencies": {
-    "@seven-design/core": "workspace:*",
-    "@seven-design/theme": "workspace:*"
+    "@seven-design-ui/core": "workspace:*",
+    "@seven-design-ui/theme": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
