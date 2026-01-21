@@ -16,8 +16,8 @@
 npm install -g pnpm
 
 # 克隆仓库
-git clone https://github.com/sevendesign/sevendesign.git
-cd sevendesign
+git clone https://github.com/7777even/sevenDesign.git
+cd sevenDesign
 
 # 安装依赖
 pnpm install
@@ -344,7 +344,7 @@ Closes #123
 如果你在贡献过程中遇到任何问题：
 
 1. 查看 [文档](https://sevendesign.dev)
-2. 搜索 [Issues](https://github.com/sevendesign/sevendesign/issues)
+2. 搜索 [Issues](https://github.com/7777even/sevenDesign.git/issues)
 3. 创建新的 Issue 提问
 
 感谢你的贡献！ 🎉

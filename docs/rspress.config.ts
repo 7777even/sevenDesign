@@ -45,7 +45,7 @@ export default defineConfig({
       {
         icon: 'github',
         mode: 'link',
-        content: 'https://github.com/sevendesign/sevendesign',
+        content: 'https://github.com/7777even/sevenDesign.git',
       },
     ],
     nav: [

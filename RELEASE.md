@@ -199,7 +199,7 @@ npm install seven-design@beta
 
 1. **验证发布**
 
-访问 [npm](https://www.npmjs.com/package/seven-design) 确认版本已发布。
+访问 [npm](https://www.npmjs.com/package/@seven-design-ui/theme) 确认版本已发布。
 
 2. **测试安装**
 

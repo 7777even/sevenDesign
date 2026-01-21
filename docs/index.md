@@ -80,6 +80,6 @@ SevenDesign 采用现代化的设计语言，参考了 Element Plus 的设计理
 
 ## 社区
 
-- [GitHub](https://github.com/sevendesign/sevendesign)
-- [NPM](https://www.npmjs.com/package/seven-design)
-- [问题反馈](https://github.com/sevendesign/sevendesign/issues)
+- [GitHub](https://github.com/7777even/sevenDesign.git)
+- [NPM](https://www.npmjs.com/package/@seven-design-ui/theme)
+- [问题反馈](https://github.com/7777even/sevenDesign.git/issues)

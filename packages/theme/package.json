@@ -1,7 +1,7 @@
 {
-  "name": "@seven-design/theme",
+  "name": "@seven-design-ui/theme",
   "version": "0.0.1",
-  "description": "SevenDesign 主题样式包",
+  "description": "SevenDesign UI 主题样式包",
   "main": "dist/index.css",
   "module": "dist/index.css",
   "types": "dist/index.d.ts",
