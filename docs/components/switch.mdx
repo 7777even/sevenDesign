@@ -69,7 +69,7 @@ export default function LoadingSwitch() {
 
 ## 自定义开关内容
 
-通过 `checkedNode` 设置选中状态的内容，通过 `unCheckedNode` 设置未选中状态的内容，可以设置：图标、文字等。
+通过 `checkedNode` 设置选中状态的内容，通过 `unCheckedNode` 设置未选中状态的内容，可以设置：图标、文字等。选中状态的内容显示在开关右侧，未选中状态的内容显示在开关左侧。
 
 ```tsx preview
 export default function CustomContentSwitch() {
@@ -87,6 +87,22 @@ export default function CustomContentSwitch() {
 }
 ```
 
+## 自定义背景色
+
+通过 `checkedColor` 设置选中状态的背景色，通过 `unCheckedColor` 设置未选中状态的背景色。
+
+```tsx preview
+export default function CustomColorSwitch() {
+  const [checked, setChecked] = React.useState(false)
+
+  return (
+    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+      <Switch checkedColor='green' unCheckedColor='red' checked={checked} onChange={setChecked} />
+    </div>
+  )
+}
+```
+
 ## API
 
 ### Props
@@ -99,6 +115,8 @@ export default function CustomContentSwitch() {
 | loading        | 是否加载中           | `boolean`                         | `false` |
 | checkedNode    | 选中状态显示的内容   | `React.ReactNode`                 | -       |
 | unCheckedNode  | 未选中状态显示的内容 | `React.ReactNode`                 | -       |
+| checkedColor   | 选中状态的背景色     | `string`                          | -       |
+| unCheckedColor | 未选中状态的背景色   | `string`                          | -       |
 | name           | 原生 input 的 name   | `string`                          | -       |
 | id             | 原生 input 的 id     | `string`                          | -       |
 | className      | 自定义类名           | `string`                          | -       |

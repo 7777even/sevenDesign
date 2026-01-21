@@ -19,6 +19,10 @@ export interface SwitchProps {
   checkedNode?: React.ReactNode
   /** 未选中状态显示的内容 */
   unCheckedNode?: React.ReactNode
+  /** 选中状态的背景色 */
+  checkedColor?: string
+  /** 未选中状态的背景色 */
+  unCheckedColor?: string
   /** 自定义类名 */
   className?: string
   /** 值改变时的回调 */
@@ -37,6 +41,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
     loading = false,
     checkedNode,
     unCheckedNode,
+    checkedColor,
+    unCheckedColor,
     className,
     onChange,
     name,
@@ -85,6 +91,14 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
     className
   )
 
+  // 计算背景色样式
+  const coreStyle: React.CSSProperties = {}
+  if (currentChecked && checkedColor) {
+    coreStyle.backgroundColor = checkedColor
+  } else if (!currentChecked && unCheckedColor) {
+    coreStyle.backgroundColor = unCheckedColor
+  }
+
   return (
     <div
       className={classes}
@@ -106,7 +120,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
         id={id}
         aria-hidden="true"
       />
-      <span className="sd-switch__core">
+      <span className="sd-switch__core" style={coreStyle}>
         {loading && (
           <span className="sd-switch__loading">
             <svg viewBox="0 0 1024 1024" className="sd-switch__spinner">

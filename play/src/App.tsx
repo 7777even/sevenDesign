@@ -7,10 +7,11 @@ function CustomContentSwitch() {
   const [switch1, setSwitch1] = useState(true)
   const [switch2, setSwitch2] = useState(false)
   const [switch3, setSwitch3] = useState(true)
+  const [switch4, setSwitch4] = useState(false)
 
   return (
     <div style={{ marginTop: '20px' }}>
-      <h3>自定义开关内容测试</h3>
+      <h3>自定义开关内容和背景色测试</h3>
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
@@ -53,8 +54,20 @@ function CustomContentSwitch() {
         </div>
       </div>
 
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <Switch
+            checkedColor="green"
+            unCheckedColor="red"
+            checked={switch4}
+            onChange={setSwitch4}
+          />
+          <span style={{ fontSize: '12px', color: '#666' }}>自定义背景色</span>
+        </div>
+      </div>
+
       <p style={{ fontSize: '12px', color: '#666' }}>
-        状态: 开关1={switch1 ? '开' : '关'}, 开关2={switch2 ? '1' : '0'}, 开关3={switch3 ? '✓' : '✗'}
+        状态: 开关1={switch1 ? '开' : '关'}, 开关2={switch2 ? '1' : '0'}, 开关3={switch3 ? '✓' : '✗'}, 开关4={switch4 ? '绿' : '红'}
       </p>
     </div>
   )
