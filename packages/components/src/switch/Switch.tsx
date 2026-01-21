@@ -3,7 +3,7 @@
 import React from "react"
 
 import { forwardRef } from 'react'
-import { classnames, useControllableState } from '@seven-design/core'
+import { classnames } from '@seven-design/core'
 import './switch.css'
 
 export interface SwitchProps {
@@ -15,14 +15,14 @@ export interface SwitchProps {
   disabled?: boolean
   /** 是否加载中 */
   loading?: boolean
-  /** 选中时的值 */
-  activeValue?: boolean | string | number
-  /** 未选中时的值 */
-  inactiveValue?: boolean | string | number
+  /** 选中状态显示的内容 */
+  checkedNode?: React.ReactNode
+  /** 未选中状态显示的内容 */
+  unCheckedNode?: React.ReactNode
   /** 自定义类名 */
   className?: string
   /** 值改变时的回调 */
-  onChange?: (value: boolean | string | number) => void
+  onChange?: (checked: boolean) => void
   /** 原生 input 的 name 属性 */
   name?: string
   /** 原生 input 的 id 属性 */
@@ -35,20 +35,37 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
     defaultChecked = false,
     disabled = false,
     loading = false,
-    activeValue = true,
-    inactiveValue = false,
+    checkedNode,
+    unCheckedNode,
     className,
     onChange,
     name,
     id,
   } = props
 
-  const [isChecked, setIsChecked] = useControllableState(checked, defaultChecked, onChange)
+  // 内部状态管理 - 只在非受控模式下使用
+  const [internalChecked, setInternalChecked] = React.useState(defaultChecked)
+
+  // 判断是否为受控模式
+  const isControlled = checked !== undefined
+
+  // 当前的开关状态
+  const currentChecked = isControlled ? checked : internalChecked
 
   const handleChange = () => {
     if (disabled || loading) return
-    const newValue = isChecked === activeValue ? inactiveValue : activeValue
-    setIsChecked(newValue as boolean)
+
+    const newChecked = !currentChecked
+
+    // 如果是非受控模式，更新内部状态
+    if (!isControlled) {
+      setInternalChecked(newChecked)
+    }
+
+    // 调用onChange回调，传递boolean值
+    if (onChange) {
+      onChange(newChecked)
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -61,7 +78,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
   const classes = classnames(
     'sd-switch',
     {
-      'is-checked': isChecked === activeValue,
+      'is-checked': currentChecked,
       'is-disabled': disabled || loading,
       'is-loading': loading,
     },
@@ -72,7 +89,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
     <div
       className={classes}
       role="switch"
-      aria-checked={isChecked === activeValue}
+      aria-checked={currentChecked}
       aria-disabled={disabled || loading}
       tabIndex={disabled || loading ? -1 : 0}
       onClick={handleChange}
@@ -82,7 +99,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
         ref={ref}
         type="checkbox"
         className="sd-switch__input"
-        checked={isChecked === activeValue}
+        checked={currentChecked}
         disabled={disabled || loading}
         onChange={handleChange}
         name={name}
@@ -101,6 +118,11 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => 
           </span>
         )}
         <span className="sd-switch__action" />
+        {(currentChecked ? checkedNode : unCheckedNode) && (
+          <span className="sd-switch__content">
+            {currentChecked ? checkedNode : unCheckedNode}
+          </span>
+        )}
       </span>
     </div>
   )

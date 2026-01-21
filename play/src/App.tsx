@@ -3,6 +3,63 @@
 import { useState } from 'react'
 import { Button, Input, Switch } from '@seven-design/components'
 
+function CustomContentSwitch() {
+  const [switch1, setSwitch1] = useState(true)
+  const [switch2, setSwitch2] = useState(false)
+  const [switch3, setSwitch3] = useState(true)
+
+  return (
+    <div style={{ marginTop: '20px' }}>
+      <h3>自定义开关内容测试</h3>
+
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <Switch
+            checkedNode="开"
+            unCheckedNode="关"
+            checked={switch1}
+            onChange={setSwitch1}
+          />
+          <span style={{ fontSize: '12px', color: '#666' }}>文字内容</span>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <Switch
+            checkedNode="1"
+            unCheckedNode="0"
+            checked={switch2}
+            onChange={setSwitch2}
+          />
+          <span style={{ fontSize: '12px', color: '#666' }}>数字内容</span>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <Switch
+            checkedNode="✓"
+            unCheckedNode="✗"
+            checked={switch3}
+            onChange={setSwitch3}
+          />
+          <span style={{ fontSize: '12px', color: '#666' }}>符号内容</span>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <Switch
+            checkedNode={<span style={{ color: 'green', fontWeight: 'bold' }}>开</span>}
+            unCheckedNode={<span style={{ color: 'red', fontWeight: 'bold' }}>关</span>}
+            defaultChecked={true}
+          />
+          <span style={{ fontSize: '12px', color: '#666' }}>React元素内容</span>
+        </div>
+      </div>
+
+      <p style={{ fontSize: '12px', color: '#666' }}>
+        状态: 开关1={switch1 ? '开' : '关'}, 开关2={switch2 ? '1' : '0'}, 开关3={switch3 ? '✓' : '✗'}
+      </p>
+    </div>
+  )
+}
+
 function App() {
   const [inputValue, setInputValue] = useState('')
   const [switchChecked, setSwitchChecked] = useState(false)
@@ -86,6 +143,9 @@ function App() {
             <Switch loading />
           </div>
           <p className="demo-tip">当前状态: {switchChecked ? '开启' : '关闭'}</p>
+
+          {/* 自定义内容测试 */}
+          <CustomContentSwitch />
         </section>
       </main>
     </div>

@@ -48,10 +48,10 @@ export default function LoadingSwitch() {
   const [loading, setLoading] = React.useState(false)
   const [checked, setChecked] = React.useState(false)
 
-  const handleChange = (value) => {
+  const handleChange = (checked) => {
     setLoading(true)
     setTimeout(() => {
-      setChecked(value)
+      setChecked(checked)
       setLoading(false)
     }, 1000)
   }
@@ -67,23 +67,21 @@ export default function LoadingSwitch() {
 }
 ```
 
-## 自定义值
+## 自定义开关内容
 
-可以通过 `activeValue` 和 `inactiveValue` 属性来设置开关的值。
+通过 `checkedNode` 设置选中状态的内容，通过 `unCheckedNode` 设置未选中状态的内容，可以设置：图标、文字等。
 
 ```tsx preview
-export default function CustomValueSwitch() {
-  const [value, setValue] = React.useState('off')
+export default function CustomContentSwitch() {
+  const [checked1, setChecked1] = React.useState(true)
+  const [checked2, setChecked2] = React.useState(false)
+  const [checked3, setChecked3] = React.useState(true)
 
   return (
-    <div>
-      <Switch
-        checked={value === 'on'}
-        activeValue="on"
-        inactiveValue="off"
-        onChange={setValue}
-      />
-      <p style={{ marginTop: '12px', color: '#606266' }}>当前值：{value}</p>
+    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+      <Switch checkedNode='开' unCheckedNode='关' checked={checked1} onChange={setChecked1} />
+      <Switch checkedNode='1' unCheckedNode='0' checked={checked2} onChange={setChecked2} />
+      <Switch checkedNode='✓' unCheckedNode='✗' checked={checked3} onChange={setChecked3} />
     </div>
   )
 }
@@ -99,17 +97,17 @@ export default function CustomValueSwitch() {
 | defaultChecked | 默认是否选中         | `boolean`                         | `false` |
 | disabled       | 是否禁用             | `boolean`                         | `false` |
 | loading        | 是否加载中           | `boolean`                         | `false` |
-| activeValue    | 选中时的值           | `boolean \| string \| number`     | `true`  |
-| inactiveValue  | 未选中时的值         | `boolean \| string \| number`     | `false` |
+| checkedNode    | 选中状态显示的内容   | `React.ReactNode`                 | -       |
+| unCheckedNode  | 未选中状态显示的内容 | `React.ReactNode`                 | -       |
 | name           | 原生 input 的 name   | `string`                          | -       |
 | id             | 原生 input 的 id     | `string`                          | -       |
 | className      | 自定义类名           | `string`                          | -       |
 
 ### Events
 
-| 事件名   | 说明             | 类型                                      |
-| -------- | ---------------- | ----------------------------------------- |
-| onChange | 状态改变时触发   | `(value: boolean \| string \| number) => void` |
+| 事件名   | 说明             | 类型                      |
+| -------- | ---------------- | ------------------------- |
+| onChange | 状态改变时触发   | `(checked: boolean) => void` |
 
 ### 键盘操作
 
