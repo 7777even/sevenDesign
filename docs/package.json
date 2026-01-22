@@ -14,7 +14,6 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "@rspress/plugin-preview": "^1.47.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "rspress": "^1.11.0",
