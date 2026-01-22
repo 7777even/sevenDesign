@@ -1,5 +1,5 @@
 {
-  "name": "@seven-design/play",
+  "name": "@seven-design-ui/play",
   "version": "0.0.1",
   "private": true,
   "description": "SevenDesign 组件开发调试环境",
@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@seven-design/components": "workspace:*",
-    "@seven-design/core": "workspace:*",
-    "@seven-design/theme": "workspace:*",
+    "@seven-design-ui/components": "workspace:*",
+    "@seven-design-ui/core": "workspace:*",
+    "@seven-design-ui/theme": "workspace:*",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

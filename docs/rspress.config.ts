@@ -23,8 +23,8 @@ export default defineConfig({
       previewCodeTransform: ({ code }) => {
         const injected = [
           "import React from 'react';",
-          "import { Button, Input, Switch, Pagination } from '@seven-design/components';",
-          "import '@seven-design/components/dist/style.css';",
+          "import { Button, Input, Switch, Pagination } from '@seven-design-ui/components';",
+          "import '@seven-design-ui/components/dist/style.css';",
           '',
         ].join('\n')
 

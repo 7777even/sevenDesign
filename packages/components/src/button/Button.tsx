@@ -1,6 +1,6 @@
 import React from "react"
 import { forwardRef, ButtonHTMLAttributes } from 'react'
-import { classnames } from '@seven-design/core'
+import { classnames } from '@seven-design-ui/core'
 import './button.css'
 
 export type ButtonType = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'

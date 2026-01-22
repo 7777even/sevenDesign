@@ -9,7 +9,7 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "@seven-design/components": "workspace:*",
+    "@seven-design-ui/components": "workspace:*",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

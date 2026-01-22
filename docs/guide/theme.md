@@ -74,7 +74,7 @@ SevenDesign 使用 CSS Variables 实现主题定制，你可以轻松地修改�
 然后在你的应用入口引入：
 
 ```tsx
-import 'seven-design/dist/style.css'
+import 'seven-design-ui/dist/style.css'
 import './custom-theme.css'
 ```
 

@@ -9,15 +9,15 @@
 ::: code-group
 
 ```bash [npm]
-npm install seven-design
+npm install seven-design-ui
 ```
 
 ```bash [pnpm]
-pnpm add seven-design
+pnpm add seven-design-ui
 ```
 
 ```bash [yarn]
-yarn add seven-design
+yarn add seven-design-ui
 ```
 
 :::
@@ -30,7 +30,7 @@ yarn add seven-design
 import { createRoot } from 'react-dom/client'
 import App from './App'
 // 引入样式
-import 'seven-design/dist/style.css'
+import 'seven-design-ui/dist/style.css'
 
 const root = document.getElementById('root')
 if (root) {
@@ -41,7 +41,7 @@ if (root) {
 然后就可以在组件中使用了：
 
 ```tsx
-import { Button } from 'seven-design'
+import { Button } from 'seven-design-ui'
 
 function App() {
   return <Button type="primary">Hello SevenDesign</Button>
@@ -55,8 +55,8 @@ export default App
 SevenDesign 支持基于 ES modules 的 tree shaking，直接引入即可按需加载：
 
 ```tsx
-import { Button, Input, Switch } from 'seven-design'
-import 'seven-design/dist/style.css'
+import { Button, Input, Switch } from 'seven-design-ui'
+import 'seven-design-ui/dist/style.css'
 
 function App() {
   return (
@@ -74,7 +74,7 @@ function App() {
 某些组件如 Button 等，可以通过全局配置来设置默认属性。
 
 ```tsx
-import { ConfigProvider, Button } from 'seven-design'
+import { ConfigProvider, Button } from 'seven-design-ui'
 
 function App() {
   return (
@@ -105,7 +105,7 @@ export default defineConfig({
 
 ```tsx
 // app/layout.tsx
-import 'seven-design/dist/style.css'
+import 'seven-design-ui/dist/style.css'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -120,7 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 // app/page.tsx
 'use client'
 
-import { Button } from 'seven-design'
+import { Button } from 'seven-design-ui'
 
 export default function Home() {
   return <Button type="primary">Hello</Button>

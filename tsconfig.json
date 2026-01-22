@@ -20,9 +20,9 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@seven-design/components": ["./packages/components/src"],
-      "@seven-design/core": ["./packages/core/src"],
-      "@seven-design/theme": ["./packages/theme/src"]
+      "@seven-design-ui/components": ["./packages/components/src"],
+      "@seven-design-ui/core": ["./packages/core/src"],
+      "@seven-design-ui/theme": ["./packages/theme/src"]
     }
   },
   "include": ["packages/**/*"],

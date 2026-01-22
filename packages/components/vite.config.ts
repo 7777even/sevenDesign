@@ -12,12 +12,12 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'esm' : 'cjs'}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', '@seven-design/core'],
+      external: ['react', 'react-dom', '@seven-design-ui/core'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          '@seven-design/core': 'SevenDesignCore',
+          '@seven-design-ui/core': 'SevenDesignCore',
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') return 'style.css'

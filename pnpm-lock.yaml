@@ -132,7 +132,7 @@ importers:
 
   docs:
     dependencies:
-      '@seven-design/components':
+      '@seven-design-ui/components':
         specifier: workspace:*
         version: link:../packages/components
       react:
@@ -160,10 +160,10 @@ importers:
 
   packages/components:
     dependencies:
-      '@seven-design/core':
+      '@seven-design-ui/core':
         specifier: workspace:*
         version: link:../core
-      '@seven-design/theme':
+      '@seven-design-ui/theme':
         specifier: workspace:*
         version: link:../theme
       react:
@@ -186,13 +186,13 @@ importers:
 
   play:
     dependencies:
-      '@seven-design/components':
+      '@seven-design-ui/components':
         specifier: workspace:*
         version: link:../packages/components
-      '@seven-design/core':
+      '@seven-design-ui/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@seven-design/theme':
+      '@seven-design-ui/theme':
         specifier: workspace:*
         version: link:../packages/theme
       react:

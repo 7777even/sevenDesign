@@ -3,7 +3,7 @@
 import React from "react"
 
 import { forwardRef, InputHTMLAttributes, useState, useRef, useImperativeHandle } from 'react'
-import { classnames } from '@seven-design/core'
+import { classnames } from '@seven-design-ui/core'
 import './input.css'
 
 export type InputSize = 'large' | 'default' | 'small'

@@ -1,5 +1,5 @@
 {
-  "name": "@seven-design-ui/core",
+  "name": "@seven-design-ui-ui/core",
   "version": "0.1.0",
   "description": "SevenDesign 核心工具和 Hooks",
   "main": "dist/index.cjs.js",

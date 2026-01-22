@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react'
-import { Button, Input, Switch, Pagination } from '@seven-design/components'
+import { Button, Input, Switch, Pagination } from '@seven-design-ui/components'
 
 function CustomContentSwitch() {
   const [switch1, setSwitch1] = useState(true)

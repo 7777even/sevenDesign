@@ -3,7 +3,7 @@
 ## 📁 完整目录结构
 
 ```
-seven-design/
+seven-design-ui/
 ├── packages/                    # Monorepo 子包目录
 │   ├── components/             # 组件库包
 │   │   ├── src/
@@ -88,7 +88,7 @@ seven-design/
 
 ## 📦 包说明
 
-### 1. @seven-design/components
+### 1. @seven-design-ui/components
 
 **职责**：UI 组件库主包
 
@@ -105,11 +105,11 @@ seven-design/
 
 **使用方式**：
 ```tsx
-import { Button } from '@seven-design/components'
-import '@seven-design/components/dist/style.css'
+import { Button } from '@seven-design-ui/components'
+import '@seven-design-ui/components/dist/style.css'
 ```
 
-### 2. @seven-design/core
+### 2. @seven-design-ui/core
 
 **职责**：核心工具和 Hooks
 
@@ -125,10 +125,10 @@ import '@seven-design/components/dist/style.css'
 
 **使用方式**：
 ```tsx
-import { classnames, useControllableState } from '@seven-design/core'
+import { classnames, useControllableState } from '@seven-design-ui/core'
 ```
 
-### 3. @seven-design/theme
+### 3. @seven-design-ui/theme
 
 **职责**：主题样式系统
 
@@ -142,7 +142,7 @@ import { classnames, useControllableState } from '@seven-design/core'
 
 **使用方式**：
 ```tsx
-import '@seven-design/theme/dist/index.css'
+import '@seven-design-ui/theme/dist/index.css'
 ```
 
 ## 🎮 开发环境
@@ -264,17 +264,17 @@ CSS 类名使用 BEM 规范：
 ## 📊 包依赖关系
 
 ```
-@seven-design/components
-  └── @seven-design/core
+@seven-design-ui/components
+  └── @seven-design-ui/core
       └── react
       └── react-dom
-  └── @seven-design/theme
+  └── @seven-design-ui/theme
 
-@seven-design/core
+@seven-design-ui/core
   └── react
   └── react-dom
 
-@seven-design/theme
+@seven-design-ui/theme
   └── (无依赖)
 ```
 
@@ -325,7 +325,7 @@ packages/components/src/
 发布到 npm 后的包结构：
 
 ```
-@seven-design/components/
+@seven-design-ui/components/
   ├── dist/
   │   ├── index.esm.js     # ES Module
   │   ├── index.cjs.js     # CommonJS

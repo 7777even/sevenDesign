@@ -21,20 +21,20 @@
 
 ```bash
 # npm
-npm install seven-design
+npm install seven-design-ui
 
 # pnpm
-pnpm add seven-design
+pnpm add seven-design-ui
 
 # yarn
-yarn add seven-design
+yarn add seven-design-ui
 ```
 
 ## 🚀 快速开始
 
 ```tsx
-import { Button } from 'seven-design'
-import 'seven-design/dist/style.css'
+import { Button } from 'seven-design-ui'
+import 'seven-design-ui/dist/style.css'
 
 function App() {
   return <Button type="primary">点击我</Button>
@@ -67,7 +67,7 @@ pnpm test
 ## 📁 项目结构
 
 ```
-seven-design/
+seven-design-ui/
 ├── packages/
 │   ├── components/      # UI 组件库
 │   ├── core/           # 核心工具和 hooks

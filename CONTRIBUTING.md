@@ -26,7 +26,7 @@ pnpm install
 ### 项目结构
 
 ```
-seven-design/
+seven-design-ui/
 ├── packages/
 │   ├── components/      # UI 组件库
 │   │   ├── src/
@@ -118,7 +118,7 @@ packages/components/src/
 ```tsx
 // YourComponent.tsx
 import { forwardRef } from 'react'
-import { classnames } from '@seven-design/core'
+import { classnames } from '@seven-design-ui/core'
 import './your-component.css'
 
 export interface YourComponentProps {

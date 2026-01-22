@@ -36,15 +36,15 @@ features:
 ::: code-group
 
 ```bash [npm]
-npm install seven-design
+npm install seven-design-ui
 ```
 
 ```bash [pnpm]
-pnpm add seven-design
+pnpm add seven-design-ui
 ```
 
 ```bash [yarn]
-yarn add seven-design
+yarn add seven-design-ui
 ```
 
 :::
@@ -52,8 +52,8 @@ yarn add seven-design
 ## 快速开始
 
 ```tsx
-import { Button } from 'seven-design'
-import 'seven-design/dist/style.css'
+import { Button } from 'seven-design-ui'
+import 'seven-design-ui/dist/style.css'
 
 function App() {
   return <Button type="primary">点击我</Button>
@@ -81,5 +81,5 @@ SevenDesign 采用现代化的设计语言，参考了 Element Plus 的设计理
 ## 社区
 
 - [GitHub](https://github.com/7777even/sevenDesign.git)
-- [NPM](https://www.npmjs.com/package/@seven-design-ui/theme)
+- [NPM](https://www.npmjs.com/package/@seven-design-ui-ui/theme)
 - [问题反馈](https://github.com/7777even/sevenDesign.git/issues)

@@ -163,13 +163,13 @@ export default function Page() {
             <pre className="bg-black/20 rounded-lg p-4 overflow-x-auto backdrop-blur">
               <code className="text-sm">
                 {`# npm
-npm install seven-design
+npm install seven-design-ui
 
 # pnpm
-pnpm add seven-design
+pnpm add seven-design-ui
 
 # yarn
-yarn add seven-design`}
+yarn add seven-design-ui`}
               </code>
             </pre>
           </div>

@@ -3,7 +3,7 @@
 import React from "react"
 
 import { forwardRef } from 'react'
-import { classnames } from '@seven-design/core'
+import { classnames } from '@seven-design-ui/core'
 import './switch.css'
 
 export interface SwitchProps {

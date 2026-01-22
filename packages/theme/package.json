@@ -1,5 +1,5 @@
 {
-  "name": "@seven-design-ui/theme",
+  "name": "@seven-design-ui-ui/theme",
   "version": "0.1.0",
   "description": "SevenDesign UI 主题样式包",
   "main": "dist/index.css",

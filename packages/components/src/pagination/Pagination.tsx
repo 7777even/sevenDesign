@@ -1,5 +1,5 @@
 import { forwardRef, useState, useCallback, useMemo } from 'react'
-import { classnames } from '@seven-design/core'
+import { classnames } from '@seven-design-ui/core'
 import './pagination.css'
 
 export type PaginationSize = 's' | 'm'

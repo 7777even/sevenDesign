@@ -1,5 +1,5 @@
 {
-  "name": "seven-design",
+  "name": "seven-design-ui",
   "version": "0.0.1",
   "private": true,
   "description": "企业级 React UI 组件库",
@@ -7,12 +7,12 @@
   "author": "Seven Team",
   "scripts": {
     "build": "pnpm --filter ./packages/** build",
-    "build:components": "pnpm --filter @seven-design/components build",
-    "build:core": "pnpm --filter @seven-design/core build",
-    "build:theme": "pnpm --filter @seven-design/theme build",
+    "build:components": "pnpm --filter @seven-design-ui/components build",
+    "build:core": "pnpm --filter @seven-design-ui/core build",
+    "build:theme": "pnpm --filter @seven-design-ui/theme build",
     "changeset": "changeset",
     "clean": "pnpm --filter ./packages/** exec rm -rf dist",
-    "dev": "pnpm --filter @seven-design/play dev",
+    "dev": "pnpm --filter @seven-design-ui/play dev",
     "docs:build": "pnpm --filter docs build",
     "docs:deploy": "pnpm docs:build && node scripts/deploy-docs.js",
     "docs:dev": "pnpm --filter docs dev",
