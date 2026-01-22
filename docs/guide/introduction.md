@@ -43,7 +43,7 @@ SevenDesign 是一个企业级的 React UI 组件库，采用 TypeScript 开发�
 
 ## 版本
 
-当前版本：v0.1.0
+当前版本：v0.0.1
 
 ## 开源协议
 
