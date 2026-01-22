@@ -1,0 +1,186 @@
+import { Pagination } from '@seven-design/components'
+import React from 'react'
+
+# Pagination 分页器
+
+当数据量过多时，使用分页器进行数据展示。
+
+## 基础用法
+
+基础的分页器用法，设置 `total`、`defaultCurrent` 和 `defaultPageSize` 来控制分页器的基本行为。
+
+```tsx preview
+export default function Demo() {
+  const [current, setCurrent] = React.useState(1)
+  const [pageSize, setPageSize] = React.useState(10)
+
+  const handleChange = (page, size) => {
+    setCurrent(page)
+    setPageSize(size)
+  }
+
+  return (
+    <div>
+      <Pagination
+        total={100}
+        defaultCurrent={1}
+        defaultPageSize={10}
+        onChange={handleChange}
+      />
+      <p style={{ marginTop: '12px', fontSize: '14px', color: '#666' }}>
+        当前页码: {current}, 每页容量: {pageSize}
+      </p>
+    </div>
+  )
+}
+```
+
+## 不同大小
+
+分页器支持两种尺寸：`s`（小）和 `m`（中），默认为 `m`。
+
+```tsx preview
+export default function Demo() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>小尺寸 (s)</div>
+        <Pagination total={50} size="s" />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>中等尺寸 (m)</div>
+        <Pagination total={50} size="m" />
+      </div>
+    </div>
+  )
+}
+```
+
+## 自定义最大页码按钮数
+
+通过 `pagerCount` 属性可以设置最大页码按钮数，默认为7。当总页数超过设置值时，会自动折叠多余的页码按钮。
+
+```tsx preview
+export default function Demo() {
+  return (
+    <div>
+      <Pagination total={200} pagerCount={5} defaultCurrent={10} />
+      <p style={{ marginTop: '12px', fontSize: '14px', color: '#666' }}>
+        最大显示5个页码按钮，总共20页数据
+      </p>
+    </div>
+  )
+}
+```
+
+## 自定义每页容量选项
+
+通过 `pageSizeOptions` 属性可以设置每页容量的选择项，默认为 `[10, 20, 50, 100]`。
+
+```tsx preview
+export default function Demo() {
+  return (
+    <div>
+      <Pagination
+        total={500}
+        pageSizeOptions={[5, 10, 20, 50]}
+        defaultPageSize={5}
+      />
+      <p style={{ marginTop: '12px', fontSize: '14px', color: '#666' }}>
+        每页容量选项: 5, 10, 20, 50
+      </p>
+    </div>
+  )
+}
+```
+
+## 跳转功能
+
+通过设置 `showQuickJumper` 为 `true` 来启用跳转功能，用户可以直接输入页码进行跳转。
+
+```tsx preview
+export default function Demo() {
+  return (
+    <div>
+      <Pagination
+        total={100}
+        showQuickJumper={true}
+        defaultCurrent={5}
+      />
+      <p style={{ marginTop: '12px', fontSize: '14px', color: '#666' }}>
+        可以通过输入框直接跳转到指定页码
+      </p>
+    </div>
+  )
+}
+```
+
+## 完整功能演示
+
+展示分页器的所有功能，包括页码切换、每页容量控制和跳转功能。
+
+```tsx preview
+export default function Demo() {
+  const [current, setCurrent] = React.useState(3)
+  const [pageSize, setPageSize] = React.useState(20)
+
+  const handleChange = (page, size) => {
+    setCurrent(page)
+    setPageSize(size)
+    console.log(`页码: ${page}, 每页容量: ${size}`)
+  }
+
+  const handlePageSizeChange = (size) => {
+    console.log(`每页容量改变: ${size}`)
+  }
+
+  return (
+    <div>
+      <Pagination
+        total={500}
+        current={current}
+        pageSize={pageSize}
+        pageSizeOptions={[10, 20, 50, 100]}
+        showQuickJumper={true}
+        onChange={handleChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
+      <div style={{ marginTop: '16px', padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
+        <p style={{ margin: '0', fontSize: '14px', color: '#333' }}>
+          <strong>当前状态：</strong>第 {current} 页，每页 {pageSize} 条，共 {500} 条数据
+        </p>
+        <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#666' }}>
+          总页数: {Math.ceil(500 / pageSize)} 页
+        </p>
+      </div>
+    </div>
+  )
+}
+```
+
+## API
+
+### Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| total | 总数量 | `number` | - |
+| defaultCurrent | 默认页码 | `number` | `1` |
+| defaultPageSize | 默认每页容量 | `number` | `10` |
+| current | 当前页码（受控模式） | `number` | - |
+| pageSize | 每页容量（受控模式） | `number` | - |
+| onChange | 页码改变回调 | `(page: number, pageSize: number) => void` | - |
+| onPageSizeChange | 每页容量改变回调 | `(pageSize: number) => void` | - |
+| pagerCount | 最大页码按钮数 | `number` | `7` |
+| size | 分页器大小 | `'s' \| 'm'` | `'m'` |
+| pageSizeOptions | 每页容量选项 | `number[]` | `[10, 20, 50, 100]` |
+| showSizeChanger | 是否显示每页容量选择器 | `boolean` | `true` |
+| showQuickJumper | 是否显示跳转输入框 | `boolean` | `false` |
+| className | 自定义类名 | `string` | - |
+
+### Events
+
+| 事件名 | 说明 | 类型 |
+| --- | --- | --- |
+| onChange | 页码或每页容量改变时触发 | `(page: number, pageSize: number) => void` |
+| onPageSizeChange | 每页容量改变时触发 | `(pageSize: number) => void` |

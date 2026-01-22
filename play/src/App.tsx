@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react'
-import { Button, Input, Switch } from '@seven-design/components'
+import { Button, Input, Switch, Pagination } from '@seven-design/components'
 
 function CustomContentSwitch() {
   const [switch1, setSwitch1] = useState(true)
@@ -77,10 +77,18 @@ function App() {
   const [inputValue, setInputValue] = useState('')
   const [switchChecked, setSwitchChecked] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [paginationPage, setPaginationPage] = useState(1)
+  const [paginationSize, setPaginationSize] = useState(10)
 
   const handleClick = () => {
     setLoading(true)
     setTimeout(() => setLoading(false), 2000)
+  }
+
+  const handlePaginationChange = (page: number, pageSize: number) => {
+    setPaginationPage(page)
+    setPaginationSize(pageSize)
+    console.log(`页码: ${page}, 每页容量: ${pageSize}`)
   }
 
   return (
@@ -159,6 +167,67 @@ function App() {
 
           {/* 自定义内容测试 */}
           <CustomContentSwitch />
+        </section>
+
+        {/* Pagination 示例 */}
+        <section className="demo-section">
+          <h2>Pagination 分页器</h2>
+
+          {/* 基础使用 */}
+          <div className="demo-column">
+            <h3>基础使用</h3>
+            <Pagination
+              total={100}
+              defaultCurrent={1}
+              defaultPageSize={10}
+              onChange={handlePaginationChange}
+            />
+            <p className="demo-tip">当前页码: {paginationPage}, 每页容量: {paginationSize}</p>
+          </div>
+
+          {/* 不同大小 */}
+          <div className="demo-column">
+            <h3>不同大小</h3>
+            <div className="demo-row">
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <Pagination total={50} size="s" />
+                <span style={{ fontSize: '12px', color: '#666' }}>小尺寸 (s)</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <Pagination total={50} size="m" />
+                <span style={{ fontSize: '12px', color: '#666' }}>中等尺寸 (m)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 自定义页码按钮数 */}
+          <div className="demo-column">
+            <h3>自定义最大页码按钮数</h3>
+            <Pagination total={200} pagerCount={5} defaultCurrent={10} />
+            <p className="demo-tip">最大显示5个页码按钮</p>
+          </div>
+
+          {/* 自定义每页容量选项 */}
+          <div className="demo-column">
+            <h3>自定义每页容量选项</h3>
+            <Pagination
+              total={500}
+              pageSizeOptions={[5, 10, 20, 50]}
+              defaultPageSize={5}
+            />
+            <p className="demo-tip">每页容量选项: 5, 10, 20, 50</p>
+          </div>
+
+          {/* 跳转功能 */}
+          <div className="demo-column">
+            <h3>跳转功能</h3>
+            <Pagination
+              total={100}
+              showQuickJumper={true}
+              defaultCurrent={5}
+            />
+            <p className="demo-tip">可以直接跳转到指定页码</p>
+          </div>
         </section>
       </main>
     </div>

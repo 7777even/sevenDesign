@@ -23,7 +23,7 @@ export default defineConfig({
       previewCodeTransform: ({ code }) => {
         const injected = [
           "import React from 'react';",
-          "import { Button, Input, Switch } from '@seven-design/components';",
+          "import { Button, Input, Switch, Pagination } from '@seven-design/components';",
           "import '@seven-design/components/dist/style.css';",
           '',
         ].join('\n')
@@ -98,6 +98,15 @@ export default defineConfig({
             {
               text: 'Switch 开关',
               link: '/components/switch',
+            },
+          ],
+        },
+        {
+          text: '数据展示',
+          items: [
+            {
+              text: 'Pagination 分页器',
+              link: '/components/pagination',
             },
           ],
         },
