@@ -1,10 +1,9 @@
 {
   "name": "seven-design-ui",
   "version": "0.0.1",
-  "private": true,
   "description": "企业级 React UI 组件库",
   "license": "MIT",
-  "author": "Seven Team",
+  "author": "seven.zhong",
   "scripts": {
     "build": "pnpm --filter ./packages/** build",
     "build:components": "pnpm --filter @seven-design-ui/components build",
