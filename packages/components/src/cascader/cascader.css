@@ -147,12 +147,22 @@
 .sd-cascader__panel {
   display: flex;
   width: fit-content;
+  min-width: 180px;
   border-radius: var(--sd-border-radius-base);
   font-size: var(--sd-font-size-base);
   background-color: var(--sd-color-white);
   border: 1px solid var(--sd-border-color);
   border-radius: var(--sd-border-radius-base);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all var(--sd-transition-duration-fast);
+  transform-origin: top left;
+}
+
+.sd-cascader__panel.is-visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .sd-cascader__menu {
@@ -162,6 +172,25 @@
   border-right: 1px solid var(--sd-border-color-lighter);
   max-height: 204px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sd-border-color) transparent;
+}
+
+.sd-cascader__menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sd-cascader__menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sd-cascader__menu::-webkit-scrollbar-thumb {
+  background: var(--sd-border-color);
+  border-radius: 3px;
+}
+
+.sd-cascader__menu::-webkit-scrollbar-thumb:hover {
+  background: var(--sd-border-color-hover);
 }
 
 .sd-cascader__menu:last-child {
@@ -191,13 +220,12 @@
   outline: none;
   cursor: pointer;
   transition: all var(--sd-transition-duration-fast);
+  user-select: none;
 }
 
-.sd-cascader__menu-item:not(.is-disabled) {
-  &:hover,
-  &:focus {
-    background-color: var(--sd-fill-color-light);
-  }
+.sd-cascader__menu-item:not(.is-disabled):hover,
+.sd-cascader__menu-item:not(.is-disabled):focus {
+  background-color: var(--sd-fill-color-light);
 }
 
 .sd-cascader__menu-item.is-disabled {
@@ -209,6 +237,7 @@
 .sd-cascader__menu-item.in-active-path {
   color: var(--sd-color-primary);
   font-weight: 500;
+  background-color: var(--sd-color-primary-light-9);
 }
 
 .sd-cascader__menu-item-label {
@@ -319,7 +348,9 @@
 
 /* 空状态 */
 .sd-cascader__empty {
-  margin: 10px 0;
+  margin: 20px 0;
+  padding: 20px;
   color: var(--sd-text-color-placeholder);
   text-align: center;
+  font-size: var(--sd-font-size-small);
 }

@@ -73,7 +73,6 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
   const [isOpen, setIsOpen] = useState(false)
   const [activePath, setActivePath] = useState<CascaderOption[]>([])
   const [hoveredPath, setHoveredPath] = useState<CascaderOption[]>([])
-  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null)
 
   // 引用
   const inputRef = useRef<HTMLDivElement>(null)
@@ -192,7 +191,6 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         onChange?.(newValue, option)
         setIsOpen(false)
         setActivePath([])
-        setDropdownPosition(null)
       }
     }
   }, [multiple, valueArray, controlledValue, onChange, selectedItems])
@@ -213,25 +211,12 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     }
   }, [expandTrigger, hoveredPath, activePath])
 
-  // 计算下拉框位置
-  const calculateDropdownPosition = useCallback(() => {
-    if (inputRef.current) {
-      const rect = inputRef.current.getBoundingClientRect()
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX
-      })
-    }
-  }, [])
 
   // 处理输入框点击
   const handleInputClick = useCallback(() => {
     if (disabled) return
-    if (!isOpen) {
-      calculateDropdownPosition()
-    }
     setIsOpen(!isOpen)
-  }, [disabled, isOpen, calculateDropdownPosition])
+  }, [disabled, isOpen])
 
   // 处理清空
   const handleClear = useCallback((e: React.MouseEvent) => {
@@ -243,7 +228,6 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     onChange?.(newValue, multiple ? [] : undefined)
     setIsOpen(false)
     setActivePath([])
-    setDropdownPosition(null)
   }, [multiple, controlledValue, onChange])
 
   // 处理标签关闭（多选模式）
@@ -265,13 +249,24 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         setIsOpen(false)
         setActivePath([])
         setHoveredPath([])
-        setDropdownPosition(null)
+      }
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false)
+        setActivePath([])
+        setHoveredPath([])
       }
     }
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     }
   }, [isOpen])
 
@@ -399,13 +394,14 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
       </div>
 
       {/* 下拉面板 */}
-      {isOpen && dropdownPosition && (
+      {isOpen && (
         <div
-          className="sd-cascader__panel"
+          className={classnames('sd-cascader__panel', 'is-visible')}
           style={{
-            position: 'fixed',
-            top: dropdownPosition.top,
-            left: dropdownPosition.left,
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
             zIndex: 9999
           }}
         >
