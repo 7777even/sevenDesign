@@ -278,6 +278,71 @@ export default function MultipleCascader() {
 }
 ```
 
+## 搜索
+
+通过 `showSearch` 开启搜索功能，支持在所有层级中搜索选项。
+
+```tsx preview
+export default function SearchCascader() {
+  const [value, setValue] = React.useState()
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+        {
+          value: 'ningbo',
+          label: '宁波',
+          children: [
+            { value: 'jiangbei', label: '江北' },
+            { value: 'yinzhou', label: '鄞州' },
+          ],
+        },
+      ],
+    },
+    {
+      value: 'jiangsu',
+      label: '江苏',
+      children: [
+        {
+          value: 'nanjing',
+          label: '南京',
+          children: [
+            { value: 'zhonghuamen', label: '中华门' },
+            { value: 'meiyuanxincun', label: '梅园新村' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <div>
+      <Cascader
+        options={options}
+        value={value}
+        onChange={setValue}
+        showSearch
+        searchPlaceholder="搜索城市"
+        placeholder="请选择城市"
+      />
+      <p style={{ marginTop: '12px', color: '#606266' }}>
+        选中值：{value || '无'}
+      </p>
+    </div>
+  )
+}
+```
+
 ## 悬停展开
 
 通过 `expandTrigger` 设置为 `hover` 来让选项在鼠标悬停时展开子菜单。
@@ -330,6 +395,9 @@ export default function HoverTriggerCascader() {
 | disabled | 是否禁用 | `boolean` | `false` |
 | showAllLevels | 是否显示完整路径 | `boolean` | `true` |
 | multiple | 是否支持多选 | `boolean` | `false` |
+| showSearch | 是否支持搜索 | `boolean` | `false` |
+| filterOption | 自定义搜索函数 | `(inputValue: string, option: CascaderOption) => boolean` | - |
+| searchPlaceholder | 搜索占位符 | `string` | `'搜索选项'` |
 | placeholder | 占位符 | `string` | `'请选择'` |
 | className | 自定义类名 | `string` | - |
 | style | 自定义样式 | `React.CSSProperties` | - |

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Button, Input, Switch, Pagination, Cascader } from '@seven-design-ui/components'
+import { basicOptions, disabledOptions, multipleOptions, hoverOptions } from './options'
 
 function CustomContentSwitch() {
   const [switch1, setSwitch1] = useState(true)
@@ -240,36 +241,7 @@ function App() {
           <div className="demo-column">
             <h3>基础使用</h3>
             <Cascader
-              options={[
-                {
-                  value: 'zhejiang',
-                  label: '浙江',
-                  children: [
-                    {
-                      value: 'hangzhou',
-                      label: '杭州',
-                      children: [
-                        { value: 'xihu', label: '西湖' },
-                        { value: 'xiasha', label: '萧山' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  value: 'jiangsu',
-                  label: '江苏',
-                  children: [
-                    {
-                      value: 'nanjing',
-                      label: '南京',
-                      children: [
-                        { value: 'zhonghuamen', label: '中华门' },
-                        { value: 'meiyuanxincun', label: '梅园新村' },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+              options={basicOptions}
               value={cascaderValue}
               onChange={setCascaderValue}
               placeholder="请选择城市"
@@ -281,29 +253,7 @@ function App() {
           <div className="demo-column">
             <h3>禁用选项</h3>
             <Cascader
-              options={[
-                {
-                  value: 'zhejiang',
-                  label: '浙江',
-                  children: [
-                    {
-                      value: 'hangzhou',
-                      label: '杭州',
-                      disabled: true,
-                      children: [
-                        { value: 'xihu', label: '西湖' },
-                      ],
-                    },
-                    {
-                      value: 'ningbo',
-                      label: '宁波',
-                      children: [
-                        { value: 'jiangbei', label: '江北' },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+              options={disabledOptions}
               placeholder="请选择城市（杭州被禁用）"
             />
           </div>
@@ -312,22 +262,7 @@ function App() {
           <div className="demo-column">
             <h3>可清空</h3>
             <Cascader
-              options={[
-                {
-                  value: 'zhejiang',
-                  label: '浙江',
-                  children: [
-                    {
-                      value: 'hangzhou',
-                      label: '杭州',
-                      children: [
-                        { value: 'xihu', label: '西湖' },
-                        { value: 'xiasha', label: '萧山' },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+              options={basicOptions}
               defaultValue={['zhejiang', 'hangzhou', 'xihu']}
               clearable
               placeholder="可清空的级联选择器"
@@ -338,22 +273,7 @@ function App() {
           <div className="demo-column">
             <h3>仅显示最后一级</h3>
             <Cascader
-              options={[
-                {
-                  value: 'zhejiang',
-                  label: '浙江',
-                  children: [
-                    {
-                      value: 'hangzhou',
-                      label: '杭州',
-                      children: [
-                        { value: 'xihu', label: '西湖' },
-                        { value: 'xiasha', label: '萧山' },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+              options={basicOptions}
               showAllLevels={false}
               placeholder="仅显示最后一级标签"
             />
@@ -363,43 +283,7 @@ function App() {
           <div className="demo-column">
             <h3>多选</h3>
             <Cascader
-              options={[
-                {
-                  value: 'zhejiang',
-                  label: '浙江',
-                  children: [
-                    {
-                      value: 'hangzhou',
-                      label: '杭州',
-                      children: [
-                        { value: 'xihu', label: '西湖' },
-                        { value: 'xiasha', label: '萧山' },
-                      ],
-                    },
-                    {
-                      value: 'ningbo',
-                      label: '宁波',
-                      disableCheckbox: true,
-                      children: [
-                        { value: 'jiangbei', label: '江北' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  value: 'jiangsu',
-                  label: '江苏',
-                  children: [
-                    {
-                      value: 'nanjing',
-                      label: '南京',
-                      children: [
-                        { value: 'zhonghuamen', label: '中华门' },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+              options={multipleOptions}
               value={multipleCascaderValue}
               onChange={setMultipleCascaderValue}
               multiple
@@ -412,22 +296,7 @@ function App() {
           <div className="demo-column">
             <h3>悬停展开</h3>
             <Cascader
-              options={[
-                {
-                  value: 'zhejiang',
-                  label: '浙江',
-                  children: [
-                    {
-                      value: 'hangzhou',
-                      label: '杭州',
-                      children: [
-                        { value: 'xihu', label: '西湖' },
-                        { value: 'xiasha', label: '萧山' },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+              options={hoverOptions}
               expandTrigger="hover"
               placeholder="鼠标悬停展开子菜单"
             />

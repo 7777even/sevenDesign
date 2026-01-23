@@ -36,8 +36,14 @@ export interface CascaderProps {
   showAllLevels?: boolean
   /** 是否支持多选 */
   multiple?: boolean
+  /** 是否支持搜索 */
+  showSearch?: boolean
+  /** 自定义搜索函数 */
+  filterOption?: (inputValue: string, option: CascaderOption) => boolean
   /** 占位符 */
   placeholder?: string
+  /** 搜索占位符 */
+  searchPlaceholder?: string
   /** 自定义类名 */
   className?: string
   /** 自定义样式 */
@@ -62,7 +68,10 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     onChange,
     showAllLevels = true,
     multiple = false,
+    showSearch = false,
+    filterOption,
     placeholder = '请选择',
+    searchPlaceholder = '搜索选项',
     className,
     style,
     ...rest
@@ -73,6 +82,9 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
   const [isOpen, setIsOpen] = useState(false)
   const [activePath, setActivePath] = useState<CascaderOption[]>([])
   const [hoveredPath, setHoveredPath] = useState<CascaderOption[]>([])
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1)
+  const [focusedLevel, setFocusedLevel] = useState<number>(0)
+  const [searchValue, setSearchValue] = useState<string>('')
 
   // 引用
   const inputRef = useRef<HTMLDivElement>(null)
@@ -170,7 +182,22 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
       if (controlledValue === undefined) {
         setInternalValue(newValue)
       }
-      const selectedOptions = selectedItems.filter(item => newValues.includes(item.value)).map(item => item.path[item.path.length - 1])
+
+      // 直接构造选中的选项，避免使用过时的selectedItems
+      const selectedOptions = newValues.map(val => {
+        const findOption = (options: CascaderOption[]): CascaderOption | null => {
+          for (const opt of options) {
+            if (opt.value === val) return opt
+            if (opt.children) {
+              const childResult = findOption(opt.children)
+              if (childResult) return childResult
+            }
+          }
+          return null
+        }
+        return findOption(options)
+      }).filter(Boolean) as CascaderOption[]
+
       onChange?.(newValue, selectedOptions.length > 0 ? selectedOptions : (multiple ? [] : undefined))
 
       // 如果有子选项，展开子菜单
@@ -193,7 +220,7 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         setActivePath([])
       }
     }
-  }, [multiple, valueArray, controlledValue, onChange, selectedItems])
+  }, [multiple, valueArray, controlledValue, onChange, options])
 
   // 处理鼠标悬停
   const handleOptionHover = useCallback((option: CascaderOption, path: CascaderOption[]) => {
@@ -242,6 +269,136 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     onChange?.(newValue, selectedOptions.length > 0 ? selectedOptions : (multiple ? [] : undefined))
   }, [valueArray, multiple, controlledValue, onChange, selectedItems])
 
+  // 默认搜索过滤函数
+  const defaultFilterOption = useCallback((inputValue: string, option: CascaderOption): boolean => {
+    return option.label.toLowerCase().includes(inputValue.toLowerCase())
+  }, [])
+
+  // 搜索过滤选项
+  const filterOptions = useCallback((options: CascaderOption[], searchValue: string): CascaderOption[] => {
+    if (!searchValue) return options
+
+    const filter = filterOption || defaultFilterOption
+
+    const filterRecursively = (opts: CascaderOption[]): CascaderOption[] => {
+      return opts
+        .map(option => {
+          // 检查当前选项是否匹配
+          const currentMatch = filter(searchValue, option)
+
+          // 递归检查子选项
+          let filteredChildren: CascaderOption[] = []
+          if (option.children) {
+            filteredChildren = filterRecursively(option.children)
+          }
+
+          // 如果当前选项或任何子选项匹配，则包含此选项
+          if (currentMatch || filteredChildren.length > 0) {
+            return {
+              ...option,
+              children: filteredChildren.length > 0 ? filteredChildren : option.children
+            }
+          }
+
+          return null
+        })
+        .filter(Boolean) as CascaderOption[]
+    }
+
+    return filterRecursively(options)
+  }, [filterOption, defaultFilterOption])
+
+  // 获取当前级别的选项（支持搜索）
+  const getCurrentLevelOptions = useCallback((level: number): CascaderOption[] => {
+    let baseOptions = options
+    if (searchValue) {
+      baseOptions = filterOptions(options, searchValue)
+    }
+
+    if (level === 0) return baseOptions
+    if (currentActivePath.length >= level) {
+      return currentActivePath[level - 1]?.children || []
+    }
+    return []
+  }, [options, currentActivePath, searchValue, filterOptions])
+
+  // 处理键盘导航
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (!isOpen) return
+
+    const currentOptions = getCurrentLevelOptions(focusedLevel)
+
+    switch (event.key) {
+      case 'Escape':
+        setIsOpen(false)
+        setActivePath([])
+        setHoveredPath([])
+        setFocusedIndex(-1)
+        setFocusedLevel(0)
+        setSearchValue('')
+        break
+
+      case 'ArrowDown':
+        event.preventDefault()
+        if (currentOptions.length > 0) {
+          const nextIndex = focusedIndex < currentOptions.length - 1 ? focusedIndex + 1 : 0
+          setFocusedIndex(nextIndex)
+          // 模拟悬停效果
+          const option = currentOptions[nextIndex]
+          if (option && expandTrigger === 'hover') {
+            const path = focusedLevel === 0 ? [option] : [...currentActivePath.slice(0, focusedLevel), option]
+            setHoveredPath(path)
+          }
+        }
+        break
+
+      case 'ArrowUp':
+        event.preventDefault()
+        if (currentOptions.length > 0) {
+          const nextIndex = focusedIndex > 0 ? focusedIndex - 1 : currentOptions.length - 1
+          setFocusedIndex(nextIndex)
+          // 模拟悬停效果
+          const option = currentOptions[nextIndex]
+          if (option && expandTrigger === 'hover') {
+            const path = focusedLevel === 0 ? [option] : [...currentActivePath.slice(0, focusedLevel), option]
+            setHoveredPath(path)
+          }
+        }
+        break
+
+      case 'ArrowRight':
+        event.preventDefault()
+        if (focusedIndex >= 0 && currentOptions[focusedIndex]?.children) {
+          // 移动到子菜单
+          const option = currentOptions[focusedIndex]
+          const path = focusedLevel === 0 ? [option] : [...currentActivePath.slice(0, focusedLevel), option]
+          setActivePath(path)
+          setFocusedLevel(focusedLevel + 1)
+          setFocusedIndex(0)
+        }
+        break
+
+      case 'ArrowLeft':
+        event.preventDefault()
+        if (focusedLevel > 0) {
+          // 移动到父菜单
+          setActivePath(currentActivePath.slice(0, focusedLevel - 1))
+          setFocusedLevel(focusedLevel - 1)
+          setFocusedIndex(-1)
+        }
+        break
+
+      case 'Enter':
+        event.preventDefault()
+        if (focusedIndex >= 0 && currentOptions[focusedIndex]) {
+          const option = currentOptions[focusedIndex]
+          const path = focusedLevel === 0 ? [] : currentActivePath.slice(0, focusedLevel)
+          handleOptionClick(option, [...path, option])
+        }
+        break
+    }
+  }, [isOpen, focusedIndex, focusedLevel, getCurrentLevelOptions, expandTrigger, currentActivePath, handleOptionClick, setFocusedIndex, setFocusedLevel, setActivePath, setIsOpen, setHoveredPath, setSearchValue])
+
   // 点击外部关闭下拉框
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -249,14 +406,9 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         setIsOpen(false)
         setActivePath([])
         setHoveredPath([])
-      }
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        setIsOpen(false)
-        setActivePath([])
-        setHoveredPath([])
+        setFocusedIndex(-1)
+        setFocusedLevel(0)
+        setSearchValue('')
       }
     }
 
@@ -268,36 +420,49 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         document.removeEventListener('keydown', handleKeyDown)
       }
     }
-  }, [isOpen])
+  }, [isOpen, handleKeyDown])
 
   // 渲染菜单项
   const renderMenuItem = useCallback((
     option: CascaderOption,
-    path: CascaderOption[]
+    path: CascaderOption[],
+    levelIndex: number,
+    itemIndex: number
   ) => {
     const isSelected = valueArray.includes(option.value)
     const hasChildren = option.children && option.children.length > 0
     const isInActivePath = activePath.some(activeOption => activeOption.value === option.value)
+    const isFocused = focusedLevel === levelIndex && focusedIndex === itemIndex
 
     const itemClasses = classnames('sd-cascader__menu-item', {
       'is-active': isSelected,
       'is-disabled': option.disabled,
-      'in-active-path': isInActivePath
+      'in-active-path': isInActivePath,
+      'is-focused': isFocused
     })
 
     return (
       <li
         key={option.value}
         className={itemClasses}
-        onClick={() => handleOptionClick(option, [...path, option])}
-        onMouseEnter={() => handleOptionHover(option, [...path, option])}
+        onClick={(e) => {
+          e.stopPropagation()
+          handleOptionClick(option, [...path, option])
+        }}
+        onMouseEnter={() => {
+          handleOptionHover(option, [...path, option])
+          // 清除键盘聚焦状态
+          setFocusedIndex(-1)
+        }}
       >
         {multiple && (
           <div className="sd-cascader__menu-item-prefix">
-            <div className={classnames('sd-cascader__menu-item-checkbox', {
-              'is-checked': isSelected,
-              'is-disabled': option.disableCheckbox || option.disabled
-            })}>
+            <div
+              className={classnames('sd-cascader__menu-item-checkbox', {
+                'is-checked': isSelected,
+                'is-disabled': option.disableCheckbox || option.disabled
+              })}
+            >
               {isSelected && <span></span>}
             </div>
           </div>
@@ -310,12 +475,13 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         )}
       </li>
     )
-  }, [valueArray, activePath, multiple, handleOptionClick, handleOptionHover])
+  }, [valueArray, activePath, multiple, focusedLevel, focusedIndex, handleOptionClick, handleOptionHover])
 
   // 渲染菜单
   const renderMenu = useCallback((
     options: CascaderOption[],
-    path: CascaderOption[] = []
+    path: CascaderOption[] = [],
+    levelIndex: number = 0
   ) => {
     if (!options || options.length === 0) {
       return (
@@ -328,7 +494,7 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     return (
       <div className="sd-cascader__menu">
         <ul className="sd-cascader__menu-list">
-          {options.map(option => renderMenuItem(option, path))}
+          {options.map((option, itemIndex) => renderMenuItem(option, path, levelIndex, itemIndex))}
         </ul>
       </div>
     )
@@ -405,21 +571,53 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
             zIndex: 9999
           }}
         >
-          <div className="sd-cascader__menu">
-            {renderMenu(options)}
-          </div>
-          {currentActivePath.map((activeOption, index) => {
-            const currentOptions = activeOption.children || []
-            const currentPath = currentActivePath.slice(0, index + 1)
+          {/* 搜索框 */}
+          {showSearch && (
+            <div className="sd-cascader__search">
+              <input
+                type="text"
+                className="sd-cascader__search-input"
+                placeholder={searchPlaceholder}
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value)
+                  // 重置活动路径和聚焦状态
+                  setActivePath([])
+                  setFocusedIndex(-1)
+                  setFocusedLevel(0)
+                }}
+                onKeyDown={(e) => {
+                  // 阻止搜索框的键盘事件冒泡到全局处理
+                  e.stopPropagation()
+                }}
+              />
+            </div>
+          )}
 
-            if (currentOptions.length === 0) return null
-
-            return (
-              <div key={index + 1} className="sd-cascader__menu">
-                {renderMenu(currentOptions, currentPath)}
+          {/* 在搜索模式下，只显示第一级过滤结果 */}
+          {!searchValue ? (
+            <>
+              <div className="sd-cascader__menu">
+                {renderMenu(options, [], 0)}
               </div>
-            )
-          })}
+              {currentActivePath.map((activeOption, index) => {
+                const currentOptions = activeOption.children || []
+                const currentPath = currentActivePath.slice(0, index + 1)
+
+                if (currentOptions.length === 0) return null
+
+                return (
+                  <div key={index + 1} className="sd-cascader__menu">
+                    {renderMenu(currentOptions, currentPath, index + 1)}
+                  </div>
+                )
+              })}
+            </>
+          ) : (
+            <div className="sd-cascader__menu">
+              {renderMenu(getCurrentLevelOptions(0), [], 0)}
+            </div>
+          )}
         </div>
       )}
     </div>
