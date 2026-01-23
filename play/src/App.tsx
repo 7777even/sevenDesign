@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react'
-import { Button, Input, Switch, Pagination } from '@seven-design-ui/components'
+import { Button, Input, Switch, Pagination, Cascader } from '@seven-design-ui/components'
 
 function CustomContentSwitch() {
   const [switch1, setSwitch1] = useState(true)
@@ -79,6 +79,8 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [paginationPage, setPaginationPage] = useState(1)
   const [paginationSize, setPaginationSize] = useState(10)
+  const [cascaderValue, setCascaderValue] = useState()
+  const [multipleCascaderValue, setMultipleCascaderValue] = useState([])
 
   const handleClick = () => {
     setLoading(true)
@@ -227,6 +229,208 @@ function App() {
               defaultCurrent={5}
             />
             <p className="demo-tip">可以直接跳转到指定页码</p>
+          </div>
+        </section>
+
+        {/* Cascader 示例 */}
+        <section className="demo-section">
+          <h2>Cascader 级联选择器</h2>
+
+          {/* 基础使用 */}
+          <div className="demo-column">
+            <h3>基础使用</h3>
+            <Cascader
+              options={[
+                {
+                  value: 'zhejiang',
+                  label: '浙江',
+                  children: [
+                    {
+                      value: 'hangzhou',
+                      label: '杭州',
+                      children: [
+                        { value: 'xihu', label: '西湖' },
+                        { value: 'xiasha', label: '萧山' },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  value: 'jiangsu',
+                  label: '江苏',
+                  children: [
+                    {
+                      value: 'nanjing',
+                      label: '南京',
+                      children: [
+                        { value: 'zhonghuamen', label: '中华门' },
+                        { value: 'meiyuanxincun', label: '梅园新村' },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+              value={cascaderValue}
+              onChange={setCascaderValue}
+              placeholder="请选择城市"
+            />
+            <p className="demo-tip">选中值: {cascaderValue || '无'}</p>
+          </div>
+
+          {/* 禁用选项 */}
+          <div className="demo-column">
+            <h3>禁用选项</h3>
+            <Cascader
+              options={[
+                {
+                  value: 'zhejiang',
+                  label: '浙江',
+                  children: [
+                    {
+                      value: 'hangzhou',
+                      label: '杭州',
+                      disabled: true,
+                      children: [
+                        { value: 'xihu', label: '西湖' },
+                      ],
+                    },
+                    {
+                      value: 'ningbo',
+                      label: '宁波',
+                      children: [
+                        { value: 'jiangbei', label: '江北' },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+              placeholder="请选择城市（杭州被禁用）"
+            />
+          </div>
+
+          {/* 清空功能 */}
+          <div className="demo-column">
+            <h3>可清空</h3>
+            <Cascader
+              options={[
+                {
+                  value: 'zhejiang',
+                  label: '浙江',
+                  children: [
+                    {
+                      value: 'hangzhou',
+                      label: '杭州',
+                      children: [
+                        { value: 'xihu', label: '西湖' },
+                        { value: 'xiasha', label: '萧山' },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+              defaultValue={['zhejiang', 'hangzhou', 'xihu']}
+              clearable
+              placeholder="可清空的级联选择器"
+            />
+          </div>
+
+          {/* 仅显示最后一级 */}
+          <div className="demo-column">
+            <h3>仅显示最后一级</h3>
+            <Cascader
+              options={[
+                {
+                  value: 'zhejiang',
+                  label: '浙江',
+                  children: [
+                    {
+                      value: 'hangzhou',
+                      label: '杭州',
+                      children: [
+                        { value: 'xihu', label: '西湖' },
+                        { value: 'xiasha', label: '萧山' },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+              showAllLevels={false}
+              placeholder="仅显示最后一级标签"
+            />
+          </div>
+
+          {/* 多选 */}
+          <div className="demo-column">
+            <h3>多选</h3>
+            <Cascader
+              options={[
+                {
+                  value: 'zhejiang',
+                  label: '浙江',
+                  children: [
+                    {
+                      value: 'hangzhou',
+                      label: '杭州',
+                      children: [
+                        { value: 'xihu', label: '西湖' },
+                        { value: 'xiasha', label: '萧山' },
+                      ],
+                    },
+                    {
+                      value: 'ningbo',
+                      label: '宁波',
+                      disableCheckbox: true,
+                      children: [
+                        { value: 'jiangbei', label: '江北' },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  value: 'jiangsu',
+                  label: '江苏',
+                  children: [
+                    {
+                      value: 'nanjing',
+                      label: '南京',
+                      children: [
+                        { value: 'zhonghuamen', label: '中华门' },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+              value={multipleCascaderValue}
+              onChange={setMultipleCascaderValue}
+              multiple
+              placeholder="请选择多个城市"
+            />
+            <p className="demo-tip">选中值: {multipleCascaderValue.join(', ') || '无'}</p>
+          </div>
+
+          {/* 悬停展开 */}
+          <div className="demo-column">
+            <h3>悬停展开</h3>
+            <Cascader
+              options={[
+                {
+                  value: 'zhejiang',
+                  label: '浙江',
+                  children: [
+                    {
+                      value: 'hangzhou',
+                      label: '杭州',
+                      children: [
+                        { value: 'xihu', label: '西湖' },
+                        { value: 'xiasha', label: '萧山' },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+              expandTrigger="hover"
+              placeholder="鼠标悬停展开子菜单"
+            />
           </div>
         </section>
       </main>

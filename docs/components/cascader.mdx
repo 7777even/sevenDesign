@@ -1,0 +1,345 @@
+import { Cascader } from '@seven-design-ui/components'
+import React from 'react'
+
+# Cascader 级联选择器
+
+级联选择器适用于有清晰层级结构的数据选择，比如省市区、行业分类等。
+
+## 基础用法
+
+只需为 Cascader 的 `options` 属性指定选项数组即可渲染出一个级联选择器。通过 `expandTrigger` 属性控制子节点的展开方式，默认 `clicked` 可选 `hover`。
+
+```tsx preview
+export default function BasicCascader() {
+  const [value, setValue] = React.useState()
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+      ],
+    },
+    {
+      value: 'jiangsu',
+      label: '江苏',
+      children: [
+        {
+          value: 'nanjing',
+          label: '南京',
+          children: [
+            { value: 'zhonghuamen', label: '中华门' },
+            { value: 'meiyuanxincun', label: '梅园新村' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <div>
+      <Cascader
+        options={options}
+        value={value}
+        onChange={setValue}
+        placeholder="请选择城市"
+      />
+      <p style={{ marginTop: '12px', color: '#606266' }}>
+        选中值：{value || '无'}
+      </p>
+    </div>
+  )
+}
+```
+
+## 禁用选项
+
+通过在数据源中设置 `disabled` 字段来声明该选项是禁用的。默认情况下，Cascader 会检查数据中每一项的 `disabled` 字段是否为 `true`。
+
+```tsx preview
+export default function DisabledCascader() {
+  const [value, setValue] = React.useState()
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          disabled: true,
+          children: [
+            { value: 'xihu', label: '西湖' },
+          ],
+        },
+        {
+          value: 'ningbo',
+          label: '宁波',
+          children: [
+            { value: 'jiangbei', label: '江北' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <Cascader
+      options={options}
+      value={value}
+      onChange={setValue}
+      placeholder="请选择城市"
+    />
+  )
+}
+```
+
+## 清空
+
+通过 `clearable` 设置输入框可清空。
+
+```tsx preview
+export default function ClearableCascader() {
+  const [value, setValue] = React.useState('zhejiang/hangzhou/xihu')
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <Cascader
+      options={options}
+      value={value}
+      onChange={setValue}
+      clearable
+      placeholder="请选择城市"
+    />
+  )
+}
+```
+
+## 默认值
+
+通过 `defaultValue` 设置默认值。
+
+```tsx preview
+export default function DefaultValueCascader() {
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <Cascader
+      options={options}
+      defaultValue={['zhejiang', 'hangzhou', 'xihu']}
+      placeholder="请选择城市"
+    />
+  )
+}
+```
+
+## 仅显示最后一级
+
+可以仅在输入框中显示选中项最后一级的标签，而不是选中项所在的完整路径。`showAllLevels` 定义了是否显示完整的路径，将其赋值为 `false` 则仅显示最后一级。
+
+```tsx preview
+export default function ShowLastLevelCascader() {
+  const [value, setValue] = React.useState()
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <div>
+      <Cascader
+        options={options}
+        value={value}
+        onChange={setValue}
+        showAllLevels={false}
+        placeholder="请选择城市"
+      />
+      <p style={{ marginTop: '12px', color: '#606266' }}>
+        选中值：{value || '无'}
+      </p>
+    </div>
+  )
+}
+```
+
+## 多选
+
+一次性选择多个选项。通过设置 `multiple` 开启。通过添加 `disableCheckbox` 属性，可选择具体某一个 checkbox 禁用。
+
+```tsx preview
+export default function MultipleCascader() {
+  const [value, setValue] = React.useState([])
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+        {
+          value: 'ningbo',
+          label: '宁波',
+          disableCheckbox: true,
+          children: [
+            { value: 'jiangbei', label: '江北' },
+          ],
+        },
+      ],
+    },
+    {
+      value: 'jiangsu',
+      label: '江苏',
+      children: [
+        {
+          value: 'nanjing',
+          label: '南京',
+          children: [
+            { value: 'zhonghuamen', label: '中华门' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <div>
+      <Cascader
+        options={options}
+        value={value}
+        onChange={setValue}
+        multiple
+        placeholder="请选择城市"
+      />
+      <p style={{ marginTop: '12px', color: '#606266' }}>
+        选中值：{value.join(', ') || '无'}
+      </p>
+    </div>
+  )
+}
+```
+
+## 悬停展开
+
+通过 `expandTrigger` 设置为 `hover` 来让选项在鼠标悬停时展开子菜单。
+
+```tsx preview
+export default function HoverTriggerCascader() {
+  const [value, setValue] = React.useState()
+
+  const options = [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            { value: 'xihu', label: '西湖' },
+            { value: 'xiasha', label: '萧山' },
+          ],
+        },
+      ],
+    },
+  ]
+
+  return (
+    <Cascader
+      options={options}
+      value={value}
+      onChange={setValue}
+      expandTrigger="hover"
+      placeholder="请选择城市"
+    />
+  )
+}
+```
+
+## API
+
+### Cascader Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| options | 可选项数据源 | `CascaderOption[]` | - |
+| value | 当前选中值（受控） | `string \| number \| Array<string \| number>` | - |
+| defaultValue | 默认选中值 | `string \| number \| Array<string \| number>` | - |
+| onChange | 选中值改变时的回调 | `(value, selectedOptions) => void` | - |
+| expandTrigger | 次级菜单的展开方式 | `'click' \| 'hover'` | `'click'` |
+| clearable | 是否可清空 | `boolean` | `false` |
+| disabled | 是否禁用 | `boolean` | `false` |
+| showAllLevels | 是否显示完整路径 | `boolean` | `true` |
+| multiple | 是否支持多选 | `boolean` | `false` |
+| placeholder | 占位符 | `string` | `'请选择'` |
+| className | 自定义类名 | `string` | - |
+| style | 自定义样式 | `React.CSSProperties` | - |
+
+### CascaderOption
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 选项的值 | `string \| number` | - |
+| label | 选项的显示文本 | `string` | - |
+| children | 子选项 | `CascaderOption[]` | - |
+| disabled | 是否禁用 | `boolean` | `false` |
+| disableCheckbox | 是否禁用复选框（多选模式下） | `boolean` | `false` |

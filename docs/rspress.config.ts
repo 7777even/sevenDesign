@@ -23,7 +23,7 @@ export default defineConfig({
       previewCodeTransform: ({ code }) => {
         const injected = [
           "import React from 'react';",
-          "import { Button, Input, Switch, Pagination } from '@seven-design-ui/components';",
+          "import { Button, Input, Switch, Pagination, Cascader } from '@seven-design-ui/components';",
           "import '@seven-design-ui/components/dist/style.css';",
           '',
         ].join('\n')
@@ -98,6 +98,10 @@ export default defineConfig({
             {
               text: 'Switch 开关',
               link: '/components/switch',
+            },
+            {
+              text: 'Cascader 级联选择器',
+              link: '/components/cascader',
             },
           ],
         },
