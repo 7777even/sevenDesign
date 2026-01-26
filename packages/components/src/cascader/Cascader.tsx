@@ -1,4 +1,4 @@
-import { forwardRef, useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import { forwardRef, useState, useCallback, useMemo, useRef, useEffect, type MutableRefObject } from 'react'
 import { classnames } from '@seven-design-ui/core'
 import './cascader.css'
 
@@ -86,7 +86,8 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
   const [focusedLevel, setFocusedLevel] = useState<number>(0)
   const [searchValue, setSearchValue] = useState<string>('')
 
-  // 引用
+  // 引用：容器包含触发器+下拉面板，用于点击外部检测；inputRef 仅触发器
+  const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLDivElement>(null)
 
   // 当前值（受控或内部）
@@ -399,10 +400,10 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     }
   }, [isOpen, focusedIndex, focusedLevel, getCurrentLevelOptions, expandTrigger, currentActivePath, handleOptionClick, setFocusedIndex, setFocusedLevel, setActivePath, setIsOpen, setHoveredPath, setSearchValue])
 
-  // 点击外部关闭下拉框
+  // 点击外部关闭下拉框（必须用容器 ref：面板与触发器是兄弟，不在 inputRef 内）
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false)
         setActivePath([])
         setHoveredPath([])
@@ -508,9 +509,19 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     'is-expanded': isOpen
   })
 
+  // 合并容器 ref 与 forwarded ref，供点击外部检测与父组件使用
+  const setContainerRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      (containerRef as MutableRefObject<HTMLDivElement | null>).current = el
+      if (typeof ref === 'function') ref(el)
+      else if (ref) (ref as MutableRefObject<HTMLDivElement | null>).current = el
+    },
+    [ref]
+  )
+
   return (
     <div
-      ref={ref}
+      ref={setContainerRef}
       className={containerClasses}
       style={style}
       {...rest}
