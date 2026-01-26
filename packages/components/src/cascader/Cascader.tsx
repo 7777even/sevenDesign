@@ -519,6 +519,8 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
     [ref]
   )
 
+  const showClearIcon = Boolean(clearable) && !disabled && selectedItems.length > 0
+
   return (
     <div
       ref={setContainerRef}
@@ -559,14 +561,15 @@ export const Cascader = forwardRef<HTMLDivElement, CascaderProps>((props, ref) =
         )}
 
         <div className="sd-cascader__suffix">
-          {clearable && valueArray.length > 0 && !disabled && (
-            <span className="sd-cascader__clear" onClick={handleClear}>
+          {showClearIcon ? (
+            <span className="sd-cascader__clear" onClick={handleClear} role="button" aria-label="清空">
               ×
             </span>
+          ) : (
+            <span className={classnames('sd-cascader__arrow', { 'is-expanded': isOpen })} aria-hidden="true">
+              ⌄
+            </span>
           )}
-          <span className={classnames('sd-cascader__arrow', { 'is-expanded': isOpen })}>
-            ⌄
-          </span>
         </div>
       </div>
 

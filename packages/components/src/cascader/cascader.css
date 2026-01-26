@@ -137,6 +137,7 @@
   cursor: pointer;
   border-radius: 50%;
   transition: all var(--sd-transition-duration-fast);
+  pointer-events: auto;
 }
 
 .sd-cascader__clear:hover {
