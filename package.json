@@ -19,7 +19,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "lint": "eslint . --ext .ts,.tsx",
     "prepare": "husky install",
-    "release": "pnpm build && changeset publish",
+    "release": "pnpm build && changeset version && node scripts/update-version.js && changeset publish",
+    "update-docs-version": "node scripts/update-version.js",
     "test": "vitest",
     "version-packages": "changeset version"
   },
