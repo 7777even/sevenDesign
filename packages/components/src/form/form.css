@@ -1,0 +1,141 @@
+/* Form 组件样式 */
+.sd-form {
+  font-size: var(--sd-font-size-base);
+}
+
+/* Form Item 样式 */
+.sd-form-item {
+  display: flex;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+
+.sd-form-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Form Item Label 样式 */
+.sd-form-item__label {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 80px;
+  margin-right: 8px;
+  padding: 0 0 8px 0;
+  color: var(--sd-text-color-regular);
+  font-size: var(--sd-font-size-base);
+  line-height: var(--sd-component-size-default);
+  text-align: right;
+  vertical-align: top;
+}
+
+.sd-form-item__label--required::before {
+  display: inline-block;
+  margin-right: 4px;
+  color: var(--sd-color-danger);
+  font-size: var(--sd-font-size-base);
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}
+
+/* Form Item Control 样式 */
+.sd-form-item__control {
+  flex: 1;
+  max-width: 100%;
+}
+
+.sd-form-item__control-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--sd-component-size-default);
+}
+
+.sd-form-item__control-input > * {
+  width: 100%;
+}
+
+/* Form Item Error 样式 */
+.sd-form-item__error {
+  margin-top: 4px;
+  color: var(--sd-color-danger);
+  font-size: var(--sd-font-size-sm);
+  line-height: 1.5715;
+}
+
+.sd-form-item__error-item {
+  margin-top: 2px;
+}
+
+.sd-form-item__error-item:first-child {
+  margin-top: 0;
+}
+
+/* Form Item 错误状态 */
+.sd-form-item--error .sd-form-item__control-input > * {
+  border-color: var(--sd-color-danger);
+}
+
+.sd-form-item--error .sd-form-item__control-input > *:focus {
+  border-color: var(--sd-color-danger);
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* Form Item 必填状态 */
+.sd-form-item--required .sd-form-item__label::before {
+  content: "*";
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .sd-form-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sd-form-item__label {
+    width: auto;
+    margin-right: 0;
+    margin-bottom: 8px;
+    padding-bottom: 0;
+    text-align: left;
+  }
+
+  .sd-form-item__control {
+    flex: none;
+  }
+}
+
+/* 紧凑布局 */
+.sd-form--compact .sd-form-item {
+  margin-bottom: 16px;
+}
+
+.sd-form--compact .sd-form-item__label {
+  margin-bottom: 4px;
+  padding-bottom: 0;
+}
+
+/* 内联布局 */
+.sd-form--inline .sd-form-item {
+  display: inline-flex;
+  margin-right: 16px;
+  margin-bottom: 0;
+}
+
+.sd-form--inline .sd-form-item__label {
+  width: auto;
+  margin-right: 8px;
+  padding-bottom: 0;
+}
+
+.sd-form--inline .sd-form-item__control {
+  flex: none;
+}
+
+.sd-form--inline .sd-form-item__error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+}

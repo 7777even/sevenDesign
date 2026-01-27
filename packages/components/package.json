@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@seven-design-ui/core": "workspace:*",
-    "@seven-design-ui/theme": "workspace:*"
+    "@seven-design-ui/theme": "workspace:*",
+    "async-validator": "^4.2.5"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

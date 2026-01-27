@@ -1,0 +1,408 @@
+import { Form, Input } from '@seven-design-ui/components'
+import React from 'react'
+
+# Form 表单
+
+具有数据收集、校验和提交功能的表单，包含输入框、选择器、单选框、多选框等元素。
+
+## 基础用法
+
+基本的表单用法。
+
+```tsx preview
+export default function BasicForm() {
+  const formRef = React.useRef()
+
+  const handleFinish = (values) => {
+    console.log('表单提交成功:', values)
+    alert('表单提交成功！')
+  }
+
+  const handleFinishFailed = (errors) => {
+    console.log('表单提交失败:', errors)
+  }
+
+  return (
+    <Form
+      ref={formRef}
+      onFinish={handleFinish}
+      onFinishFailed={handleFinishFailed}
+      style={{ maxWidth: '400px' }}
+    >
+      <Form.Item
+        label="用户名"
+        name="username"
+        rules={[{ required: true, message: '请输入用户名' }]}
+      >
+        <Input placeholder="请输入用户名" />
+      </Form.Item>
+
+      <Form.Item
+        label="密码"
+        name="password"
+        rules={[{ required: true, message: '请输入密码' }]}
+      >
+        <Input type="password" placeholder="请输入密码" />
+      </Form.Item>
+
+      <Form.Item>
+        <button type="submit" style={{ padding: '8px 16px', background: '#1890ff', color: 'white', border: 'none', borderRadius: '4px' }}>
+          提交
+        </button>
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+## 表单校验
+
+通过 `rules` 属性设置校验规则，支持多种校验类型。
+
+```tsx preview
+export default function ValidationForm() {
+  const formRef = React.useRef()
+
+  const handleFinish = (values) => {
+    console.log('表单提交成功:', values)
+    alert('表单提交成功！')
+  }
+
+  return (
+    <Form
+      ref={formRef}
+      onFinish={handleFinish}
+      style={{ maxWidth: '400px' }}
+    >
+      <Form.Item
+        label="邮箱"
+        name="email"
+        rules={[
+          { required: true, message: '请输入邮箱' },
+          { type: 'email', message: '邮箱格式不正确' }
+        ]}
+      >
+        <Input placeholder="请输入邮箱" />
+      </Form.Item>
+
+      <Form.Item
+        label="年龄"
+        name="age"
+        rules={[
+          { required: true, message: '请输入年龄' },
+          { type: 'number', min: 1, max: 120, message: '年龄必须在1-120之间' }
+        ]}
+      >
+        <Input type="number" placeholder="请输入年龄" />
+      </Form.Item>
+
+      <Form.Item
+        label="电话"
+        name="phone"
+        rules={[
+          { pattern: /^1[3-9]\d{9}$/, message: '电话号码格式不正确' }
+        ]}
+      >
+        <Input placeholder="请输入电话号码" />
+      </Form.Item>
+
+      <Form.Item>
+        <button type="submit" style={{ padding: '8px 16px', background: '#1890ff', color: 'white', border: 'none', borderRadius: '4px' }}>
+          提交
+        </button>
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+## 校验触发方式
+
+通过 `validateTrigger` 属性设置触发校验的事件，默认值为 `'onBlur'`。
+
+```tsx preview
+export default function TriggerForm() {
+  const formRef = React.useRef()
+
+  const handleFinish = (values) => {
+    console.log('表单提交成功:', values)
+    alert('表单提交成功！')
+  }
+
+  return (
+    <Form
+      ref={formRef}
+      onFinish={handleFinish}
+      style={{ maxWidth: '400px' }}
+    >
+      <Form.Item
+        label="失去焦点校验"
+        name="blurField"
+        validateTrigger="onBlur"
+        rules={[{ required: true, message: '此字段必填' }]}
+      >
+        <Input placeholder="失去焦点时校验" />
+      </Form.Item>
+
+      <Form.Item
+        label="输入时校验"
+        name="changeField"
+        validateTrigger="onChange"
+        rules={[{ required: true, message: '此字段必填' }]}
+      >
+        <Input placeholder="输入时实时校验" />
+      </Form.Item>
+
+      <Form.Item
+        label="多种触发方式"
+        name="multipleField"
+        validateTrigger={['onBlur', 'onChange']}
+        rules={[{ required: true, message: '此字段必填' }]}
+      >
+        <Input placeholder="失去焦点和输入时都校验" />
+      </Form.Item>
+
+      <Form.Item>
+        <button type="submit" style={{ padding: '8px 16px', background: '#1890ff', color: 'white', border: 'none', borderRadius: '4px' }}>
+          提交
+        </button>
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+## 表单方法
+
+通过 ref 可以获取到 Form 组件的实例，调用各种方法来操作表单。
+
+```tsx preview
+export default function MethodForm() {
+  const formRef = React.useRef()
+
+  const handleValidateField = () => {
+    formRef.current?.validateField('username').then(() => {
+      alert('用户名校验通过')
+    }).catch(() => {
+      alert('用户名校验失败')
+    })
+  }
+
+  const handleValidateAll = () => {
+    form.current?.validateAllFields().then((values) => {
+      console.log('所有字段校验通过:', values)
+      alert('表单校验通过')
+    }).catch((errors) => {
+      console.log('表单校验失败:', errors)
+      alert('表单校验失败')
+    })
+  }
+
+  const handleReset = () => {
+    form.current?.resetFields()
+  }
+
+  const handleSetValue = () => {
+    form.current?.setFieldValue('username', 'admin')
+  }
+
+  const handleGetValue = () => {
+    const value = form.current?.getFieldValue('username')
+    alert(`用户名值: ${value || '空'}`)
+  }
+
+  const handleGetAllValues = () => {
+    const values = form.current?.getFieldsValue()
+    console.log('所有值:', values)
+    alert(`所有值: ${JSON.stringify(values)}`)
+  }
+
+  return (
+    <div>
+      <Form
+        ref={formRef}
+        style={{ maxWidth: '400px', marginBottom: '20px' }}
+      >
+        <Form.Item
+          label="用户名"
+          name="username"
+          rules={[{ required: true, message: '请输入用户名' }]}
+        >
+          <Input placeholder="请输入用户名" />
+        </Form.Item>
+
+        <Form.Item
+          label="邮箱"
+          name="email"
+          rules={[{ required: true, message: '请输入邮箱' }, { type: 'email', message: '邮箱格式不正确' }]}
+        >
+          <Input placeholder="请输入邮箱" />
+        </Form.Item>
+      </Form>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <button onClick={handleValidateField} style={{ padding: '6px 12px', background: '#52c41a', color: 'white', border: 'none', borderRadius: '4px' }}>
+          校验用户名
+        </button>
+        <button onClick={handleValidateAll} style={{ padding: '6px 12px', background: '#1890ff', color: 'white', border: 'none', borderRadius: '4px' }}>
+          校验全部
+        </button>
+        <button onClick={handleReset} style={{ padding: '6px 12px', background: '#faad14', color: 'white', border: 'none', borderRadius: '4px' }}>
+          重置表单
+        </button>
+        <button onClick={handleSetValue} style={{ padding: '6px 12px', background: '#722ed1', color: 'white', border: 'none', borderRadius: '4px' }}>
+          设置用户名
+        </button>
+        <button onClick={handleGetValue} style={{ padding: '6px 12px', background: '#13c2c2', color: 'white', border: 'none', borderRadius: '4px' }}>
+          获取用户名
+        </button>
+        <button onClick={handleGetAllValues} style={{ padding: '6px 12px', background: '#eb2f96', color: 'white', border: 'none', borderRadius: '4px' }}>
+          获取全部值
+        </button>
+      </div>
+    </div>
+  )
+}
+```
+
+## 自定义校验
+
+通过自定义 `validator` 函数实现复杂的校验逻辑。
+
+```tsx preview
+export default function CustomValidationForm() {
+  const formRef = React.useRef()
+
+  const handleFinish = (values) => {
+    console.log('表单提交成功:', values)
+    alert('表单提交成功！')
+  }
+
+  // 自定义校验函数
+  const validatePassword = (rule, value, callback) => {
+    if (!value) {
+      callback(new Error('请输入密码'))
+      return
+    }
+    if (value.length < 6) {
+      callback(new Error('密码长度不能少于6位'))
+      return
+    }
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+      callback(new Error('密码必须包含大小写字母和数字'))
+      return
+    }
+    callback()
+  }
+
+  const validateConfirmPassword = (rule, value, callback) => {
+    const password = formRef.current?.getFieldValue('password')
+    if (!value) {
+      callback(new Error('请确认密码'))
+      return
+    }
+    if (value !== password) {
+      callback(new Error('两次输入的密码不一致'))
+      return
+    }
+    callback()
+  }
+
+  return (
+    <Form
+      ref={formRef}
+      onFinish={handleFinish}
+      style={{ maxWidth: '400px' }}
+    >
+      <Form.Item
+        label="用户名"
+        name="username"
+        rules={[{ required: true, message: '请输入用户名' }]}
+      >
+        <Input placeholder="请输入用户名" />
+      </Form.Item>
+
+      <Form.Item
+        label="密码"
+        name="password"
+        rules={[{ validator: validatePassword }]}
+      >
+        <Input type="password" placeholder="请输入密码" />
+      </Form.Item>
+
+      <Form.Item
+        label="确认密码"
+        name="confirmPassword"
+        rules={[{ validator: validateConfirmPassword }]}
+      >
+        <Input type="password" placeholder="请确认密码" />
+      </Form.Item>
+
+      <Form.Item>
+        <button type="submit" style={{ padding: '8px 16px', background: '#1890ff', color: 'white', border: 'none', borderRadius: '4px' }}>
+          提交
+        </button>
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+## API 参考
+
+### Form
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| initialValues | 表单初始值 | `Record<string, any>` | `{}` |
+| onFinish | 表单提交成功的回调 | `(values: Record<string, any>) => void` | - |
+| onFinishFailed | 表单提交失败的回调 | `(errors: Record<string, ValidateError[]>) => void` | - |
+| className | 自定义类名 | `string` | - |
+
+### Form.Item
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| name | 表单项名称，用于表单校验和数据提交 | `string` | - |
+| label | 表单项标签 | `string` | - |
+| rules | 校验规则 | `Rule[]` | `[]` |
+| validateTrigger | 触发校验的事件 | `string \| string[]` | `'onBlur'` |
+| className | 自定义类名 | `string` | - |
+| labelCol | label 标签布局 | `{span?: number, offset?: number}` | - |
+| wrapperCol | 输入控件布局 | `{span?: number, offset?: number}` | - |
+
+### Rule
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| type | 校验类型，如 'email', 'number' 等 | `string` | - |
+| required | 是否必填 | `boolean` | - |
+| message | 错误提示信息 | `string` | - |
+| validator | 自定义校验函数 | `(rule: Rule, value: any, callback: (error?: string) => void) => void` | - |
+| min | 最小长度/值 | `number` | - |
+| max | 最大长度/值 | `number` | - |
+| pattern | 正则表达式 | `RegExp` | - |
+| asyncValidator | 异步自定义校验函数 | `(rule: Rule, value: any) => Promise<void>` | - |
+
+### Form 实例方法
+
+| 方法 | 说明 | 参数 | 返回值 |
+| --- | --- | --- | --- |
+| validateField | 校验单个字段 | `(name: string)` | `Promise<void>` |
+| validateAllFields | 校验所有字段 | - | `Promise<Record<string, any>>` |
+| resetFields | 重置表单 | - | `void` |
+| setFieldValue | 设置单个字段的值 | `(name: string, value: any)` | `void` |
+| getFieldValue | 获取单个字段的值 | `(name: string)` | `any` |
+| getFieldsValue | 获取所有字段的值 | - | `Record<string, any>` |
+
+## 注意事项
+
+1. Form.Item 内的输入组件需要设置 `name` 属性，才能正常进行表单校验。
+
+2. 校验规则支持多种类型，包括 required、type、min、max、pattern 等。
+
+3. validateTrigger 可以设置为单个事件或事件数组，默认为 'onBlur'。
+
+4. 通过 ref 可以获取 Form 实例，调用各种方法来操作表单。
+
+5. 表单提交时会自动触发所有字段的校验，如果校验失败会调用 onFinishFailed 回调。

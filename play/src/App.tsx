@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react'
-import { Button, Input, Switch, Pagination, Cascader } from '@seven-design-ui/components'
+import { useState, useRef } from 'react'
+import { Button, Input, Switch, Pagination, Cascader, Form } from '@seven-design-ui/components'
 import { basicOptions, disabledOptions, multipleOptions, hoverOptions } from './options'
 
 function CustomContentSwitch() {
@@ -82,6 +82,7 @@ function App() {
   const [paginationSize, setPaginationSize] = useState(10)
   const [cascaderValue, setCascaderValue] = useState()
   const [multipleCascaderValue, setMultipleCascaderValue] = useState([])
+  const formRef = useRef()
 
   const handleClick = () => {
     setLoading(true)
@@ -300,6 +301,83 @@ function App() {
               expandTrigger="hover"
               placeholder="鼠标悬停展开子菜单"
             />
+          </div>
+        </section>
+
+        {/* Form 示例 */}
+        <section className="demo-section">
+          <h2>Form 表单</h2>
+
+          {/* 基础表单 */}
+          <div className="demo-column">
+            <h3>基础表单</h3>
+            <Form
+              ref={formRef}
+              onFinish={(values) => {
+                console.log('表单提交成功:', values)
+                alert('表单提交成功！')
+              }}
+              onFinishFailed={(errors) => {
+                console.log('表单提交失败:', errors)
+                alert('表单校验失败，请检查输入！')
+              }}
+              style={{ maxWidth: '400px' }}
+            >
+              <Form.Item
+                label="用户名"
+                name="username"
+                rules={[{ required: true, message: '请输入用户名' }]}
+              >
+                <Input placeholder="请输入用户名" />
+              </Form.Item>
+
+              <Form.Item
+                label="密码"
+                name="password"
+                rules={[{ required: true, message: '请输入密码' }]}
+              >
+                <Input type="password" placeholder="请输入密码" />
+              </Form.Item>
+
+              <Form.Item
+                label="邮箱"
+                name="email"
+                rules={[
+                  { required: true, message: '请输入邮箱' },
+                  { type: 'email', message: '邮箱格式不正确' }
+                ]}
+              >
+                <Input placeholder="请输入邮箱" />
+              </Form.Item>
+
+              <Form.Item>
+                <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
+                  提交
+                </Button>
+                <Button onClick={() => formRef.current?.resetFields()}>
+                  重置
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+
+          {/* 表单方法测试 */}
+          <div className="demo-column">
+            <h3>表单方法测试</h3>
+            <div className="demo-row">
+              <Button onClick={() => formRef.current?.validateField('username').then(() => alert('用户名校验通过')).catch(() => alert('用户名校验失败'))}>
+                校验用户名
+              </Button>
+              <Button onClick={() => formRef.current?.validateAllFields().then((values) => alert('表单校验通过')).catch(() => alert('表单校验失败'))}>
+                校验全部
+              </Button>
+              <Button onClick={() => formRef.current?.setFieldValue('username', 'admin')}>
+                设置用户名
+              </Button>
+              <Button onClick={() => alert(`用户名值: ${formRef.current?.getFieldValue('username') || '空'}`)}>
+                获取用户名
+              </Button>
+            </div>
           </div>
         </section>
       </main>
