@@ -1,0 +1,297 @@
+---
+title: Message 消息提示
+description: 常用于主动操作后的反馈提示。与 Notification 的区别是后者更多用于系统级通知的被动提醒。
+---
+
+import { MessageProvider, $message } from '@seven-design-ui/components'
+
+:::info
+所有演示都已包含在 MessageProvider 中，你可以直接点击按钮查看效果。
+:::
+
+## 基础用法
+
+默认情况下在顶部显示并在 3 秒后消失。你可以使用 placement 属性控制位置。
+
+```tsx preview
+function BasicMessage() {
+  return (
+    <MessageProvider>
+      <div>
+        <button
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#409eff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+          onClick={() => $message.info('这是一条普通的消息')}
+        >
+          显示消息
+        </button>
+      </div>
+      <MessageContainer />
+    </MessageProvider>
+  )
+}
+
+export default BasicMessage
+```
+
+## 不同状态
+
+用来显示「成功、警告、消息、错误、主要」类的操作反馈。
+
+```tsx preview
+function MessageTypes() {
+  const buttonStyle = {
+    padding: '8px 16px',
+    backgroundColor: '#409eff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    marginBottom: '8px'
+  }
+
+  return (
+    <MessageProvider>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <button style={{...buttonStyle, backgroundColor: '#67c23a'}} onClick={() => $message.success('操作成功！')}>
+          成功消息
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#e6a23c'}} onClick={() => $message.warning('这是一条警告消息')}>
+          警告消息
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#f56c6c'}} onClick={() => $message.error('操作失败，请重试')}>
+          错误消息
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#409eff'}} onClick={() => $message.primary('这是一条主要消息')}>
+          主要消息
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#909399'}} onClick={() => $message.info('这是一条普通消息')}>
+          普通消息
+        </button>
+      </div>
+      <MessageContainer />
+    </MessageProvider>
+  )
+}
+
+export default MessageTypes
+```
+
+## Plain 背景
+
+设置 plain 为 true 可以显示纯色背景的消息。
+
+```tsx preview
+function PlainMessage() {
+  const buttonStyle = {
+    padding: '8px 16px',
+    backgroundColor: '#409eff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    marginBottom: '8px'
+  }
+
+  return (
+    <MessageProvider>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <button style={{...buttonStyle, backgroundColor: '#67c23a'}} onClick={() => $message.success('纯色背景的成功消息', { plain: true })}>
+          纯色成功
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#e6a23c'}} onClick={() => $message.warning('纯色背景的警告消息', { plain: true })}>
+          纯色警告
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#f56c6c'}} onClick={() => $message.error('纯色背景的错误消息', { plain: true })}>
+          纯色错误
+        </button>
+      </div>
+      <MessageContainer />
+    </MessageProvider>
+  )
+}
+
+export default PlainMessage
+```
+
+## 可关闭的消息提示
+
+默认的 Message 是不可以被人工关闭的。如果你需要手动关闭功能，你可以把 showClose 设置为 true。此外，和 Notification 一样，Message 拥有可控的 duration，默认的关闭时间为 3000 毫秒，当把这个属性的值设置为 0 便表示该消息不会被自动关闭。
+
+```tsx preview
+function ClosableMessage() {
+  const buttonStyle = {
+    padding: '8px 16px',
+    backgroundColor: '#409eff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    marginBottom: '8px'
+  }
+
+  return (
+    <MessageProvider>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <button style={{...buttonStyle, backgroundColor: '#909399'}} onClick={() => $message.info('这是一条可关闭的消息', {
+          showClose: true
+        })}>
+          可关闭消息
+        </button>
+        <button style={{...buttonStyle, backgroundColor: '#67c23a'}} onClick={() => $message.success('这条消息不会自动关闭', {
+          duration: 0,
+          showClose: true
+        })}>
+          永不自动关闭
+        </button>
+      </div>
+      <MessageContainer />
+    </MessageProvider>
+  )
+}
+
+export default ClosableMessage
+```
+
+## 位置控制
+
+使用 placement 属性可以控制消息显示的位置。
+
+```tsx preview
+function PositionMessage() {
+  const buttonStyle = {
+    padding: '8px 16px',
+    backgroundColor: '#409eff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    marginBottom: '8px'
+  }
+
+  return (
+    <MessageProvider>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <button style={buttonStyle} onClick={() => $message.info('顶部居中的消息')}>
+          顶部居中
+        </button>
+        <button style={buttonStyle} onClick={() => $message.info('顶部左侧的消息', { placement: 'top-left' })}>
+          顶部左侧
+        </button>
+        <button style={buttonStyle} onClick={() => $message.info('顶部右侧的消息', { placement: 'top-right' })}>
+          顶部右侧
+        </button>
+        <button style={buttonStyle} onClick={() => $message.info('底部居中的消息', { placement: 'bottom' })}>
+          底部居中
+        </button>
+        <button style={buttonStyle} onClick={() => $message.info('底部左侧的消息', { placement: 'bottom-left' })}>
+          底部左侧
+        </button>
+        <button style={buttonStyle} onClick={() => $message.info('底部右侧的消息', { placement: 'bottom-right' })}>
+          底部右侧
+        </button>
+      </div>
+      <MessageContainer />
+    </MessageProvider>
+  )
+}
+
+export default PositionMessage
+```
+
+## 通用 API
+
+你也可以使用通用的 open 方法来显示消息，这样可以设置更多的选项。
+
+```tsx preview
+function OpenApiMessage() {
+  const buttonStyle = {
+    padding: '8px 16px',
+    backgroundColor: '#409eff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '14px'
+  }
+
+  return (
+    <MessageProvider>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button style={buttonStyle} onClick={() => $message.open({
+          message: '自定义消息内容',
+          type: 'primary',
+          placement: 'top-right',
+          showClose: true,
+          duration: 5000,
+          plain: true,
+          onClose: () => {
+            console.log('消息已关闭')
+          }
+        })}>
+          通用API
+        </button>
+      </div>
+      <MessageContainer />
+    </MessageProvider>
+  )
+}
+
+export default OpenApiMessage
+```
+
+## API 参考
+
+### MessageOptions
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| message | 消息内容 | `string \| ReactNode` | - |
+| type | 消息类型 | `MessageType` | `'info'` |
+| placement | 消息位置 | `MessagePlacement` | `'top'` |
+| showClose | 是否显示关闭按钮 | `boolean` | `false` |
+| duration | 显示时长，单位毫秒，0表示不自动关闭 | `number` | `3000` |
+| plain | 是否为纯色背景 | `boolean` | `false` |
+| className | 自定义类名 | `string` | - |
+| onClose | 关闭时的回调函数 | `() => void` | - |
+
+### MessageType
+
+```tsx
+type MessageType = 'success' | 'warning' | 'error' | 'info' | 'primary'
+```
+
+### MessagePlacement
+
+```tsx
+type MessagePlacement = 'top' | 'top-left' | 'top-right' | 'bottom' | 'bottom-left' | 'bottom-right'
+```
+
+### $message 方法
+
+| 方法 | 说明 | 参数 |
+| --- | --- | --- |
+| $message.info | 显示普通消息 | `(message, options?)` |
+| $message.success | 显示成功消息 | `(message, options?)` |
+| $message.warning | 显示警告消息 | `(message, options?)` |
+| $message.error | 显示错误消息 | `(message, options?)` |
+| $message.primary | 显示主要消息 | `(message, options?)` |
+| $message.open | 通用显示方法 | `(options)` |
+
+### 组件
+
+| 组件 | 说明 |
+| --- | --- |
+| MessageProvider | 消息提供者，需要包裹在应用根组件外层 |
+| MessageContainer | 消息容器组件，用于渲染消息列表 |

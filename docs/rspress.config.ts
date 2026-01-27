@@ -23,7 +23,7 @@ export default defineConfig({
       previewCodeTransform: ({ code }) => {
         const injected = [
           "import React from 'react';",
-          "import { Button, Input, Switch, Pagination, Cascader, Form } from '@seven-design-ui/components';",
+          "import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message } from '@seven-design-ui/components';",
           "import '@seven-design-ui/components/dist/style.css';",
           '',
         ].join('\n')
@@ -115,6 +115,10 @@ export default defineConfig({
             {
               text: 'Pagination 分页器',
               link: '/components/pagination',
+            },
+            {
+              text: 'Message 消息提示',
+              link: '/components/message',
             },
           ],
         },
