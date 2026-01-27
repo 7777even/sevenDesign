@@ -300,11 +300,22 @@ const FormComponent = forwardRef<FormRef, FormProps>((props, ref) => {
     const rules = customRules || field.rules
     if (rules.length === 0) return
 
-    const value = values[name]
+    const rawValue = values[name]
+
+    // 根据规则对值做轻量转换（目前仅支持 number）
+    let valueForValidate: any = rawValue
+    if (rules.some(rule => rule.type === 'number') && typeof rawValue === 'string') {
+      const n = Number(rawValue)
+      // 非数字字符串保持原样，让 async-validator 按类型报错；数字字符串则转成真正的 number
+      if (!Number.isNaN(n)) {
+        valueForValidate = n
+      }
+    }
+
     const schema = new Schema({ [name]: rules } as Rules)
 
     try {
-      await schema.validate({ [name]: value })
+      await schema.validate({ [name]: valueForValidate })
       setErrors(prev => {
         const newErrors = { ...prev }
         delete newErrors[name]
