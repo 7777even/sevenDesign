@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react'
-import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message } from '@seven-design-ui/components'
+import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table } from '@seven-design-ui/components'
 import { basicOptions, disabledOptions, multipleOptions, hoverOptions } from './options'
 
 function CustomContentSwitch() {
@@ -443,6 +443,120 @@ function App() {
                   通用API
                 </Button>
               </div>
+            </div>
+          </section>
+
+          {/* Table 示例 */}
+          <section className="demo-section">
+            <h2>Table 表格</h2>
+
+            {/* 基础表格 */}
+            <div className="demo-column">
+              <h3>基础表格</h3>
+              <Table
+                data={[
+                  { id: 1, name: '张三', age: 25, gender: '男', city: '北京', score: 85 },
+                  { id: 2, name: '李四', age: 30, gender: '女', city: '上海', score: 92 },
+                  { id: 3, name: '王五', age: 28, gender: '男', city: '广州', score: 78 },
+                  { id: 4, name: '赵六', age: 22, gender: '女', city: '深圳', score: 88 }
+                ]}
+                columns={[
+                  { prop: 'name', label: '姓名', width: 120 },
+                  { prop: 'age', label: '年龄', width: 80 },
+                  { prop: 'gender', label: '性别', width: 80 },
+                  { prop: 'city', label: '城市', width: 120 },
+                  { prop: 'score', label: '分数', width: 80 }
+                ]}
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            {/* 带斑马纹的表格 */}
+            <div className="demo-column">
+              <h3>带斑马纹的表格</h3>
+              <Table
+                data={[
+                  { id: 1, name: '张三', age: 25, gender: '男', city: '北京', score: 85 },
+                  { id: 2, name: '李四', age: 30, gender: '女', city: '上海', score: 92 },
+                  { id: 3, name: '王五', age: 28, gender: '男', city: '广州', score: 78 },
+                  { id: 4, name: '赵六', age: 22, gender: '女', city: '深圳', score: 88 }
+                ]}
+                columns={[
+                  { prop: 'name', label: '姓名', width: 120 },
+                  { prop: 'age', label: '年龄', width: 80 },
+                  { prop: 'gender', label: '性别', width: 80 },
+                  { prop: 'city', label: '城市', width: 120 },
+                  { prop: 'score', label: '分数', width: 80 }
+                ]}
+                stripe={true}
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            {/* 带边框的表格 */}
+            <div className="demo-column">
+              <h3>带边框的表格</h3>
+              <Table
+                data={[
+                  { id: 1, name: '张三', age: 25, gender: '男', city: '北京', score: 85 },
+                  { id: 2, name: '李四', age: 30, gender: '女', city: '上海', score: 92 }
+                ]}
+                columns={[
+                  { prop: 'name', label: '姓名', width: 120 },
+                  { prop: 'age', label: '年龄', width: 80 },
+                  { prop: 'gender', label: '性别', width: 80 },
+                  { prop: 'city', label: '城市', width: 120 },
+                  { prop: 'score', label: '分数', width: 80 }
+                ]}
+                border={true}
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            {/* 可排序的表格 */}
+            <div className="demo-column">
+              <h3>可排序的表格</h3>
+              <Table
+                data={[
+                  { id: 1, name: '张三', age: 25, gender: '男', city: '北京', score: 85 },
+                  { id: 2, name: '李四', age: 30, gender: '女', city: '上海', score: 92 },
+                  { id: 3, name: '王五', age: 28, gender: '男', city: '广州', score: 78 },
+                  { id: 4, name: '赵六', age: 22, gender: '女', city: '深圳', score: 88 }
+                ]}
+                columns={[
+                  { prop: 'name', label: '姓名', width: 120, sortable: true },
+                  { prop: 'age', label: '年龄', width: 80, sortable: true },
+                  { prop: 'gender', label: '性别', width: 80, sortable: true },
+                  { prop: 'city', label: '城市', width: 120, sortable: true },
+                  { prop: 'score', label: '分数', width: 80, sortable: true }
+                ]}
+                defaultSort={{ prop: 'score', order: 'descending' }}
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            {/* 固定表头的表格 */}
+            <div className="demo-column">
+              <h3>固定表头的表格</h3>
+              <Table
+                data={Array.from({ length: 20 }, (_, index) => ({
+                  id: index + 1,
+                  name: `用户${index + 1}`,
+                  age: 20 + (index % 15),
+                  gender: index % 2 === 0 ? '男' : '女',
+                  city: ['北京', '上海', '广州', '深圳'][index % 4],
+                  score: 60 + (index % 40)
+                }))}
+                columns={[
+                  { prop: 'name', label: '姓名', width: 120 },
+                  { prop: 'age', label: '年龄', width: 80 },
+                  { prop: 'gender', label: '性别', width: 80 },
+                  { prop: 'city', label: '城市', width: 120 },
+                  { prop: 'score', label: '分数', width: 80 }
+                ]}
+                height={300}
+                style={{ width: '100%' }}
+              />
             </div>
           </section>
         </main>

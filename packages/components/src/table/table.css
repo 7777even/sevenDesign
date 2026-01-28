@@ -1,0 +1,285 @@
+/* Table 表格组件样式 */
+.seven-table {
+  position: relative;
+  width: 100%;
+  font-size: 14px;
+  color: var(--seven-text-color-regular, #606266);
+  background-color: var(--seven-bg-color, #ffffff);
+  border-collapse: collapse;
+}
+
+.seven-table__wrapper {
+  overflow: auto;
+  max-height: inherit;
+  height: inherit;
+}
+
+.seven-table__inner {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.seven-table__inner th,
+.seven-table__inner td {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--seven-border-color-light, #ebeef5);
+}
+
+/* 表头样式 */
+.seven-table__header {
+  background-color: var(--seven-bg-color-page, #f5f7fa);
+}
+
+.seven-table__cell--header {
+  font-weight: 500;
+  color: var(--seven-text-color-primary, #303133);
+  background-color: var(--seven-bg-color-page, #f5f7fa);
+  border-bottom: 1px solid var(--seven-border-color, #dcdfe6);
+  user-select: none;
+}
+
+.seven-table__cell-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* 斑马纹样式 */
+.seven-table--stripe .seven-table__row--striped {
+  background-color: var(--seven-bg-color, #fafafa);
+}
+
+/* 边框样式 */
+.seven-table--border {
+  border: 1px solid var(--seven-border-color, #dcdfe6);
+}
+
+.seven-table--border .seven-table__cell {
+  border-right: 1px solid var(--seven-border-color, #dcdfe6);
+}
+
+.seven-table--border .seven-table__cell:last-child {
+  border-right: none;
+}
+
+/* 排序样式 */
+.is-sortable {
+  cursor: pointer;
+  position: relative;
+}
+
+.is-sortable:hover {
+  background-color: var(--seven-fill-color-light, #f5f7fa);
+}
+
+.seven-table__sort-icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.seven-table__sort-icon-asc,
+.seven-table__sort-icon-desc {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  margin: 1px 0;
+  transition: border-color 0.2s ease;
+}
+
+.seven-table__sort-icon-asc {
+  border-bottom: 4px solid var(--seven-border-color, #c0c4cc);
+}
+
+.seven-table__sort-icon-desc {
+  border-top: 4px solid var(--seven-border-color, #c0c4cc);
+}
+
+.is-sorting .seven-table__sort-icon-asc,
+.is-sorting .seven-table__sort-icon-desc {
+  border-color: var(--seven-color-primary, #409eff);
+}
+
+.sort-asc .seven-table__sort-icon-asc {
+  border-bottom-color: var(--seven-color-primary, #409eff);
+}
+
+.sort-desc .seven-table__sort-icon-desc {
+  border-top-color: var(--seven-color-primary, #409eff);
+}
+
+/* 行样式 */
+.seven-table__row {
+  transition: background-color 0.2s ease;
+}
+
+.seven-table__row:hover {
+  background-color: var(--seven-bg-color-page, #f5f7fa);
+}
+
+/* 状态行样式 */
+.seven-table__row--success {
+  background-color: var(--seven-color-success-light-9, #f0f9ff);
+}
+
+.seven-table__row--warning {
+  background-color: var(--seven-color-warning-light-9, #fdf6ec);
+}
+
+.seven-table__row--danger {
+  background-color: var(--seven-color-danger-light-9, #fef0f0);
+}
+
+.seven-table__row--info {
+  background-color: var(--seven-color-info-light-9, #f4f4f5);
+}
+
+/* 固定列样式 */
+.seven-table__cell--fixed-left,
+.seven-table__cell--fixed-right {
+  position: sticky;
+  z-index: 2;
+  background-color: inherit;
+}
+
+.seven-table__cell--fixed-left {
+  left: 0;
+  box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.12);
+}
+
+.seven-table__cell--fixed-right {
+  right: 0;
+  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.12);
+}
+
+/* 固定表头样式 */
+.seven-table--fixed-header .seven-table__wrapper {
+  overflow-y: auto;
+}
+
+.seven-table--fixed-header .seven-table__header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background-color: var(--seven-bg-color-page, #f5f7fa);
+}
+
+.seven-table--fixed-header .seven-table__cell--header {
+  background-color: var(--seven-bg-color-page, #f5f7fa);
+}
+
+/* 固定表头样式 */
+.seven-table--fixed-header .seven-table__wrapper {
+  overflow-y: auto;
+}
+
+.seven-table--fixed-header .seven-table__header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+  .seven-table__cell-content {
+    padding: 0 12px;
+  }
+
+  .seven-table__inner th,
+  .seven-table__inner td {
+    padding: 8px 0;
+  }
+}
+
+/* 滚动条样式 */
+.seven-table__wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.seven-table__wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--seven-border-color, #dcdfe6);
+  border-radius: 3px;
+}
+
+.seven-table__wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: var(--seven-border-color-dark, #c0c4cc);
+}
+
+.seven-table__wrapper::-webkit-scrollbar-track {
+  background-color: var(--seven-fill-color-blank, #ffffff);
+}
+
+/* 空数据样式 */
+.seven-table__empty {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--seven-text-color-placeholder, #a8abb2);
+}
+
+.seven-table__empty-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 加载中样式 */
+.seven-table__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+}
+
+.seven-table__loading-text {
+  margin-left: 8px;
+  font-size: 14px;
+  color: var(--seven-text-color-regular, #606266);
+}
+
+/* 筛选样式 */
+.is-filterable {
+  position: relative;
+}
+
+.seven-table__filter-icon {
+  margin-left: 4px;
+  color: var(--seven-border-color, #dcdfe6);
+  transition: color 0.2s ease;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.is-filterable:hover .seven-table__filter-icon,
+.seven-table__filter--active .seven-table__filter-icon {
+  color: var(--seven-color-primary, #409eff);
+}
+
+.seven-table__filter-icon-inner::before {
+  content: '▼';
+  font-size: 10px;
+  margin-right: 2px;
+}
+
+/* 工具提示样式 */
+.seven-table__tooltip {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 高亮搜索结果样式 */
+.seven-table__highlight {
+  background-color: var(--seven-color-warning-light-5, #fdf6ec);
+  color: var(--seven-color-warning, #e6a23c);
+}

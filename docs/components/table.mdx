@@ -1,0 +1,940 @@
+import { Table } from '@seven-design-ui/components'
+import React from 'react'
+
+# Table 表格
+
+用于展示多条结构类似的数据，可以对数据进行排序、筛选、对比或其他自定义操作。
+
+## 基础用法
+
+基础的表格展示用法。
+
+```tsx preview
+export default function Demo() {
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    }
+  ]
+
+  return (
+    <Table
+      data={tableData}
+      columns={columns}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 带斑马纹表格
+
+使用带斑马纹的表格，可以更容易区分出不同行的数据。
+
+`stripe` 可以创建带斑马纹的表格。 如果为 true, 表格将会带有斑马纹。
+
+```tsx preview
+export default function Demo() {
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    }
+  ]
+
+  return (
+    <Table
+      data={tableData}
+      columns={columns}
+      stripe={true}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 带边框表格
+
+默认情况下，Table 组件是不具有竖直方向的边框的，如果需要，可以使用 `border` 属性，把该属性设置为 true 即可启用。
+
+```tsx preview
+export default function Demo() {
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    }
+  ]
+
+  return (
+    <Table
+      data={tableData}
+      columns={columns}
+      border={true}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 带状态表格
+
+可将表格内容 highlight 显示，方便区分「成功、信息、警告、危险」等内容。
+
+可以通过指定 Table 组件的 `rowClassName` 属性来为 Table 中的某一行添加 class， 这样就可以自定义每一行的样式了。
+
+```tsx preview
+export default function Demo() {
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80,
+      render: (value) => {
+        if (value >= 90) return <span style={{ color: '#67c23a' }}>{value} (优秀)</span>
+        if (value >= 80) return <span style={{ color: '#e6a23c' }}>{value} (良好)</span>
+        if (value >= 70) return <span style={{ color: '#f56c6c' }}>{value} (及格)</span>
+        return <span style={{ color: '#f56c6c' }}>{value} (不及格)</span>
+      }
+    }
+  ]
+
+  const getRowClassName = (row, index) => {
+    if (row.score >= 90) return 'seven-table__row--success'
+    if (row.score >= 80) return 'seven-table__row--warning'
+    if (row.score >= 70) return 'seven-table__row--info'
+    return 'seven-table__row--danger'
+  }
+
+  return (
+    <Table
+      data={tableData}
+      columns={columns}
+      rowClassName={getRowClassName}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 固定表头
+
+纵向内容过多时，可选择固定表头。
+
+只要在 `el-table` 元素中定义了 `height` 属性，即可实现固定表头的表格，而不需要额外的代码。
+
+```tsx preview
+export default function Demo() {
+  const columns = [
+    {
+      prop: 'id',
+      label: 'ID',
+      width: 80
+    },
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    },
+    {
+      prop: 'description',
+      label: '描述',
+      width: 200,
+      render: () => '这是一个很长的描述文本，用来测试固定表头的效果。当内容很长时，表头会保持固定在顶部。'
+    }
+  ]
+
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  // 生成更多数据
+  const moreData = Array.from({ length: 20 }, (_, index) => ({
+    ...tableData[index % tableData.length],
+    id: index + 1,
+    description: `描述 ${index + 1}`
+  }))
+
+  return (
+    <Table
+      data={moreData}
+      columns={columns}
+      height={300}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 固定列
+
+横向内容过多时，可选择固定列。
+
+固定列需要使用 `fixed` 属性，它接受 Boolean 值。如果为 true, 列将被左侧固定. 它还接受传入字符串，`left` 或 `right`，表示左边固定还是右边固定。
+
+```tsx preview
+export default function Demo() {
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  const columns = [
+    {
+      prop: 'id',
+      label: 'ID',
+      width: 80,
+      fixed: true
+    },
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120,
+      fixed: true
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    },
+    {
+      prop: 'address',
+      label: '地址',
+      width: 200,
+      render: () => '北京市朝阳区建国门外大街1号中国国际贸易中心'
+    },
+    {
+      prop: 'phone',
+      label: '电话',
+      width: 150,
+      render: () => '138-0000-0000'
+    },
+    {
+      prop: 'email',
+      label: '邮箱',
+      width: 200,
+      render: () => 'user@example.com'
+    },
+    {
+      prop: 'action',
+      label: '操作',
+      width: 120,
+      fixed: 'right',
+      render: () => (
+        <div>
+          <button style={{ marginRight: '8px' }}>编辑</button>
+          <button>删除</button>
+        </div>
+      )
+    }
+  ]
+
+  return (
+    <Table
+      data={tableData}
+      columns={columns}
+      height={300}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 固定列和表头
+
+当您有大量数据块放入表中，您可以同时固定表头和列。
+
+固定列和表头可以同时使用，只需要将上述两个属性分别设置好即可。
+
+```tsx preview
+export default function Demo() {
+  const columns = [
+    {
+      prop: 'id',
+      label: 'ID',
+      width: 80,
+      fixed: true
+    },
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120,
+      fixed: true
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    },
+    {
+      prop: 'description',
+      label: '描述',
+      width: 300,
+      render: (value, row) => `${row.name}的详细描述信息，这里包含了很多文字内容，用来测试固定表头和固定列的效果。`
+    },
+    {
+      prop: 'action',
+      label: '操作',
+      width: 120,
+      fixed: 'right',
+      render: () => (
+        <div>
+          <button style={{ marginRight: '8px' }}>编辑</button>
+          <button>删除</button>
+        </div>
+      )
+    }
+  ]
+
+  const tableData = [
+    {
+      id: 1,
+      name: '张三',
+      age: 25,
+      gender: '男',
+      city: '北京',
+      score: 85
+    },
+    {
+      id: 2,
+      name: '李四',
+      age: 30,
+      gender: '女',
+      city: '上海',
+      score: 92
+    },
+    {
+      id: 3,
+      name: '王五',
+      age: 28,
+      gender: '男',
+      city: '广州',
+      score: 78
+    },
+    {
+      id: 4,
+      name: '赵六',
+      age: 22,
+      gender: '女',
+      city: '深圳',
+      score: 88
+    }
+  ]
+
+  // 生成更多数据
+  const moreData = Array.from({ length: 50 }, (_, index) => ({
+    ...tableData[index % tableData.length],
+    id: index + 1
+  }))
+
+  return (
+    <Table
+      data={moreData}
+      columns={columns}
+      height={400}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 流体高度
+
+当数据量动态变化时，可以为 Table 设置一个最大高度。
+
+通过设置 `maxHeight` 属性为 Table 指定最大高度。此时若表格所需的高度大于最大高度，则会显示一个滚动条。
+
+```tsx preview
+export default function Demo() {
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80
+    }
+  ]
+
+  // 生成大量数据
+  const largeData = Array.from({ length: 100 }, (_, index) => ({
+    id: index + 1,
+    name: `用户${index + 1}`,
+    age: 20 + (index % 30),
+    gender: index % 2 === 0 ? '男' : '女',
+    city: ['北京', '上海', '广州', '深圳', '杭州'][index % 5],
+    score: 60 + (index % 40)
+  }))
+
+  return (
+    <Table
+      data={largeData}
+      columns={columns}
+      maxHeight={400}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 排序
+
+对表格进行排序，可快速查找或对比数据。
+
+在列中设置 `sortable` 属性即可实现以该列为基准的排序，接受一个 Boolean，默认为 false。可以通过 Table 的 `defaultSort` 属性设置默认的排序列和排序顺序。可以使用 `sortMethod` 或者 `sortBy` 使用自定义的排序规则。如果需要后端排序，需将 `sortable` 设置为 `custom`，同时在 Table 上监听 `onSortChange` 事件，在事件回调中可以获取当前排序的字段名和排序顺序，从而向接口请求排序后的表格数据。
+
+```tsx preview
+export default function Demo() {
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120,
+      sortable: true
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80,
+      sortable: true
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80,
+      sortable: true
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120,
+      sortable: true
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80,
+      sortable: true,
+      // 自定义排序方法
+      sortMethod: (a, b) => {
+        return b.score - a.score // 降序排序
+      }
+    }
+  ]
+
+  // 生成更多数据用于排序测试
+  const sortData = Array.from({ length: 10 }, (_, index) => ({
+    id: index + 1,
+    name: `用户${index + 1}`,
+    age: 20 + (index % 15),
+    gender: index % 2 === 0 ? '男' : '女',
+    city: ['北京', '上海', '广州', '深圳', '杭州'][index % 5],
+    score: 60 + (index % 40)
+  }))
+
+  return (
+    <Table
+      data={sortData}
+      columns={columns}
+      defaultSort={{ prop: 'score', order: 'descending' }}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## 筛选
+
+对表格进行筛选，可快速查找到自己想看的数据。
+
+在列中设置 `filters` 和 `filterMethod` 属性即可开启该列的筛选，`filters` 是一个数组，`filterMethod` 是一个方法，它用于决定某些数据是否显示，会传入三个参数：`value`, `row` 和 `column`。
+
+```tsx preview
+export default function Demo() {
+  const columns = [
+    {
+      prop: 'name',
+      label: '姓名',
+      width: 120
+    },
+    {
+      prop: 'age',
+      label: '年龄',
+      width: 80,
+      sortable: true,
+      filters: [
+        { text: '20岁以下', value: 'young' },
+        { text: '20-30岁', value: 'middle' },
+        { text: '30岁以上', value: 'old' }
+      ],
+      filterMethod: (value, row) => {
+        if (value === 'young') return row.age < 20
+        if (value === 'middle') return row.age >= 20 && row.age <= 30
+        if (value === 'old') return row.age > 30
+        return true
+      }
+    },
+    {
+      prop: 'gender',
+      label: '性别',
+      width: 80,
+      filters: [
+        { text: '男', value: '男' },
+        { text: '女', value: '女' }
+      ],
+      filterMethod: (value, row) => row.gender === value
+    },
+    {
+      prop: 'city',
+      label: '城市',
+      width: 120,
+      filters: [
+        { text: '北京', value: '北京' },
+        { text: '上海', value: '上海' },
+        { text: '广州', value: '广州' },
+        { text: '深圳', value: '深圳' }
+      ],
+      filterMethod: (value, row) => row.city === value
+    },
+    {
+      prop: 'score',
+      label: '分数',
+      width: 80,
+      sortable: true
+    }
+  ]
+
+  // 生成更多数据用于筛选测试
+  const filterData = Array.from({ length: 20 }, (_, index) => ({
+    id: index + 1,
+    name: `用户${index + 1}`,
+    age: 18 + (index % 25),
+    gender: index % 2 === 0 ? '男' : '女',
+    city: ['北京', '上海', '广州', '深圳', '杭州'][index % 5],
+    score: 60 + (index % 40)
+  }))
+
+  return (
+    <Table
+      data={filterData}
+      columns={columns}
+      style={{ width: '100%' }}
+    />
+  )
+}
+```
+
+## API
+
+### Table Props
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| data | 表格数据 | `T[]` | - | `[]` |
+| columns | 表格列配置 | `TableColumn<T>[]` | - | `[]` |
+| stripe | 是否显示斑马纹 | `boolean` | - | `false` |
+| border | 是否显示边框 | `boolean` | - | `false` |
+| height | 表格高度 | `string \| number` | - | - |
+| maxHeight | 表格最大高度 | `string \| number` | - | - |
+| rowClassName | 行类名函数 | `string \| ((row: T, index: number) => string)` | - | - |
+| rowStyle | 行样式函数 | `(row: T, index: number) => React.CSSProperties` | - | - |
+| defaultSort | 默认排序 | `SortState` | - | - |
+| onSortChange | 排序变化回调 | `(sort: SortState \| null) => void` | - | - |
+| onFilterChange | 筛选变化回调 | `(filters: FilterState[]) => void` | - | - |
+| onRowClick | 行点击事件 | `(row: T, index: number, event: React.MouseEvent) => void` | - | - |
+| onRowDoubleClick | 行双击事件 | `(row: T, index: number, event: React.MouseEvent) => void` | - | - |
+| onCellClick | 单元格点击事件 | `(row: T, column: TableColumn<T>, cellValue: any, event: React.MouseEvent) => void` | - | - |
+
+### TableColumn Props
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| prop | 列的字段名 | `string` | - | - |
+| label | 列的标题 | `string` | - | - |
+| width | 列宽度 | `string \| number` | - | - |
+| minWidth | 列最小宽度 | `string \| number` | - | - |
+| fixed | 是否固定列 | `boolean \| 'left' \| 'right'` | - | `false` |
+| sortable | 是否可排序 | `boolean \| 'custom'` | - | `false` |
+| sortMethod | 自定义排序方法 | `(a: T, b: T) => number` | - | - |
+| sortBy | 自定义排序字段 | `string \| ((row: T, index: number) => any)` | - | - |
+| render | 自定义渲染函数 | `(value: any, row: T, index: number) => ReactNode` | - | - |
+| formatter | 格式化函数 | `(row: T, column: TableColumn<T>, cellValue: any, index: number) => any` | - | - |
+| filters | 筛选选项 | `Array<{ text: string; value: any }>` | - | - |
+| filterMethod | 自定义筛选方法 | `(value: any, row: T, column: TableColumn<T>) => boolean` | - | - |
+| filteredValue | 筛选的初始值 | `any[]` | - | - |
+| className | 列类名 | `string` | - | - |
+| style | 列样式 | `React.CSSProperties` | - | - |
+| align | 对齐方式 | `'left' \| 'center' \| 'right'` | - | `'left'` |
+| headerAlign | 表头对齐方式 | `'left' \| 'center' \| 'right'` | - | - |
+
+### Table Methods
+
+| 方法名 | 说明 | 参数 |
+| --- | --- | --- |
+| sort | 手动排序 | `(prop: string, order: 'ascending' \| 'descending') => void` |
+| clearSort | 清除排序 | `() => void` |
+| filter | 手动筛选 | `(prop: string, values: any[]) => void` |
+| clearFilter | 清除筛选 | `(prop?: string) => void` |
+
+### Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| onSortChange | 排序变化时触发 | `(sort: SortState \| null) => void` |
+| onFilterChange | 筛选变化时触发 | `(filters: FilterState[]) => void` |
+| onRowClick | 行点击时触发 | `(row: T, index: number, event: React.MouseEvent) => void` |
+| onRowDoubleClick | 行双击时触发 | `(row: T, index: number, event: React.MouseEvent) => void` |
+| onCellClick | 单元格点击时触发 | `(row: T, column: TableColumn<T>, cellValue: any, event: React.MouseEvent) => void` |
