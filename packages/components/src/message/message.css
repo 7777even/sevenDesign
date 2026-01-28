@@ -2,7 +2,7 @@
 
 .seven-message-container {
   position: fixed;
-  z-index: 2000;
+  z-index: 10000;
   pointer-events: none;
 }
 
@@ -122,28 +122,33 @@
 
 /* Plain 背景样式 */
 .seven-message--plain.seven-message--info {
-  background-color: #909399;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #909399;
+  border-color: #909399;
 }
 
 .seven-message--plain.seven-message--success {
-  background-color: #67c23a;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #67c23a;
+  border-color: #67c23a;
 }
 
 .seven-message--plain.seven-message--warning {
-  background-color: #e6a23c;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #e6a23c;
+  border-color: #e6a23c;
 }
 
 .seven-message--plain.seven-message--error {
-  background-color: #f56c6c;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #f56c6c;
+  border-color: #f56c6c;
 }
 
 .seven-message--plain.seven-message--primary {
-  background-color: #409eff;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #409eff;
+  border-color: #409eff;
 }
 
 /* 动画效果 */
