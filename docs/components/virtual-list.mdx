@@ -1,0 +1,312 @@
+import { VirtualList } from '@seven-design-ui/components'
+import React, { useState, useEffect, useCallback } from 'react'
+
+# VirtualList 虚拟列表
+
+虚拟列表组件，用于大数据量的列表渲染，通过只渲染可见区域的内容来提高性能。
+
+## 基础用法
+
+使用 `data` 指定数据源，`renderItem` 指定渲染函数。
+
+```tsx preview
+export default function Demo() {
+  const data = Array.from({ length: 1000 }, (_, index) => ({
+    id: index + 1,
+    name: `用户${index + 1}`,
+    age: 20 + (index % 15),
+    city: ['北京', '上海', '广州', '深圳'][index % 4]
+  }))
+
+  return (
+    <VirtualList
+      data={data}
+      height={300}
+      itemHeight={50}
+      itemKey="id"
+      renderItem={(item, index) => (
+        <div style={{
+          padding: '12px',
+          border: '1px solid #e4e7ed',
+          borderRadius: '4px',
+          backgroundColor: '#fff'
+        }}>
+          <div style={{ fontWeight: 'bold' }}>{item.name}</div>
+          <div style={{ color: '#666', fontSize: '14px' }}>
+            年龄: {item.age} | 城市: {item.city}
+          </div>
+        </div>
+      )}
+    />
+  )
+}
+```
+
+## 等高模式
+
+等高模式下，所有项目具有相同的高度，通过 `itemHeight` 指定项目高度。
+
+```tsx preview
+export default function Demo() {
+  const data = Array.from({ length: 500 }, (_, index) => ({
+    id: index + 1,
+    title: `新闻标题 ${index + 1}`,
+    summary: `这是新闻${index + 1}的摘要内容，包含了一些基本信息。`.repeat(2),
+    time: new Date().toLocaleString()
+  }))
+
+  return (
+    <VirtualList
+      data={data}
+      height={400}
+      itemHeight={80}
+      itemKey="id"
+      gap={10}
+      renderItem={(item, index) => (
+        <div style={{
+          padding: '16px',
+          border: '1px solid #e4e7ed',
+          borderRadius: '8px',
+          backgroundColor: '#fff',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between'
+        }}>
+          <div>
+            <h4 style={{ margin: '0 0 8px 0', color: '#333' }}>{item.title}</h4>
+            <p style={{ margin: '0', color: '#666', fontSize: '14px', lineHeight: '1.4' }}>
+              {item.summary}
+            </p>
+          </div>
+          <div style={{ fontSize: '12px', color: '#999' }}>{item.time}</div>
+        </div>
+      )}
+    />
+  )
+}
+```
+
+## 不等高模式
+
+不等高模式下，每个项目可以有不同的高度，通过 `fixedHeight={false}` 启用。
+
+```tsx preview
+export default function Demo() {
+  const data = Array.from({ length: 100 }, (_, index) => ({
+    id: index + 1,
+    name: `文章${index + 1}`,
+    content: `这是第${index + 1}篇文章的内容。`.repeat(Math.floor(Math.random() * 5) + 1),
+    author: `作者${index + 1}`,
+    time: new Date().toLocaleDateString()
+  }))
+
+  return (
+    <VirtualList
+      data={data}
+      height={400}
+      fixedHeight={false}
+      estimatedHeight={80}
+      itemKey="id"
+      gap={12}
+      renderItem={(item, index) => (
+        <div style={{
+          padding: '16px',
+          border: '1px solid #e4e7ed',
+          borderRadius: '8px',
+          backgroundColor: '#fff'
+        }}>
+          <h4 style={{ margin: '0 0 8px 0', color: '#333' }}>{item.name}</h4>
+          <p style={{ margin: '0 0 12px 0', color: '#666', lineHeight: '1.5' }}>
+            {item.content}
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#999' }}>
+            <span>{item.author}</span>
+            <span>{item.time}</span>
+          </div>
+        </div>
+      )}
+    />
+  )
+}
+```
+
+## 滚动加载更多
+
+通过 `requestMore` 属性实现滚动到底部时自动加载更多数据。
+
+```tsx preview
+export default function Demo() {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const fakeDataUrl = 'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo'
+
+  const loadMoreData = useCallback(async () => {
+    setLoading(true)
+    try {
+      const response = await fetch(fakeDataUrl)
+      const result = await response.json()
+      const newData = result.results.map((user, index) => ({
+        id: data.length + index + 1,
+        name: `${user.name.first} ${user.name.last}`,
+        email: user.email,
+        gender: user.gender,
+        country: user.nat,
+        avatar: user.picture.thumbnail
+      }))
+      setData(prev => [...prev, ...newData])
+    } catch (error) {
+      console.error('Failed to load data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [data.length])
+
+  useEffect(() => {
+    loadMoreData()
+  }, [])
+
+  return (
+    <VirtualList
+      data={data}
+      height={400}
+      itemHeight={70}
+      itemKey="id"
+      gap={8}
+      requestMore={loadMoreData}
+      renderItem={(item, index) => (
+        <div style={{
+          padding: '12px',
+          border: '1px solid #e4e7ed',
+          borderRadius: '8px',
+          backgroundColor: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          <img
+            src={item.avatar}
+            alt={item.name}
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              objectFit: 'cover'
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{item.name}</div>
+            <div style={{ color: '#666', fontSize: '14px' }}>
+              {item.email} • {item.country}
+            </div>
+          </div>
+        </div>
+      )}
+    />
+  )
+}
+```
+
+## 自定义样式
+
+通过 `className` 和内联样式自定义虚拟列表的外观。
+
+```tsx preview
+export default function Demo() {
+  const data = Array.from({ length: 200 }, (_, index) => ({
+    id: index + 1,
+    name: `项目${index + 1}`,
+    status: ['进行中', '已完成', '待开始'][index % 3],
+    progress: Math.floor(Math.random() * 100)
+  }))
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case '已完成': return '#67c23a'
+      case '进行中': return '#e6a23c'
+      case '待开始': return '#909399'
+      default: return '#909399'
+    }
+  }
+
+  return (
+    <VirtualList
+      data={data}
+      height={350}
+      itemHeight={60}
+      itemKey="id"
+      gap={6}
+      className="custom-virtual-list"
+      renderItem={(item, index) => (
+        <div style={{
+          padding: '12px 16px',
+          border: '1px solid #e4e7ed',
+          borderRadius: '6px',
+          backgroundColor: '#fafafa',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{item.name}</div>
+            <div style={{
+              fontSize: '14px',
+              color: getStatusColor(item.status)
+            }}>
+              {item.status}
+            </div>
+          </div>
+          <div style={{
+            width: '80px',
+            height: '8px',
+            backgroundColor: '#e4e7ed',
+            borderRadius: '4px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              width: `${item.progress}%`,
+              height: '100%',
+              backgroundColor: getStatusColor(item.status),
+              transition: 'width 0.3s ease'
+            }} />
+          </div>
+          <span style={{
+            marginLeft: '12px',
+            fontSize: '14px',
+            color: '#666'
+          }}>
+            {item.progress}%
+          </span>
+        </div>
+      )}
+    />
+  )
+}
+```
+
+## API 参考
+
+### VirtualListProps
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| data | `T[]` | - | 数据源数组 |
+| height | `number \| string` | - | 列表高度 |
+| itemHeight | `number` | 50 | 等高模式下子项高度 |
+| renderItem | `(item: T, index: number) => ReactNode` | - | 子项渲染函数 |
+| requestMore | `() => Promise<void>` | - | 异步加载数据的方法 |
+| itemKey | `keyof T` | - | 作为子项key的值在item中对应的属性字段 |
+| gap | `number` | 0 | 子项间隔 |
+| onScroll | `(event: UIEvent<HTMLDivElement>) => void` | - | 滚动事件 |
+| fixedHeight | `boolean` | true | 是否为等高模式 |
+| estimatedHeight | `number` | 50 | 不等高模式下子项的预测高度 |
+| className | `string` | - | 自定义类名 |
+| children | `ReactNode` | - | 子元素 |
+
+## 注意事项
+
+1. 请在使用时传入 `itemKey`，这对应你传入的 `data` 中单项的一个属性，保证它是唯一的。
+2. 或者选择在 `renderItem` 返回的元素中手动传入 `key` 值，不推荐使用 `index` 作为 `key`。
+3. 等高模式性能更好，适用于所有项目高度相同的情况。
+4. 不等高模式适用于项目高度不固定的情况，但性能相对较低。
+5. 滚动加载功能需要配合 `requestMore` 属性使用，当用户滚动到列表底部时会自动触发加载更多数据。

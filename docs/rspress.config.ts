@@ -22,8 +22,8 @@ export default defineConfig({
       // 这里统一注入 React + 组件库的 import，避免 "Button is not defined" 这类运行时错误
       previewCodeTransform: ({ code }) => {
         const injected = [
-          "import React from 'react';",
-          "import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table } from '@seven-design-ui/components';",
+          "import React, { useState, useEffect, useCallback, useRef } from 'react';",
+          "import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table, VirtualList } from '@seven-design-ui/components';",
           "import '@seven-design-ui/components/dist/style.css';",
           '',
         ].join('\n')
@@ -123,6 +123,10 @@ export default defineConfig({
             {
               text: 'Message 消息提示',
               link: '/components/message',
+            },
+            {
+              text: 'VirtualList 虚拟列表',
+              link: '/components/virtual-list',
             },
           ],
         },

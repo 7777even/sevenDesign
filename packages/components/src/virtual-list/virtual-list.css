@@ -1,0 +1,91 @@
+/* VirtualList 组件样式 */
+.sd-virtual-list {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  background-color: var(--sd-fill-color-blank);
+  border: 1px solid var(--sd-border-color-lighter);
+  border-radius: var(--sd-border-radius-base);
+}
+
+.sd-virtual-list__container {
+  position: relative;
+  width: 100%;
+}
+
+.sd-virtual-list__content {
+  position: relative;
+  width: 100%;
+}
+
+.sd-virtual-list__item {
+  box-sizing: border-box;
+  width: 100%;
+  transition: background-color var(--sd-transition-duration-fast);
+}
+
+.sd-virtual-list__item:hover {
+  background-color: var(--sd-fill-color-light);
+}
+
+/* 等高模式 */
+.sd-virtual-list--fixed-height .sd-virtual-list__item {
+  position: absolute !important;
+  left: 0;
+  top: 0;
+}
+
+/* 不等高模式 */
+.sd-virtual-list--variable-height .sd-virtual-list__item {
+  position: relative !important;
+}
+
+/* 加载状态 */
+.sd-virtual-list--loading {
+  position: relative;
+}
+
+.sd-virtual-list__loading {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  text-align: center;
+  color: var(--sd-text-color-placeholder);
+  font-size: var(--sd-font-size-small);
+  background-color: var(--sd-fill-color-blank);
+  border-top: 1px solid var(--sd-border-color-lighter);
+}
+
+/* 滚动条样式 */
+.sd-virtual-list::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.sd-virtual-list::-webkit-scrollbar-track {
+  background: var(--sd-fill-color-light);
+  border-radius: 3px;
+}
+
+.sd-virtual-list::-webkit-scrollbar-thumb {
+  background: var(--sd-border-color);
+  border-radius: 3px;
+}
+
+.sd-virtual-list::-webkit-scrollbar-thumb:hover {
+  background: var(--sd-border-color-dark);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .sd-virtual-list {
+    border-radius: var(--sd-border-radius-small);
+  }
+
+  .sd-virtual-list__loading {
+    padding: 8px;
+    font-size: var(--sd-font-size-extra-small);
+  }
+}
