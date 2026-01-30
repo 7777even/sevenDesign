@@ -594,43 +594,6 @@ function App() {
               />
               <p className="demo-tip">等高虚拟列表，包含1000个项目，每个项目高度50px，间隔8px</p>
             </div>
-
-            {/* 不等高模式 */}
-            <div className="demo-column">
-              <h3>不等高模式</h3>
-              <VirtualList
-                data={Array.from({ length: 100 }, (_, index) => ({
-                  id: index + 1,
-                  name: `文章${index + 1}`,
-                  content: `这是第${index + 1}篇文章的内容。`.repeat(Math.floor(Math.random() * 5) + 1),
-                  author: `作者${index + 1}`,
-                  time: new Date().toLocaleDateString()
-                }))}
-                height={400}
-                fixedHeight={false}
-                estimatedHeight={80}
-                itemKey="id"
-                gap={12}
-                renderItem={(item, index) => (
-                  <div style={{
-                    padding: '16px',
-                    border: '1px solid #e4e7ed',
-                    borderRadius: '8px',
-                    backgroundColor: '#fff'
-                  }}>
-                    <h4 style={{ margin: '0 0 8px 0', color: '#333' }}>{item.name}</h4>
-                    <p style={{ margin: '0 0 12px 0', color: '#666', lineHeight: '1.5' }}>
-                      {item.content}
-                    </p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#999' }}>
-                      <span>{item.author}</span>
-                      <span>{item.time}</span>
-                    </div>
-                  </div>
-                )}
-              />
-              <p className="demo-tip">不等高虚拟列表，每个项目高度不固定，使用estimatedHeight预测高度</p>
-            </div>
           </section>
         </main>
       </div>

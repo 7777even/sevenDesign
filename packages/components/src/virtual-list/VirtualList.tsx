@@ -19,10 +19,6 @@ export interface VirtualListProps<T = any> {
   gap?: number
   /** 滚动事件 */
   onScroll?: (event: React.UIEvent<HTMLDivElement>) => void
-  /** 是否为等高模式 */
-  fixedHeight?: boolean
-  /** 不等高模式下的预测高度 */
-  estimatedHeight?: number
   /** 自定义类名 */
   className?: string
   /** 子元素 */
@@ -39,8 +35,6 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps>((props, 
     itemKey,
     gap = 0,
     onScroll,
-    fixedHeight = true,
-    estimatedHeight = 50,
     className,
     children,
     ...rest
@@ -52,8 +46,6 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps>((props, 
   const [scrollTop, setScrollTop] = useState(0)
   // 是否正在加载更多数据
   const [loading, setLoading] = useState(false)
-  // 不等高模式下的高度缓存
-  const heightsRef = useRef<Map<number, number>>(new Map())
 
   // 计算容器高度
   const containerHeight = useMemo(() => {
@@ -75,12 +67,8 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps>((props, 
     return 400
   }, [height])
 
-  // 计算可见区域的起始和结束索引（等高模式）
+  // 计算可见区域的起始和结束索引
   const { startIndex, endIndex, offsetY } = useMemo(() => {
-    if (!fixedHeight) {
-      return { startIndex: 0, endIndex: data.length - 1, offsetY: 0 }
-    }
-
     const itemHeightWithGap = itemHeight + gap
     const visibleCount = Math.ceil(containerHeight / itemHeightWithGap) + 2 // 多渲染2个防止空白
     const start = Math.floor(scrollTop / itemHeightWithGap)
@@ -91,45 +79,18 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps>((props, 
       endIndex: Math.max(0, end - 1),
       offsetY: start * itemHeightWithGap
     }
-  }, [scrollTop, containerHeight, itemHeight, gap, data.length, fixedHeight])
+  }, [scrollTop, containerHeight, itemHeight, gap, data.length])
 
   // 计算可见项和总高度
   const { visibleItems, totalHeight } = useMemo(() => {
-    if (fixedHeight) {
-      return {
-        visibleItems: data.slice(startIndex, endIndex + 1).map((item, index) => ({
-          item,
-          index: startIndex + index,
-          top: startIndex * (itemHeight + gap) + index * gap
-        })),
-        totalHeight: data.length * (itemHeight + gap)
-      }
+    return {
+      visibleItems: data.slice(startIndex, endIndex + 1).map((item, index) => ({
+        item,
+        index: startIndex + index
+      })),
+      totalHeight: data.length * (itemHeight + gap)
     }
-
-    // 不等高模式
-    let currentTop = 0
-    const items = []
-
-    for (let i = 0; i < data.length; i++) {
-      const cachedHeight = heightsRef.current.get(i)
-      const itemHeight = cachedHeight || estimatedHeight
-      const itemTop = currentTop
-      const itemBottom = currentTop + itemHeight + gap
-
-      // 检查是否在可见区域
-      if (itemBottom > scrollTop && itemTop < scrollTop + containerHeight) {
-        items.push({
-          item: data[i],
-          index: i,
-          top: itemTop
-        })
-      }
-
-      currentTop = itemBottom
-    }
-
-    return { visibleItems: items, totalHeight: currentTop }
-  }, [data, startIndex, endIndex, scrollTop, containerHeight, itemHeight, gap, estimatedHeight, fixedHeight])
+  }, [data, startIndex, endIndex])
 
   // 滚动事件处理
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
@@ -163,8 +124,6 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps>((props, 
   const classes = classnames(
     'sd-virtual-list',
     {
-      'sd-virtual-list--fixed-height': fixedHeight,
-      'sd-virtual-list--variable-height': !fixedHeight,
       'sd-virtual-list--loading': loading
     },
     className
@@ -186,19 +145,19 @@ export const VirtualList = forwardRef<HTMLDivElement, VirtualListProps>((props, 
         <div
           className="sd-virtual-list__content"
           style={{
-            transform: `translateY(${fixedHeight ? offsetY : 0}px)`
+            transform: `translateY(${offsetY}px)`
           }}
         >
-          {visibleItems.map(({ item, index, top }) => (
+          {visibleItems.map(({ item, index }) => (
             <div
               key={getItemKey(item, index)}
               className="sd-virtual-list__item"
               style={{
-                height: fixedHeight ? itemHeight : 'auto',
+                height: itemHeight,
                 paddingTop: gap / 2,
                 paddingBottom: gap / 2,
                 position: 'absolute',
-                top: fixedHeight ? (index - startIndex) * (itemHeight + gap) : top,
+                top: (index - startIndex) * (itemHeight + gap),
                 width: '100%'
               }}
             >
