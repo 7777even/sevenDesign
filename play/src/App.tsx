@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react'
-import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table, VirtualList } from '@seven-design-ui/components'
+import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table, VirtualList, Upload } from '@seven-design-ui/components'
 import { basicOptions, disabledOptions, multipleOptions, hoverOptions } from './options'
 
 function CustomContentSwitch() {
@@ -593,6 +593,102 @@ function App() {
                 )}
               />
               <p className="demo-tip">等高虚拟列表，包含1000个项目，每个项目高度50px，间隔8px</p>
+            </div>
+          </section>
+
+          {/* Upload 组件示例 */}
+          <section className="demo-section">
+            <h2>Upload 上传</h2>
+
+            <div className="demo-item">
+              <h3>基础用法</h3>
+              <Upload
+                action="https://httpbin.org/post"
+                onSuccess={(response, file) => {
+                  console.log('上传成功:', response, file);
+                  $message.success('上传成功');
+                }}
+                onError={(error, file) => {
+                  console.log('上传失败:', error, file);
+                  $message.error('上传失败');
+                }}
+              >
+                <Button type="primary">点击上传</Button>
+              </Upload>
+              <p className="demo-tip">基础的上传功能，支持自定义上传按钮</p>
+            </div>
+
+            <div className="demo-item">
+              <h3>限制上传数量</h3>
+              <Upload
+                action="https://httpbin.org/post"
+                limit={2}
+                onExceed={(files, uploadFiles) => {
+                  $message.warning(`最多只能上传 ${2} 个文件`);
+                }}
+                onSuccess={(response, file) => {
+                  console.log('上传成功:', response, file);
+                  $message.success('上传成功');
+                }}
+                onError={(error, file) => {
+                  console.log('上传失败:', error, file);
+                  $message.error('上传失败');
+                }}
+              >
+                <Button type="primary">最多上传2个文件</Button>
+              </Upload>
+              <p className="demo-tip">设置 limit 为2，最多只能上传2个文件</p>
+            </div>
+
+            <div className="demo-item">
+              <h3>拖拽上传</h3>
+              <Upload
+                action="https://httpbin.org/post"
+                drag
+                multiple
+                onSuccess={(response, file) => {
+                  console.log('上传成功:', response, file);
+                  $message.success('上传成功');
+                }}
+                onError={(error, file) => {
+                  console.log('上传失败:', error, file);
+                  $message.error('上传失败');
+                }}
+              />
+              <p className="demo-tip">支持拖拽上传，可以同时选择多个文件</p>
+            </div>
+
+            <div className="demo-item">
+              <h3>文件格式和大小限制</h3>
+              <Upload
+                action="https://httpbin.org/post"
+                accept="image/*"
+                maxSize={1024 * 1024} // 1MB
+                beforeUpload={(file) => {
+                  const isImage = file.type.startsWith('image/');
+                  if (!isImage) {
+                    $message.error('只能上传图片文件');
+                    return false;
+                  }
+                  const isLt1M = file.size < 1024 * 1024;
+                  if (!isLt1M) {
+                    $message.error('图片大小不能超过1MB');
+                    return false;
+                  }
+                  return true;
+                }}
+                onSuccess={(response, file) => {
+                  console.log('上传成功:', response, file);
+                  $message.success('上传成功');
+                }}
+                onError={(error, file) => {
+                  console.log('上传失败:', error, file);
+                  $message.error('上传失败');
+                }}
+              >
+                <Button type="primary">上传头像</Button>
+              </Upload>
+              <p className="demo-tip">只允许上传图片文件，大小限制为1MB</p>
             </div>
           </section>
         </main>

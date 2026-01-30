@@ -23,7 +23,7 @@ export default defineConfig({
       previewCodeTransform: ({ code }) => {
         const injected = [
           "import React, { useState, useEffect, useCallback, useRef } from 'react';",
-          "import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table, VirtualList } from '@seven-design-ui/components';",
+          "import { Button, Input, Switch, Pagination, Cascader, Form, MessageProvider, MessageContainer, $message, Table, VirtualList, Upload } from '@seven-design-ui/components';",
           "import '@seven-design-ui/components/dist/style.css';",
           '',
         ].join('\n')
@@ -127,6 +127,15 @@ export default defineConfig({
             {
               text: 'VirtualList 虚拟列表',
               link: '/components/virtual-list',
+            },
+          ],
+        },
+        {
+          text: '数据录入',
+          items: [
+            {
+              text: 'Upload 上传',
+              link: '/components/upload',
             },
           ],
         },
