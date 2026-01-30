@@ -26,12 +26,6 @@ export interface TableColumn<T = any> {
   render?: (value: any, row: T, index: number) => ReactNode
   /** 格式化函数 */
   formatter?: (row: T, column: TableColumn<T>, cellValue: any, index: number) => any
-  /** 筛选选项 */
-  filters?: Array<{ text: string; value: any }>
-  /** 自定义筛选方法 */
-  filterMethod?: (value: any, row: T, column: TableColumn<T>) => boolean
-  /** 筛选的初始值 */
-  filteredValue?: any[]
   /** 列的类名 */
   className?: string
   /** 列的样式 */
@@ -48,14 +42,6 @@ export interface SortState {
   prop: string
   /** 排序顺序 */
   order: 'ascending' | 'descending'
-}
-
-// 筛选状态接口
-export interface FilterState {
-  /** 筛选字段 */
-  prop: string
-  /** 筛选值 */
-  values: any[]
 }
 
 // Table组件的属性接口
@@ -82,8 +68,6 @@ export interface TableProps<T = any> {
   defaultSort?: SortState
   /** 排序变化回调 */
   onSortChange?: (sort: SortState | null) => void
-  /** 筛选变化回调 */
-  onFilterChange?: (filters: FilterState[]) => void
   /** 行点击事件 */
   onRowClick?: (row: T, index: number, event: React.MouseEvent) => void
   /** 行双击事件 */
@@ -104,10 +88,6 @@ export interface TableRef {
   sort: (prop: string, order: 'ascending' | 'descending') => void
   /** 清除排序 */
   clearSort: () => void
-  /** 手动筛选 */
-  filter: (prop: string, values: any[]) => void
-  /** 清除筛选 */
-  clearFilter: (prop?: string) => void
 }
 
 // 将列宽解析为像素数值（用于固定列偏移、表格总宽等）
@@ -179,7 +159,6 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
     rowStyle,
     defaultSort,
     onSortChange,
-    onFilterChange,
     onRowClick,
     onRowDoubleClick,
     onCellClick,
@@ -191,16 +170,6 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
 
   // 排序状态
   const [sortState, setSortState] = useState<SortState | null>(defaultSort || null)
-  // 筛选状态
-  const [filterStates, setFilterStates] = useState<FilterState[]>(() => {
-    // 从列配置中获取初始筛选值
-    return columns
-      .filter(column => column.filteredValue && column.filteredValue.length > 0)
-      .map(column => ({
-        prop: column.prop!,
-        values: column.filteredValue!
-      }))
-  })
 
   // 处理排序
   const handleSort = useCallback((column: TableColumn) => {
@@ -217,28 +186,9 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
   }, [sortState, onSortChange])
 
 
-  // 排序和筛选数据
+  // 排序数据
   const processedData = useMemo(() => {
     let result = [...data]
-
-    // 应用筛选
-    filterStates.forEach(filter => {
-      const column = columns.find(col => col.prop === filter.prop)
-      if (column) {
-        result = result.filter(row => {
-          if (column.filterMethod) {
-            // 使用自定义筛选方法
-            return filter.values.some(value =>
-              column.filterMethod!(value, row, column)
-            )
-          } else {
-            // 默认筛选方法：精确匹配
-            const cellValue = getColumnValue(row, column, 0)
-            return filter.values.some(value => cellValue === value)
-          }
-        })
-      }
-    })
 
     // 应用排序
     if (sortState) {
@@ -261,7 +211,7 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
     }
 
     return result
-  }, [data, columns, sortState, filterStates])
+  }, [data, columns, sortState])
 
   // 固定列：计算每列的 left/right 偏移（用于横向滚动时 sticky 定位）、是否有固定列、列总宽
   const fixedColumnMeta = useMemo(() => {
@@ -322,24 +272,8 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
     clearSort: () => {
       setSortState(null)
       onSortChange?.(null)
-    },
-    filter: (prop: string, values: any[]) => {
-      const newFilters = filterStates.filter(f => f.prop !== prop)
-      if (values.length > 0) {
-        newFilters.push({ prop, values })
-      }
-      setFilterStates(newFilters)
-      onFilterChange?.(newFilters)
-    },
-    clearFilter: (prop?: string) => {
-      if (prop) {
-        setFilterStates(prev => prev.filter(f => f.prop !== prop))
-      } else {
-        setFilterStates([])
-      }
-      onFilterChange?.([])
     }
-  }), [onSortChange, onFilterChange, filterStates])
+  }), [onSortChange])
 
   // 表格样式
   const tableStyle: React.CSSProperties = {
@@ -381,7 +315,6 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
                     'is-sorting': sortState?.prop === column.prop,
                     'sort-asc': sortState?.prop === column.prop && sortState?.order === 'ascending',
                     'sort-desc': sortState?.prop === column.prop && sortState?.order === 'descending',
-                    'is-filterable': !!(column.filters && column.filters.length > 0),
                     'seven-table__cell--fixed-left': column.fixed === true || column.fixed === 'left',
                     'seven-table__cell--fixed-right': column.fixed === 'right'
                   },
@@ -412,11 +345,6 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
                         <span className="seven-table__sort-icon">
                           <i className="seven-table__sort-icon-asc"></i>
                           <i className="seven-table__sort-icon-desc"></i>
-                        </span>
-                      )}
-                      {column.filters && column.filters.length > 0 && (
-                        <span className="seven-table__filter-icon">
-                          <i className="seven-table__filter-icon-inner">筛选</i>
                         </span>
                       )}
                     </div>

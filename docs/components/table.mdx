@@ -743,7 +743,6 @@ export default function Demo() {
       prop: 'name',
       label: '姓名',
       width: 120,
-      sortable: true
     },
     {
       prop: 'age',
@@ -767,11 +766,7 @@ export default function Demo() {
       prop: 'score',
       label: '分数',
       width: 80,
-      sortable: true,
-      // 自定义排序方法
-      sortMethod: (a, b) => {
-        return b.score - a.score // 降序排序
-      }
+      sortable: true
     }
   ]
 
@@ -795,88 +790,6 @@ export default function Demo() {
   )
 }
 ```
-
-## 筛选
-
-对表格进行筛选，可快速查找到自己想看的数据。
-
-在列中设置 `filters` 和 `filterMethod` 属性即可开启该列的筛选，`filters` 是一个数组，`filterMethod` 是一个方法，它用于决定某些数据是否显示，会传入三个参数：`value`, `row` 和 `column`。
-
-```tsx preview
-export default function Demo() {
-  const columns = [
-    {
-      prop: 'name',
-      label: '姓名',
-      width: 120
-    },
-    {
-      prop: 'age',
-      label: '年龄',
-      width: 80,
-      sortable: true,
-      filters: [
-        { text: '20岁以下', value: 'young' },
-        { text: '20-30岁', value: 'middle' },
-        { text: '30岁以上', value: 'old' }
-      ],
-      filterMethod: (value, row) => {
-        if (value === 'young') return row.age < 20
-        if (value === 'middle') return row.age >= 20 && row.age <= 30
-        if (value === 'old') return row.age > 30
-        return true
-      }
-    },
-    {
-      prop: 'gender',
-      label: '性别',
-      width: 80,
-      filters: [
-        { text: '男', value: '男' },
-        { text: '女', value: '女' }
-      ],
-      filterMethod: (value, row) => row.gender === value
-    },
-    {
-      prop: 'city',
-      label: '城市',
-      width: 120,
-      filters: [
-        { text: '北京', value: '北京' },
-        { text: '上海', value: '上海' },
-        { text: '广州', value: '广州' },
-        { text: '深圳', value: '深圳' }
-      ],
-      filterMethod: (value, row) => row.city === value
-    },
-    {
-      prop: 'score',
-      label: '分数',
-      width: 80,
-      sortable: true
-    }
-  ]
-
-  // 生成更多数据用于筛选测试
-  const filterData = Array.from({ length: 20 }, (_, index) => ({
-    id: index + 1,
-    name: `用户${index + 1}`,
-    age: 18 + (index % 25),
-    gender: index % 2 === 0 ? '男' : '女',
-    city: ['北京', '上海', '广州', '深圳', '杭州'][index % 5],
-    score: 60 + (index % 40)
-  }))
-
-  return (
-    <Table
-      data={filterData}
-      columns={columns}
-      style={{ width: '100%' }}
-    />
-  )
-}
-```
-
 ## API
 
 ### Table Props

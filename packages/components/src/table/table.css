@@ -99,17 +99,22 @@
   border-top: 4px solid var(--seven-border-color, #c0c4cc);
 }
 
-.is-sorting .seven-table__sort-icon-asc,
-.is-sorting .seven-table__sort-icon-desc {
-  border-color: var(--seven-color-primary, #409eff);
-}
+/* 移除全局排序时的颜色变化，由具体的升序/降序类控制 */
 
 .sort-asc .seven-table__sort-icon-asc {
   border-bottom-color: var(--seven-color-primary, #409eff);
 }
 
+.sort-asc .seven-table__sort-icon-desc {
+  border-top-color: var(--seven-border-color, #c0c4cc);
+}
+
 .sort-desc .seven-table__sort-icon-desc {
   border-top-color: var(--seven-color-primary, #409eff);
+}
+
+.sort-desc .seven-table__sort-icon-asc {
+  border-bottom-color: var(--seven-border-color, #c0c4cc);
 }
 
 /* 行样式 */
@@ -252,30 +257,6 @@
   margin-left: 8px;
   font-size: 14px;
   color: var(--seven-text-color-regular, #606266);
-}
-
-/* 筛选样式 */
-.is-filterable {
-  position: relative;
-}
-
-.seven-table__filter-icon {
-  margin-left: 4px;
-  color: var(--seven-border-color, #dcdfe6);
-  transition: color 0.2s ease;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.is-filterable:hover .seven-table__filter-icon,
-.seven-table__filter--active .seven-table__filter-icon {
-  color: var(--seven-color-primary, #409eff);
-}
-
-.seven-table__filter-icon-inner::before {
-  content: '▼';
-  font-size: 10px;
-  margin-right: 2px;
 }
 
 /* 工具提示样式 */
