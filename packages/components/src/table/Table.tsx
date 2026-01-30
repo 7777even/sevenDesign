@@ -110,6 +110,15 @@ export interface TableRef {
   clearFilter: (prop?: string) => void
 }
 
+// 将列宽解析为像素数值（用于固定列偏移、表格总宽等）
+function parseColumnWidth(col: TableColumn, defaultVal = 80): number {
+  const raw = col.width ?? col.minWidth
+  if (raw == null) return defaultVal
+  if (typeof raw === 'number') return raw
+  const match = String(raw).match(/^(\d+(?:\.\d+)?)\s*px$/)
+  return match ? Number(match[1]) : Number(raw) || defaultVal
+}
+
 // 获取列的值
 function getColumnValue<T>(row: T, column: TableColumn<T>, index: number): any {
   if (column.prop) {
@@ -254,6 +263,33 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
     return result
   }, [data, columns, sortState, filterStates])
 
+  // 固定列：计算每列的 left/right 偏移（用于横向滚动时 sticky 定位）、是否有固定列、列总宽
+  const fixedColumnMeta = useMemo(() => {
+    const leftOffsets: number[] = []
+    const rightOffsets: number[] = []
+    let accLeft = 0
+    for (let i = 0; i < columns.length; i++) {
+      const col = columns[i]
+      const w = parseColumnWidth(col)
+      const isLeft = col.fixed === true || col.fixed === 'left'
+      leftOffsets[i] = isLeft ? accLeft : 0
+      if (isLeft) accLeft += w
+    }
+    let accRight = 0
+    for (let i = columns.length - 1; i >= 0; i--) {
+      const col = columns[i]
+      const w = parseColumnWidth(col)
+      const isRight = col.fixed === 'right'
+      rightOffsets[i] = isRight ? accRight : 0
+      if (isRight) accRight += w
+    }
+    const hasFixed = columns.some(
+      c => c.fixed === true || c.fixed === 'left' || c.fixed === 'right'
+    )
+    const totalWidth = columns.reduce((sum, c) => sum + parseColumnWidth(c), 0)
+    return { leftOffsets, rightOffsets, hasFixedColumns: hasFixed, totalColumnsWidth: totalWidth }
+  }, [columns])
+
   // 获取行类名
   const getRowClassName = useCallback((row: any, index: number): string => {
     let className = ''
@@ -318,15 +354,21 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
     {
       'seven-table--border': border,
       'seven-table--stripe': stripe,
-      'seven-table--fixed-header': !!(height || maxHeight)
+      'seven-table--fixed-header': !!(height || maxHeight),
+      'seven-table--fixed-columns': fixedColumnMeta.hasFixedColumns
     },
     className
   )
 
+  const innerTableStyle: React.CSSProperties = fixedColumnMeta.hasFixedColumns &&
+    fixedColumnMeta.totalColumnsWidth > 0
+    ? { minWidth: `${fixedColumnMeta.totalColumnsWidth}px` }
+    : {}
+
   return (
     <div className={tableClassName} style={tableStyle} {...rest}>
       <div className="seven-table__wrapper">
-        <table className="seven-table__inner">
+        <table className="seven-table__inner" style={innerTableStyle}>
           {/* 表头 */}
           <thead className="seven-table__header">
             <tr>
@@ -346,10 +388,14 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
                   column.className
                 )
 
+                const isFixedLeft = column.fixed === true || column.fixed === 'left'
+                const isFixedRight = column.fixed === 'right'
                 const headerStyle: React.CSSProperties = {
                   width: column.width ? (typeof column.width === 'number' ? `${column.width}px` : column.width) : undefined,
                   minWidth: column.minWidth ? (typeof column.minWidth === 'number' ? `${column.minWidth}px` : column.minWidth) : undefined,
                   textAlign: column.headerAlign || column.align || 'left',
+                  ...(isFixedLeft && { left: fixedColumnMeta.leftOffsets[index] }),
+                  ...(isFixedRight && { right: fixedColumnMeta.rightOffsets[index] }),
                   ...column.style
                 }
 
@@ -391,17 +437,23 @@ const Table = forwardRef<TableRef, TableProps>((props, _ref) => {
                 onDoubleClick={(event) => onRowDoubleClick?.(row, rowIndex, event)}
               >
                 {columns.map((column, colIndex) => {
+                  const isFixedLeft = column.fixed === true || column.fixed === 'left'
+                  const isFixedRight = column.fixed === 'right'
                   const cellClassName = classnames(
                     'seven-table__cell',
                     {
-                      'seven-table__cell--fixed-left': column.fixed === true || column.fixed === 'left',
-                      'seven-table__cell--fixed-right': column.fixed === 'right'
+                      'seven-table__cell--fixed-left': isFixedLeft,
+                      'seven-table__cell--fixed-right': isFixedRight
                     },
                     column.className
                   )
 
                   const cellStyle: React.CSSProperties = {
+                    width: column.width ? (typeof column.width === 'number' ? `${column.width}px` : column.width) : undefined,
+                    minWidth: column.minWidth ? (typeof column.minWidth === 'number' ? `${column.minWidth}px` : column.minWidth) : undefined,
                     textAlign: column.align || 'left',
+                    ...(isFixedLeft && { left: fixedColumnMeta.leftOffsets[colIndex] }),
+                    ...(isFixedRight && { right: fixedColumnMeta.rightOffsets[colIndex] }),
                     ...column.style
                   }
 

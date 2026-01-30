@@ -138,25 +138,39 @@
   background-color: var(--seven-color-info-light-9, #f4f4f5);
 }
 
-/* 固定列样式 */
+/* 固定列样式：列固定，横向滚动时固定展示（与固定表头纵向滚动时表头固定同理） */
 .seven-table__cell--fixed-left,
 .seven-table__cell--fixed-right {
   position: sticky;
   z-index: 2;
-  background-color: inherit;
+  /* left/right 由 Table.tsx 根据列偏移注入，多列固定时每列偏移不同 */
+}
+
+/* 表体固定列：显式背景，横向滚动时不透出底层内容（参考固定表头显式背景的做法） */
+.seven-table__body .seven-table__cell--fixed-left,
+.seven-table__body .seven-table__cell--fixed-right {
+  background-color: var(--seven-bg-color, #ffffff);
+}
+
+.seven-table--stripe .seven-table__body .seven-table__row--striped .seven-table__cell--fixed-left,
+.seven-table--stripe .seven-table__body .seven-table__row--striped .seven-table__cell--fixed-right {
+  background-color: var(--seven-bg-color, #fafafa);
+}
+
+.seven-table__body .seven-table__row:hover .seven-table__cell--fixed-left,
+.seven-table__body .seven-table__row:hover .seven-table__cell--fixed-right {
+  background-color: var(--seven-bg-color-page, #f5f7fa);
 }
 
 .seven-table__cell--fixed-left {
-  left: 0;
-  box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 2px 0 8px -2px rgba(0, 0, 0, 0.08);
 }
 
 .seven-table__cell--fixed-right {
-  right: 0;
-  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.12);
+  box-shadow: -2px 0 8px -2px rgba(0, 0, 0, 0.08);
 }
 
-/* 固定表头样式 */
+/* 固定表头样式：纵向滚动时表头固定 */
 .seven-table--fixed-header .seven-table__wrapper {
   overflow-y: auto;
 }
@@ -172,15 +186,9 @@
   background-color: var(--seven-bg-color-page, #f5f7fa);
 }
 
-/* 固定表头样式 */
-.seven-table--fixed-header .seven-table__wrapper {
-  overflow-y: auto;
-}
-
-.seven-table--fixed-header .seven-table__header {
-  position: sticky;
-  top: 0;
-  z-index: 3;
+/* 固定列时允许横向滚动，表格通过 minWidth 撑开 */
+.seven-table--fixed-columns .seven-table__wrapper {
+  overflow-x: auto;
 }
 
 /* 响应式样式 */
