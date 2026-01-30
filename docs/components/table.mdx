@@ -1,4 +1,4 @@
-import { Table } from '@seven-design-ui/components'
+import { Table, Button } from '@seven-design-ui/components'
 import React from 'react'
 
 # Table 表格
@@ -538,12 +538,12 @@ export default function Demo() {
     {
       prop: 'action',
       label: '操作',
-      width: 120,
+      width: 160,
       fixed: 'right',
       render: () => (
         <div>
-          <button style={{ marginRight: '8px' }}>编辑</button>
-          <button>删除</button>
+          <Button type="primary">编辑</Button>
+          <Button type="danger">删除</Button>
         </div>
       )
     }
@@ -610,12 +610,12 @@ export default function Demo() {
     {
       prop: 'action',
       label: '操作',
-      width: 120,
+      width: 160,
       fixed: 'right',
       render: () => (
         <div>
-          <button style={{ marginRight: '8px' }}>编辑</button>
-          <button>删除</button>
+          <Button type="primary">编辑</Button>
+          <Button type="danger">删除</Button>
         </div>
       )
     }
