@@ -2,7 +2,7 @@
 
 .seven-message-container {
   position: fixed;
-  z-index: 10000;
+  z-index: 2147483647;
   pointer-events: none;
 }
 

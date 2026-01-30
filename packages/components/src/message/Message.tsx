@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, ReactNode, createContext, useContext } from 'react';
+import { createPortal } from 'react-dom';
 import { classnames } from '@seven-design-ui/core';
 import './message.css';
 
@@ -138,7 +139,7 @@ const MessageContainer: React.FC = () => {
     return acc;
   }, {} as Record<string, MessageInstance[]>);
 
-  return (
+  const messageElements = (
     <>
       {Object.entries(groupedMessages).map(([placement, placementMessages]) => (
         <div
@@ -155,6 +156,9 @@ const MessageContainer: React.FC = () => {
       ))}
     </>
   );
+
+  // 将消息容器渲染到body的最外层
+  return createPortal(messageElements, document.body);
 };
 
 // 消息API类
@@ -294,6 +298,7 @@ export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children })
   return (
     <MessageListContext.Provider value={contextValue}>
       {children}
+      <MessageContainer />
     </MessageListContext.Provider>
   );
 };
