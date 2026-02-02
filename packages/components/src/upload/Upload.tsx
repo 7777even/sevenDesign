@@ -160,17 +160,17 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
     let currentFileList = [...fileList]; // 创建当前文件列表的副本
 
     // 检查文件数量限制
-    if (limit && currentFileList.length + fileArray.length > limit) {
-      if (currentFileList.length >= limit) {
-        // 如果已达到限制，触发onExceed
-        onExceed?.(fileArray, currentFileList);
-        return;
-      } else {
-        // 如果会超出限制，只保留允许的数量
-        const allowedCount = limit - currentFileList.length;
-        fileArray.splice(allowedCount);
-        onExceed?.(Array.from(files).slice(allowedCount), currentFileList);
-      }
+    if (limit && currentFileList.length >= limit) {
+      // 如果已达到限制，替换现有文件
+      const exceedFiles = fileArray;
+      currentFileList = []; // 清空现有文件列表，准备替换
+      onExceed?.(exceedFiles, currentFileList);
+    } else if (limit && currentFileList.length + fileArray.length > limit) {
+      // 如果会超出限制，只保留允许的数量
+      const allowedCount = limit - currentFileList.length;
+      const exceedFiles = fileArray.slice(allowedCount);
+      fileArray.splice(allowedCount);
+      onExceed?.(exceedFiles, currentFileList);
     }
 
     // 处理每个文件
