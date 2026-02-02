@@ -126,19 +126,20 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
   const [dragOver, setDragOver] = useState(false);
 
   // 实际使用的文件列表
-  const fileList = propFileList.length > 0 ? propFileList : internalFileList;
+  const fileList = propFileList && propFileList.length > 0 ? propFileList : internalFileList;
 
   // 文件输入框引用
   const inputRef = useRef<HTMLInputElement>(null);
 
   // 更新文件列表
   const updateFileList = useCallback((newFileList: UploadFile[]) => {
-    if (propFileList.length === 0) {
+    if (!propFileList || propFileList.length === 0) {
+      // 使用内部状态管理时，更新内部状态
       setInternalFileList(newFileList);
     }
-    // 触发onChange回调
+    // 触发onChange回调，通知父组件状态变化
     onChange?.(newFileList[newFileList.length - 1], newFileList);
-  }, [propFileList.length, onChange]);
+  }, [propFileList, onChange]);
 
   // 创建文件对象
   const createFileItem = useCallback((file: File): UploadFile => {
@@ -156,18 +157,19 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
   // 处理文件选择
   const handleFileSelect = useCallback(async (files: FileList | File[]) => {
     const fileArray = Array.from(files);
+    let currentFileList = [...fileList]; // 创建当前文件列表的副本
 
     // 检查文件数量限制
-    if (limit && fileList.length + fileArray.length > limit) {
-      if (fileList.length >= limit) {
+    if (limit && currentFileList.length + fileArray.length > limit) {
+      if (currentFileList.length >= limit) {
         // 如果已达到限制，触发onExceed
-        onExceed?.(fileArray, fileList);
+        onExceed?.(fileArray, currentFileList);
         return;
       } else {
         // 如果会超出限制，只保留允许的数量
-        const allowedCount = limit - fileList.length;
+        const allowedCount = limit - currentFileList.length;
         fileArray.splice(allowedCount);
-        onExceed?.(Array.from(files).slice(allowedCount), fileList);
+        onExceed?.(Array.from(files).slice(allowedCount), currentFileList);
       }
     }
 
@@ -178,7 +180,7 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
       // 执行beforeUpload钩子
       if (beforeUpload) {
         try {
-          const result = await beforeUpload(file, fileList);
+          const result = await beforeUpload(file, currentFileList);
           if (result === false) continue; // 阻止上传
           if (result instanceof File) {
             processedFile = result; // 使用处理后的文件
@@ -194,34 +196,38 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
         const fileItem = createFileItem(processedFile);
         fileItem.status = 'error';
         fileItem.error = `文件大小超过限制 ${maxSize} 字节`;
-        updateFileList([...fileList, fileItem]);
-        onError?.(new Error(fileItem.error), fileItem, [...fileList, fileItem]);
+        currentFileList = [...currentFileList, fileItem];
+        updateFileList(currentFileList);
+        onError?.(new Error(fileItem.error), fileItem, currentFileList);
         continue;
       }
 
       // 创建文件项并添加到列表
       const fileItem = createFileItem(processedFile);
-      updateFileList([...fileList, fileItem]);
+      currentFileList = [...currentFileList, fileItem];
+      updateFileList(currentFileList);
 
       // 如果提供了action，开始上传
       if (action) {
-        uploadFile(fileItem);
+        uploadFile(fileItem, currentFileList);
       }
     }
   }, [fileList, limit, beforeUpload, maxSize, onExceed, onError, createFileItem, updateFileList, action]);
 
   // 上传文件
-  const uploadFile = useCallback(async (fileItem: UploadFile) => {
+  const uploadFile = useCallback(async (fileItem: UploadFile, currentFileList: UploadFile[]) => {
     if (!action || !fileItem.raw) return;
 
     // 更新状态为上传中
     const updateStatus = (status: UploadFileStatus, percent?: number, error?: string, url?: string) => {
-      const newFileList = fileList.map(f =>
+      // 使用传入的当前文件列表
+      const newFileList = currentFileList.map(f =>
         f.uid === fileItem.uid
           ? { ...f, status, percent, error, url }
           : f
       );
       updateFileList(newFileList);
+      return newFileList; // 返回更新后的文件列表
     };
 
     updateStatus('uploading', 0);
@@ -248,21 +254,17 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
       }
 
       const result = await response.json();
-      updateStatus('success', 100, undefined, result.url);
+      const successFileList = updateStatus('success', 100, undefined, result.url);
 
-      onSuccess?.(result, fileItem, fileList.map(f =>
-        f.uid === fileItem.uid ? { ...f, status: 'success', percent: 100, url: result.url } : f
-      ));
+      onSuccess?.(result, fileItem, successFileList);
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '上传失败';
-      updateStatus('error', undefined, errorMessage);
+      const errorFileList = updateStatus('error', undefined, errorMessage);
 
-      onError?.(error, fileItem, fileList.map(f =>
-        f.uid === fileItem.uid ? { ...f, status: 'error', error: errorMessage } : f
-      ));
+      onError?.(error, fileItem, errorFileList);
     }
-  }, [action, name, data, headers, fileList, updateFileList, onSuccess, onError]);
+  }, [action, name, data, headers, updateFileList, onSuccess, onError]);
 
   // 移除文件
   const handleRemove = useCallback(async (fileItem: UploadFile) => {
@@ -283,11 +285,6 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
     onRemove?.(fileItem, newFileList);
   }, [beforeRemove, fileList, updateFileList, onRemove]);
 
-  // 点击上传区域
-  const handleClick = useCallback(() => {
-    if (disabled) return;
-    inputRef.current?.click();
-  }, [disabled]);
 
   // 文件选择改变
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -369,7 +366,6 @@ export const Upload = React.forwardRef<HTMLDivElement, UploadProps>((props, ref)
             'upload-trigger-disabled': disabled,
           }
         )}
-        onClick={handleClick}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
